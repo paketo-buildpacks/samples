@@ -1,0 +1,3 @@
+---
+go:
+  import-path: github.com/paketo-buildpacks/samples/go/dep

@@ -1,0 +1,3 @@
+[[constraint]]
+  name = "github.com/gorilla/mux"
+  version = "1.7.4"
