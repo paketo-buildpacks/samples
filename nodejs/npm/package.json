@@ -1,0 +1,15 @@
+{
+  "author": "Paketo Buildpacks",
+  "dependencies": {
+    "express": "^4.17.0"
+  },
+  "description": "Sample Node.js Application using NPM",
+  "license": "Apache-2.0",
+  "main": "server.js",
+  "name": "sample",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paketo-buildpacks/samples"
+  },
+  "version": "0.0.0"
+}
