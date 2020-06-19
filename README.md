@@ -9,6 +9,16 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 
 ## Samples
 
+### Java
+* [AspectJ](/java/aspectj)
+* [Azure Application Insights](/java/application-insights)
+* [Gradle DistZip](/java/dist-zip)
+* [Gradle](/java/gradle)
+* [Maven](/java/maven)
+* [Pre-compiled JAR](/java/jar)
+* [Scala Akka](/java/akka)
+* [WAR](/java/war)
+
 ### Node.js
 * [NPM](/nodejs/npm)
 * [Yarn](/nodejs/yarn)
