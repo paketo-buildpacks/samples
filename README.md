@@ -14,6 +14,7 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [Azure Application Insights](/java/application-insights)
 * [Gradle DistZip](/java/dist-zip)
 * [Gradle](/java/gradle)
+* [Kotlin](/java/kotlin)
 * [Maven](/java/maven)
 * [Pre-compiled JAR](/java/jar)
 * [Scala Akka](/java/akka)
