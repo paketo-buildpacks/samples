@@ -22,7 +22,7 @@ echo "<Instrumentation Key>" > binding/secret/InstrumentationKey
 ## Building
 
 ```bash
-pack build applications/application-insights --volume "$(pwd)/binding:/bindings/application-insights"
+pack build applications/application-insights --volume "$(pwd)/binding:/platform/bindings/application-insights"
 ```
 
 ## Running
