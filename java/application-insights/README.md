@@ -7,7 +7,6 @@ The buildpack installs the Azure Application Insights Agent, and configures it f
 ```plain
 binding
 ├── type
-├── provider
 └── InstrumentationKey
 ```
 
