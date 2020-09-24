@@ -9,7 +9,7 @@ pack build applications/aspectj
 ## Running
 
 ```bash
-docker run --tty --publish 8080:8080 applications/aspectj
+docker run --rm --tty --publish 8080:8080 applications/aspectj
 ```
 
 ## Viewing
