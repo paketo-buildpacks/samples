@@ -2,21 +2,19 @@
 
 ## Binding
 
-The buildpack installs the Azure Application Insights Agent, and configures it for usage based on a Service Binding.  This binding consists of a `kind` indicating what type of service it is, and an `InstrumentationKey` with the Application Insight Instrumentation Key.
+The buildpack installs the Azure Application Insights Agent, and configures it for usage based on a Service Binding.  This binding consists of a `type` indicating what type of service it is, and an `InstrumentationKey` with the Application Insight Instrumentation Key.
 
 ```plain
 binding
-├── metadata
-│   ├── kind
-│   └── provider
-└── secret
-    └── InstrumentationKey
+├── type
+├── provider
+└── InstrumentationKey
 ```
 
 Add your instrumentation key to the binding
 
 ```bash
-echo "<Instrumentation Key>" > binding/secret/InstrumentationKey
+echo "<Instrumentation Key>" > binding/InstrumentationKey
 ```
 
 ## Building
@@ -28,7 +26,7 @@ pack build applications/application-insights --volume "$(pwd)/binding:/platform/
 ## Running
 
 ```bash
-docker run --tty --publish 8080:8080 applications/application-insights
+docker run --rm --env SERVICE_BINDING_ROOT=/bindings --volume "$(pwd)/binding:/bindings/application" --tty --publish 8080:8080 applications/application-insights
 ```
 
 ## Viewing
