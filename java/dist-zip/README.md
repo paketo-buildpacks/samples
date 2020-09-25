@@ -9,7 +9,7 @@ pack build applications/dist-zip --env BP_GRADLE_BUILD_ARGUMENTS="--no-daemon -x
 ## Running
 
 ```bash
-docker run --tty --publish 8080:8080 applications/dist-zip
+docker run --rm --tty --publish 8080:8080 applications/dist-zip
 ```
 
 ## Viewing

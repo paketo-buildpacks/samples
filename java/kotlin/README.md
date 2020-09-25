@@ -9,7 +9,7 @@ pack build applications/kotlin
 ## Running
 
 ```bash
-docker run --tty --publish 8080:8080 applications/kotlin
+docker run --rm --tty --publish 8080:8080 applications/kotlin
 ```
 
 ## Viewing

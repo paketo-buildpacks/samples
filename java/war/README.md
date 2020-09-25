@@ -9,7 +9,7 @@ pack build applications/war
 ## Running
 
 ```bash
-docker run --tty --publish 8080:8080 applications/war
+docker run --rm --tty --publish 8080:8080 applications/war
 ```
 
 ## Viewing

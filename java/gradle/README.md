@@ -9,7 +9,7 @@ pack build applications/gradle
 ## Running
 
 ```bash
-docker run --tty --publish 8080:8080 applications/gradle
+docker run --rm --tty --publish 8080:8080 applications/gradle
 ```
 
 ## Viewing

@@ -9,7 +9,7 @@ pack build applications/leiningen
 ## Running
 
 ```bash
-docker run --tty --publish 8080:8080 applications/leiningen
+docker run --rm --tty --publish 8080:8080 applications/leiningen
 ```
 
 ## Viewing

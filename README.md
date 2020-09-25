@@ -17,6 +17,7 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [Kotlin](/java/kotlin)
 * [Leiningen (Clojure)](/java/leiningen)
 * [Maven](/java/maven)
+* [Native Image](/java/native-image)
 * [Pre-compiled JAR](/java/jar)
 * [Scala Akka](/java/akka)
 * [WAR](/java/war)

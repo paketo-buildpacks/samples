@@ -9,7 +9,7 @@ pack build applications/akka
 ## Running
 
 ```bash
-docker run --tty --publish 8080:8080 applications/akka
+docker run --rm --tty --publish 8080:8080 applications/akka
 ```
 
 ## Viewing

@@ -9,7 +9,7 @@ pack build applications/maven
 ## Running
 
 ```bash
-docker run --tty --publish 8080:8080 applications/maven
+docker run --rm --tty --publish 8080:8080 applications/maven
 ```
 
 ## Viewing
