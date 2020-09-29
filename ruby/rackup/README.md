@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build rackup-sample --buildpack gcr.io/paketo-community/ruby`
+`pack build rackup-sample --buildpack gcr.io/paketo-buildpacks/ruby`
 
 ## Running
 

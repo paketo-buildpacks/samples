@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build passenger-sample --buildpack gcr.io/paketo-community/ruby`
+`pack build passenger-sample --buildpack gcr.io/paketo-buildpacks/ruby`
 
 ## Running
 
