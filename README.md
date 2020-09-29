@@ -38,5 +38,13 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [NGINX](/php/nginx)
 * [Apache HTTPD](/php/httpd)
 
+### Ruby
+* [Passenger](/ruby/passenger)
+* [Puma](/ruby/puma)
+* [Rackup](/ruby/rackup)
+* [Rake](/ruby/rake)
+* [Thin](/ruby/thin)
+* [Unicorn](/ruby/unicorn)
+
 ### Procfile
 * [Static Webserver](/procfile)
