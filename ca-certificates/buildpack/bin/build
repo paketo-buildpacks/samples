@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+echo -e "\nPaketo CA Certificates Test Buildpack"
+
+if [[ -z $BP_TEST_URL ]]; then
+  echo -e "-----> Skipping CA Certficate test because \$BP_TEST_URL was not provided.\n"
+  exit 0
+fi
+
+echo -e "-----> Executing: curl --head ${BP_TEST_URL}\n"
+curl --head "${BP_TEST_URL}" > /dev/null
+echo "SUCCESS!"
