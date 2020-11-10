@@ -27,4 +27,4 @@ jobs:
           key: ${{ runner.os }}-sbt-${{ hashFiles('java/akka/build.sbt') }}
           restore-keys: ${{ runner.os }}-sbt
       - run: ./sbt universal:packageBin
-        working-directory: java/sbt
+        working-directory: java/akka
