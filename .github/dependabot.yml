@@ -1,0 +1,99 @@
+version: 2
+updates:
+
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: daily
+
+- package-ecosystem: npm
+  directory: demo-apps/app-source/
+  schedule:
+    interval: daily
+
+- package-ecosystem: gomod
+  directory: go/mod/
+  schedule:
+    interval: daily
+
+- package-ecosystem: maven
+  directory: java/application-insights/
+  schedule:
+    interval: daily
+
+- package-ecosystem: maven
+  directory: java/aspectj/
+  schedule:
+    interval: daily
+
+- package-ecosystem: gradle
+  directory: java/dist-zip/
+  schedule:
+    interval: daily
+
+- package-ecosystem: gradle
+  directory: java/gradle/
+  schedule:
+    interval: daily
+
+# Kotlin Gradle config not yet supported
+# - package-ecosystem: gradle
+#   directory: java/kotlin/
+#   schedule:
+#     interval: daily
+
+- package-ecosystem: maven
+  directory: java/maven/
+  schedule:
+    interval: daily
+
+- package-ecosystem: maven
+  directory: java/native-image/
+  schedule:
+    interval: daily
+
+- package-ecosystem: maven
+  directory: java/war/
+  schedule:
+    interval: daily
+
+- package-ecosystem: npm
+  directory: nodejs/npm/
+  schedule:
+    interval: daily
+
+- package-ecosystem: npm
+  directory: nodejs/yarn/
+  schedule:
+    interval: daily
+
+- package-ecosystem: bundler
+  directory: ruby/passenger/
+  schedule:
+    interval: daily
+
+- package-ecosystem: bundler
+  directory: ruby/puma/
+  schedule:
+    interval: daily
+
+- package-ecosystem: bundler
+  directory: ruby/rackup/
+  schedule:
+    interval: daily
+
+- package-ecosystem: bundler
+  directory: ruby/rake/
+  schedule:
+    interval: daily
+
+- package-ecosystem: bundler
+  directory: ruby/thin/
+  schedule:
+    interval: daily
+
+- package-ecosystem: bundler
+  directory: ruby/unicorn/
+  schedule:
+    interval: daily
+

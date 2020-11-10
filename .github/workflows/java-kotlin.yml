@@ -1,0 +1,30 @@
+name: kotlin
+"on":
+  pull_request:
+    paths:
+    - java/kotlin/**
+  push:
+    branches:
+    - main
+    paths:
+    - java/kotlin/**
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [8, 11]
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('java/gradle/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - run: ./gradlew build
+        working-directory: java/kotlin
