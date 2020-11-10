@@ -1,1 +1,3 @@
-* @paketo-buildpacks/content-maintainers
+*          @paketo-buildpacks/content-maintainers
+java/      @paketo-buildpacks/java-buildpacks
+procfile/  @paketo-buildpacks/java-buildpacks
