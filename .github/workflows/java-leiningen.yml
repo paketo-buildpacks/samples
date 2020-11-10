@@ -24,7 +24,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/.lein
-          key: ${{ runner.os }}-sbt-${{ hashFiles('java/leiningen/project.clj') }}
-          restore-keys: ${{ runner.os }}-sbt
+          key: ${{ runner.os }}-lein-${{ hashFiles('java/leiningen/project.clj') }}
+          restore-keys: ${{ runner.os }}-lein
       - run: ./lein uberjar
-        working-directory: java/sbt
+        working-directory: java/leiningen
