@@ -3,11 +3,11 @@ name: aspectj
   pull_request:
     paths:
     - java/aspectj/**
-    push:
-      branches:
-      - main
-      paths:
-      - java/aspectj/**
+  push:
+    branches:
+    - main
+    paths:
+    - java/aspectj/**
 
 jobs:
   test:

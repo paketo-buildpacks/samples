@@ -3,11 +3,11 @@ name: war
   pull_request:
     paths:
     - java/war/**
-    push:
-      branches:
-      - main
-      paths:
-      - java/war/**
+  push:
+    branches:
+    - main
+    paths:
+    - java/war/**
 
 jobs:
   test:
