@@ -82,11 +82,6 @@ updates:
     interval: daily
 
 - package-ecosystem: bundler
-  directory: ruby/passenger/
-  schedule:
-    interval: daily
-
-- package-ecosystem: bundler
   directory: ruby/rake/
   schedule:
     interval: daily
