@@ -1,11 +1,10 @@
 version: 2
 updates:
 
-# No GitHub Actions yet
-# - package-ecosystem: github-actions
-#   directory: /
-#   schedule:
-#     interval: daily
+- package-ecosystem: github-actions
+  directory: /
+  schedule:
+    interval: daily
 
 - package-ecosystem: npm
   directory: demo-apps/app-source/
