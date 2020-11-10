@@ -1,10 +1,11 @@
 version: 2
 updates:
 
-- package-ecosystem: github-actions
-  directory: /
-  schedule:
-    interval: daily
+# No GitHub Actions yet
+# - package-ecosystem: github-actions
+#   directory: /
+#   schedule:
+#     interval: daily
 
 - package-ecosystem: npm
   directory: demo-apps/app-source/
@@ -36,10 +37,11 @@ updates:
   schedule:
     interval: daily
 
-- package-ecosystem: gradle
-  directory: java/kotlin/
-  schedule:
-    interval: daily
+# Kotlin Gradle config not yet supported
+# - package-ecosystem: gradle
+#   directory: java/kotlin/
+#   schedule:
+#     interval: daily
 
 - package-ecosystem: maven
   directory: java/maven/
