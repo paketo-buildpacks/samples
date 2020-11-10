@@ -1,4 +1,4 @@
-name: war
+name: aspectj
 "on":
   pull_request:
     paths:
