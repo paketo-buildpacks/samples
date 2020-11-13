@@ -5,7 +5,6 @@
   },
   "description": "Sample Node.js Application using NPM",
   "license": "Apache-2.0",
-  "main": "server.js",
   "name": "sample",
   "repository": {
     "type": "git",
