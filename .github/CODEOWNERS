@@ -1,3 +1,11 @@
-*          @paketo-buildpacks/content-maintainers
-java/      @paketo-buildpacks/java-buildpacks
-procfile/  @paketo-buildpacks/java-buildpacks
+*                @paketo-buildpacks/content-maintainers
+ca-certificates/ @paketo-buildpacks/java-buildpacks
+dotnet-core/     @paketo-buildpacks/dotnet-core-maintainers
+go/              @paketo-buildpacks/go-maintainers
+httpd/           @paketo-buildpacks/php-maintainers
+java/            @paketo-buildpacks/java-buildpacks
+nginx/           @paketo-buildpacks/php-maintainers
+nodejs/          @paketo-buildpacks/nodejs-maintainers
+php/             @paketo-buildpacks/php-maintainers
+procfile/        @paketo-buildpacks/java-buildpacks
+ruby/            @paketo-buildpacks/ruby-maintainers
