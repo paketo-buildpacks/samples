@@ -7,3 +7,5 @@ require (
 	github.com/paketo-buildpacks/occam v0.0.24
 	github.com/sclevine/spec v1.4.0
 )
+
+replace github.com/paketo-buildpacks/occam => /home/ubuntu/workspace/paketo-buildpacks/occam
