@@ -46,8 +46,8 @@ func TestSamples(t *testing.T) {
 	for _, builder := range Builders {
 		// suite("Dotnet", testDotnet)
 		suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
+		suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder))
 		// suite("HTTPD", testHTTPD)
-		// suite("Java Native Image", testJavaNativeImage)
 		// suite("Java", testJava)
 		// suite("NGINX", testNGINX)
 		// suite("Nodejs", testNodejs)
