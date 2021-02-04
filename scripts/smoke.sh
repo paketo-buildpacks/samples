@@ -128,7 +128,8 @@ function tests::run() {
 
   testout=$(mktemp)
   pushd "${SAMPLESDIR}"/tests > /dev/null
-    if GOMAXPROCS="${GOMAXPROCS:-4}" go test -count=1 -timeout 0 ./... -v -run Samples  --name "${builderArray[@]}" | tee "${testout}"; then
+  # ignore shellcheck double quote error, we want the builderArray to be split 
+  if GOMAXPROCS="${GOMAXPROCS:-4}" go test -count=1 -timeout 0 ./... -v -run Samples ${builderArray[@]/#/--name } | tee "${testout}"; then
       util::tools::tests::checkfocus "${testout}"
       util::print::success "** GO Test Succeeded **"
     else
