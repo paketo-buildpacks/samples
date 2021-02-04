@@ -2,6 +2,7 @@ package samples_test
 
 import (
 	"flag"
+	"fmt"
 	"testing"
 	"time"
 
@@ -11,31 +12,48 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-var Builder string
+type builderFlags []string
+
+func (f *builderFlags) String() string {
+	var resultString string
+	for _, builder := range *f {
+		resultString += builder
+		resultString += ", "
+	}
+	return resultString
+}
+
+func (f *builderFlags) Set(value string) error {
+	fmt.Printf("Appending: %s\n", value)
+	*f = append(*f, value)
+	return nil
+}
+
+var Builders builderFlags
 
 func init() {
-	flag.StringVar(&Builder, "name", "", "")
+	flag.Var(&Builders, "name", "the name a builder to test with")
 }
 
 func TestSamples(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
-	flag.Parse()
-
-	Expect(Builder).NotTo(Equal(""))
+	Expect(len(Builders)).NotTo(Equal(0))
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
 
 	suite := spec.New("Samples", spec.Parallel(), spec.Report(report.Terminal{}))
-	// suite("Dotnet", testDotnet)
-	suite("Go", testGo)
-	// suite("HTTPD", testHTTPD)
-	// suite("Java Native Image", testJavaNativeImage)
-	// suite("Java", testJava)
-	// suite("NGINX", testNGINX)
-	// suite("Nodejs", testNodejs)
-	// suite("PHP", testPHP)
-	// suite("Procfile", testProcfile)
-	// suite("Ruby", testRuby)
+	for _, builder := range Builders {
+		// suite("Dotnet", testDotnet)
+		suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
+		// suite("HTTPD", testHTTPD)
+		// suite("Java Native Image", testJavaNativeImage)
+		// suite("Java", testJava)
+		// suite("NGINX", testNGINX)
+		// suite("Nodejs", testNodejs)
+		// suite("PHP", testPHP)
+		// suite("Procfile", testProcfile)
+		// suite("Ruby", testRuby)
+	}
 	suite.Run(t)
 }
