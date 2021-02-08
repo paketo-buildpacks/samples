@@ -76,6 +76,8 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
 				Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
 				Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Native Image Buildpack")))
+
+				Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
 			})
 		})
 	}

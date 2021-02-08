@@ -43,8 +43,9 @@ function main() {
       util::print::warn "** WARNING  No Smoke tests **"
   fi
   # TODO: fix unary operator
-  if [ ! "${builderArray[@]}" ]; then
+  if [[ ! "${builderArray[*]}" ]]; then
     builderArray+=("paketobuildpacks/builder:full")
+    util::print::info "No builder specified. Running with full builder"
   fi
 
   tools::install
@@ -65,7 +66,7 @@ Runs the smoke test suite.
 
 OPTIONS
   --help        -h         prints the command usage
-  --builder <name> -b <name>  sets the name of the builder that is built for testing
+  --builder <name> -b <name>  sets the name of the builder that is built for testing. Defaults to Full Builder if nothing passed.
 USAGE
 }
 
