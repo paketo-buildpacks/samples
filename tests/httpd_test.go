@@ -3,7 +3,7 @@ package samples_test
 import (
 	"fmt"
 	"os"
-	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/paketo-buildpacks/occam"
@@ -13,7 +13,14 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+	// HTTPD apps are not compatible with the tiny builder or base builder
+	if strings.Contains(builder, "base") || strings.Contains(builder, "tiny") {
+		return func(t *testing.T, context spec.G, it spec.S) {
+			context(fmt.Sprintf("skip HTTPD tests with %s", builder), func() {})
+		}
+	}
+
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -28,7 +35,7 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			docker = occam.NewDocker()
 		})
 
-		context("detects a Go app", func() {
+		context("detects an HTTPD app", func() {
 			var (
 				image     occam.Image
 				container occam.Container
@@ -50,10 +57,10 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("uses go modules", func() {
+			context("app uses HTTPD", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../go", "mod"))
+					source, err = occam.Source("../httpd")
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -63,37 +70,7 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Mod Vendor Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
-
-					container, err = docker.Container.Run.
-						WithEnv(map[string]string{"PORT": "8080"}).
-						WithPublish("8080").
-						Execute(image.ID)
-					Expect(err).NotTo(HaveOccurred())
-
-					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
-				})
-			})
-
-			context("uses dep", func() {
-				it("builds successfully", func() {
-					var err error
-					source, err = occam.Source(filepath.Join("../go", "dep"))
-					Expect(err).NotTo(HaveOccurred())
-
-					var logs fmt.Stringer
-					image, logs, err = pack.Build.
-						WithPullPolicy("never").
-						WithBuilder(builder).
-						Execute(name, source)
-					Expect(err).ToNot(HaveOccurred(), logs.String)
-
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Dep Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Dep Ensure Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache HTTP Server Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).

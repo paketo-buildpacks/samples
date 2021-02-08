@@ -44,16 +44,16 @@ func TestSamples(t *testing.T) {
 
 	suite := spec.New("Samples", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range Builders {
-		// suite("Dotnet", testDotnet)
+		suite(fmt.Sprintf(".NET Core with %s builder", builder), testDotnetWithBuilder(builder))
 		suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
-		suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder))
-		// suite("HTTPD", testHTTPD)
-		// suite("Java", testJava)
-		// suite("NGINX", testNGINX)
-		// suite("Nodejs", testNodejs)
-		// suite("PHP", testPHP)
-		// suite("Procfile", testProcfile)
-		// suite("Ruby", testRuby)
+		suite(fmt.Sprintf("HTTPD with %s builder", builder), testHTTPDWithBuilder(builder))
+		suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder), spec.Sequential())
+		suite(fmt.Sprintf("Java with %s builder", builder), testJavaWithBuilder(builder), spec.Sequential())
+		suite(fmt.Sprintf("NGINX with %s builder", builder), testNGINXWithBuilder(builder))
+		suite(fmt.Sprintf("Node.js with %s builder", builder), testNodeWithBuilder(builder))
+		suite(fmt.Sprintf("PHP with %s builder", builder), testPHPWithBuilder(builder))
+		suite(fmt.Sprintf("Procfile with %s builder", builder), testProcfileWithBuilder(builder))
+		suite(fmt.Sprintf("Ruby with %s builder", builder), testRubyWithBuilder(builder))
 	}
 	suite.Run(t)
 }
