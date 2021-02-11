@@ -7,6 +7,16 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 1. Clone this repository: `git clone https://github.com/paketo-buildpacks/samples`
 1. [Pack](https://buildpacks.io/docs/install-pack/)
 
+## Adding New Samples
+* Add app to the appropriate language family
+* Add a smoke test in the `tests` directory
+  * If the app is a part of an existing language family: add a test context to
+    the existing test file.
+  * If the app is a part of a new language family: add a new test file, and add
+    the suite to `tests/init_test.go`. Be mindful of which builders the app is
+    compatible with.
+* Update README.md
+
 ## Samples
 
 ### Java
