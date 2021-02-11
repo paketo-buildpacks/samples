@@ -3,13 +3,13 @@
 ## Building
 
 ```bash
-pack build --env JAVA_TOOL_OPTIONS='-XX:MaxMetaspaceSize=100M' applications/leiningen
+pack build applications/leiningen
 ```
 
 ## Running
 
 ```bash
-docker run --rm --tty --publish 8080:8080 --env JAVA_TOOL_OPTIONS='-XX:MaxMetaspaceSize=100M' applications/leiningen
+docker run --rm --tty --publish 8080:8080 applications/leiningen
 ```
 
 ## Viewing
