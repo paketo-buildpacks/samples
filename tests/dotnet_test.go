@@ -85,9 +85,7 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					Eventually(container).Should(BeAvailable())
 
-					// This is failing with 2021/02/09 16:06:56 Unsolicited response received on idle HTTP channel starting with "HTTP/1.1 200 OK
-					// TODO: look into this
-					// Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
 				})
 			})
 

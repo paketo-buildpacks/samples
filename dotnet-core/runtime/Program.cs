@@ -33,7 +33,7 @@ namespace runtime
 </html>";
                 string payload = @"HTTP/1.1 200 OK
 Accept-Ranges: bytes
-Content-Length: " + System.Text.ASCIIEncoding.Unicode.GetByteCount(document) + @"
+Content-Length: " + Encoding.UTF8.GetByteCount(document) + @"
 Connection: close
 Content-Type: text/html; charset=utf-8
 
