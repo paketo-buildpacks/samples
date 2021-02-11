@@ -42,7 +42,7 @@ function main() {
   if [[ ! -d "${SAMPLESDIR}/tests" ]]; then
       util::print::warn "** WARNING  No Smoke tests **"
   fi
-  # TODO: fix unary operator
+
   if [[ ! "${builderArray[*]}" ]]; then
     builderArray+=("paketobuildpacks/builder:full")
     util::print::info "No builder specified. Running with full builder"
