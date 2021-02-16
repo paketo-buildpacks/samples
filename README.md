@@ -50,6 +50,7 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [Built-in Webserver](/php/webserver)
 * [NGINX](/php/nginx)
 * [Apache HTTPD](/php/httpd)
+* [Composer](/php/composer)
 
 ### Ruby
 * [Passenger](/ruby/passenger)
