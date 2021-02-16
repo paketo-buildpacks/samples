@@ -41,6 +41,7 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [ASPNet](/dotnet-core/aspnet)
 
 ### Go
+* [No Imports](/go/no-imports)
 * [Mod](/go/mod)
 * [Dep](/go/dep)
 
