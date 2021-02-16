@@ -33,6 +33,7 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [WAR](/java/war)
 
 ### Node.js
+* [No Package Manager](/nodejs/no-package-manager)
 * [NPM](/nodejs/npm)
 * [Yarn](/nodejs/yarn)
 
