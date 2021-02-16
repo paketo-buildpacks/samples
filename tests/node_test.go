@@ -61,6 +61,32 @@ func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			context("app uses npm", func() {
 				it("builds successfully", func() {
 					var err error
+					source, err = occam.Source(filepath.Join("../nodejs", "no-package-manager"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithBuilder(builder).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Start Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+				})
+			})
+
+			context("app uses npm", func() {
+				it("builds successfully", func() {
+					var err error
 					source, err = occam.Source(filepath.Join("../nodejs", "npm"))
 					Expect(err).NotTo(HaveOccurred())
 
