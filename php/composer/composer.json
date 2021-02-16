@@ -1,0 +1,6 @@
+{
+    "name": "paketo/composer_app",
+    "require": {
+        "vlucas/phpdotenv": "5.3.0"
+    }
+}
