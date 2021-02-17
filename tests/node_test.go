@@ -58,7 +58,7 @@ func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("app uses npm", func() {
+			context("no package manager", func() {
 				it("builds successfully", func() {
 					var err error
 					source, err = occam.Source(filepath.Join("../nodejs", "no-package-manager"))
