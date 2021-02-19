@@ -33,6 +33,7 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [WAR](/java/war)
 
 ### Node.js
+* [No Package Manager](/nodejs/no-package-manager)
 * [NPM](/nodejs/npm)
 * [Yarn](/nodejs/yarn)
 
@@ -41,6 +42,7 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [ASPNet](/dotnet-core/aspnet)
 
 ### Go
+* [No Imports](/go/no-imports)
 * [Mod](/go/mod)
 * [Dep](/go/dep)
 
