@@ -13,7 +13,7 @@ source "${PROGDIR}/.util/tools.sh"
 source "${PROGDIR}/.util/print.sh"
 
 function main() {
-  local builderArray
+  local builderArray suite
   builderArray=()
 
   while [[ "${#}" != 0 ]]; do
@@ -26,6 +26,11 @@ function main() {
 
       --builder|-b)
         builderArray+=("${2}")
+        shift 2
+        ;;
+
+      --suite|-s)
+        suite="${2}"
         shift 2
         ;;
 
@@ -48,6 +53,11 @@ function main() {
     util::print::info "No builder specified. Running with full builder"
   fi
 
+  if [[ -z ${suite} ]]; then
+    suite="Samples"
+    util::print::info "No suites specified. Running all tests."
+  fi
+
   tools::install
   for name in "${builderArray[@]}"; do
     builder::pull "${name}"
@@ -55,7 +65,7 @@ function main() {
     image::pull::run_image "${name}"
   done
 
-  tests::run "${builderArray[@]}"
+  tests::run ${builderArray[@]/#/--name } --suite ${suite}
 }
 
 function usage() {
@@ -108,20 +118,23 @@ function image::pull::run_image() {
   docker pull "${run_image}"
 }
 function tests::run() {
-  local builderArray
+  local builderArray suite
   builderArray=()
   while [[ "${#}" != 0 ]]; do
     case "${1}" in
+      --name)
+        builderArray+=("${2}")
+        shift 2
+        ;;
+
+      --suite)
+        suite="${2}"
+        shift 2
+        ;;
       "")
         # skip if the argument is empty
         shift 1
         ;;
-
-      *)
-        builderArray+=("${1}")
-        shift 1
-        ;;
-
     esac
   done
 
@@ -130,7 +143,7 @@ function tests::run() {
   testout=$(mktemp)
   pushd "${SAMPLESDIR}"/tests > /dev/null
   # ignore shellcheck double quote error, we want the builderArray to be split 
-  if GOMAXPROCS="${GOMAXPROCS:-4}" go test -count=1 -timeout 0 ./... -v -run Samples ${builderArray[@]/#/--name } | tee "${testout}"; then
+  if GOMAXPROCS="${GOMAXPROCS:-4}" go test -count=1 -timeout 0 ./... -v -run ${suite} ${builderArray[@]/#/--name } | tee "${testout}"; then
       util::tools::tests::checkfocus "${testout}"
       util::print::success "** GO Test Succeeded **"
     else

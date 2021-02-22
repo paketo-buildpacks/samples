@@ -18,9 +18,34 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Test Sample Apps With Latest Paketo Builders
+    - uses: dorny/paths-filter@v2
+      id: filter
+      with:
+        filters: |
+          dotnet-core:
+            - 'dotnet-core/**'
+          go:
+            - 'go/**'
+
+    - name: Test .NET Samples
+      if: steps.filter.outputs.dotnet-core == 'true'
       run: |
-        ./scripts/smoke.sh --builder paketobuildpacks/builder:full \
-                   --builder paketobuildpacks/builder:base \
-                   --builder paketobuildpacks/builder:tiny
+        ./scripts/smoke.sh --suite Dotnet \
+                           --builder paketobuildpacks/builder:full \
+                           --builder paketobuildpacks/builder:base \
+                           --builder paketobuildpacks/builder:tiny
+
+    - name: Test Go Samples
+      if: steps.filter.outputs.go == 'true'
+      run: |
+        ./scripts/smoke.sh --suite Go \
+                           --builder paketobuildpacks/builder:full \
+                           --builder paketobuildpacks/builder:base \
+                           --builder paketobuildpacks/builder:tiny
+
+    # - name: Test Sample Apps With Latest Paketo Builders
+    #   run: |
+    #     ./scripts/smoke.sh --builder paketobuildpacks/builder:full \
+    #                --builder paketobuildpacks/builder:base \
+    #                --builder paketobuildpacks/builder:tiny
 

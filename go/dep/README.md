@@ -11,3 +11,5 @@
 ## Viewing
 
 `curl http://localhost:8080`
+
+<!-- a trivial change that should trigger the Go test suite -->
