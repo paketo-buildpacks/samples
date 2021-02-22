@@ -84,7 +84,6 @@ func TestSamples(t *testing.T) {
 			suite(fmt.Sprintf("Procfile with %s builder", builder), testProcfileWithBuilder(builder))
 			suite(fmt.Sprintf("Ruby with %s builder", builder), testRubyWithBuilder(builder))
 		}
-
 	}
 	suite.Run(t)
 }

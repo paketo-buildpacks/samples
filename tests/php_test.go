@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 
 	"github.com/paketo-buildpacks/occam"
@@ -15,13 +14,6 @@ import (
 )
 
 func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
-	// PHP apps are not compatible with the tiny builder or base
-	if strings.Contains(builder, "base") || strings.Contains(builder, "tiny") {
-		return func(t *testing.T, context spec.G, it spec.S) {
-			context(fmt.Sprintf("skip PHP tests with %s", builder), func() {})
-		}
-	}
-
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
