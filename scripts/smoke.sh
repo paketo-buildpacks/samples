@@ -43,7 +43,7 @@ function main() {
       util::print::warn "** WARNING  No Smoke tests **"
   fi
 
-  if [[ ! "${builderArray[*]}" ]]; then
+  if [[ ! ${builderArray[@]+"${builderArray[@]}"} ]]; then
     builderArray+=("paketobuildpacks/builder:full")
     util::print::info "No builder specified. Running with full builder"
   fi
