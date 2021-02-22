@@ -3,7 +3,6 @@ package samples_test
 import (
 	"fmt"
 	"os"
-	"strings"
 	"testing"
 
 	"github.com/paketo-buildpacks/occam"
@@ -14,13 +13,6 @@ import (
 )
 
 func testProcfileWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
-	// Procfile apps are not compatible with the tiny builder
-	if strings.Contains(builder, "tiny") {
-		return func(t *testing.T, context spec.G, it spec.S) {
-			context(fmt.Sprintf("skip procfile tests with %s", builder), func() {})
-		}
-	}
-
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
