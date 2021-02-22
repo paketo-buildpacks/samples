@@ -5,13 +5,36 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/paketo-buildpacks/occam"
 	"github.com/sclevine/spec"
+	"github.com/sclevine/spec/report"
 
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
+
+func TestGo(t *testing.T) {
+	Expect := NewWithT(t).Expect
+
+	Expect(len(Builders)).NotTo(Equal(0))
+
+	SetDefaultEventuallyTimeout(60 * time.Second)
+
+	suite := spec.New("Go", spec.Parallel(), spec.Report(report.Terminal{}))
+	for _, builder := range Builders {
+		switch builderType := findBuilderType(builder); builderType {
+		case "tiny":
+			suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
+		case "base":
+			suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
+		default:
+			suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
+		}
+	}
+	suite.Run(t)
+}
 
 func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
