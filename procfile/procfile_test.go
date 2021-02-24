@@ -1,18 +1,51 @@
-package samples_test
+package procfile_test
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/paketo-buildpacks/occam"
+	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
+	"github.com/sclevine/spec/report"
 
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+var builders tests.BuilderFlags
+var suite spec.Suite
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+
+func TestProcfile(t *testing.T) {
+	Expect := NewWithT(t).Expect
+
+	Expect(len(builders)).NotTo(Equal(0))
+
+	SetDefaultEventuallyTimeout(60 * time.Second)
+
+	suite := spec.New("Procfile", spec.Parallel(), spec.Report(report.Terminal{}))
+	for _, builder := range builders {
+		switch builderType := tests.FindBuilderType(builder); builderType {
+		case "tiny":
+			// do nothing; Procfile does not run on Tiny
+			suite(fmt.Sprintf("Procfile with %s builder", builder), func(t *testing.T, context spec.G, it spec.S) {})
+		case "base":
+			suite(fmt.Sprintf("Procfile with %s builder", builder), testProcfileWithBuilder(builder))
+		default:
+			suite(fmt.Sprintf("Procfile with %s builder", builder), testProcfileWithBuilder(builder))
+		}
+	}
+	suite.Run(t)
+}
+
+func testProcfileWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -27,7 +60,7 @@ func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			docker = occam.NewDocker()
 		})
 
-		context("detects an HTTPD app", func() {
+		context("detects a Procfile app", func() {
 			var (
 				image     occam.Image
 				container occam.Container
@@ -49,10 +82,10 @@ func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("app uses HTTPD", func() {
+			context("app uses a procfile", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source("../httpd")
+					source, err = occam.Source("../procfile/procfile-sample")
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -62,7 +95,7 @@ func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache HTTP Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Procfile Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -70,9 +103,10 @@ func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+					Eventually(container).Should(Serve(ContainSubstring("Hello World!")).OnPort(8080).WithEndpoint("/hello-world.txt"))
 				})
 			})
+
 		})
 	}
 }

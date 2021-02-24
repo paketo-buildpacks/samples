@@ -54,9 +54,10 @@ function main() {
   fi
 
   if [[ -z ${suite} ]]; then
-    suite="Samples"
+    suite="..."
     util::print::info "No suites specified. Running all tests."
   fi
+  suite="${suite/#/./}"
 
   tools::install
   for name in "${builderArray[@]}"; do
@@ -141,9 +142,9 @@ function tests::run() {
   util::print::title "Run Samples Tests"
 
   testout=$(mktemp)
-  pushd "${SAMPLESDIR}"/tests > /dev/null
+  # pushd "${SAMPLESDIR}"/tests > /dev/null
   # ignore shellcheck double quote error, we want the builderArray to be split 
-  if GOMAXPROCS="${GOMAXPROCS:-4}" go test -count=1 -timeout 0 ./... -v -run ${suite} ${builderArray[@]/#/--name } | tee "${testout}"; then
+  if GOMAXPROCS="${GOMAXPROCS:-4}" go test -count=1 -timeout 0 "${suite}" -v  ${builderArray[@]/#/--name } | tee "${testout}"; then
       util::tools::tests::checkfocus "${testout}"
       util::print::success "** GO Test Succeeded **"
     else

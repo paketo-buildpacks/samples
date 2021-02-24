@@ -1,6 +1,7 @@
-package samples_test
+package dotnet_core_test
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -8,6 +9,7 @@ import (
 	"time"
 
 	"github.com/paketo-buildpacks/occam"
+	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
 	"github.com/sclevine/spec/report"
 
@@ -15,18 +17,26 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
+var builders tests.BuilderFlags
+var suite spec.Suite
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+
 func TestDotnet(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
-	Expect(len(Builders)).NotTo(Equal(0))
+	Expect(len(builders)).NotTo(Equal(0))
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
 
 	suite := spec.New("Dotnet", spec.Parallel(), spec.Report(report.Terminal{}))
-	for _, builder := range Builders {
-		switch builderType := findBuilderType(builder); builderType {
+	for _, builder := range builders {
+		switch builderType := tests.FindBuilderType(builder); builderType {
 		case "tiny":
-			// do nothing
+			// do nothing; .NET does not run on Tiny
+			suite(fmt.Sprintf(".NET Core with %s builder", builder), func(t *testing.T, context spec.G, it spec.S) {})
 		case "base":
 			suite(fmt.Sprintf(".NET Core with %s builder", builder), testDotnetWithBuilder(builder))
 		default:
