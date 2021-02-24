@@ -1,17 +1,41 @@
-package samples_test
+package java_test
 
 import (
 	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/paketo-buildpacks/occam"
+	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
+	"github.com/sclevine/spec/report"
 
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
+
+func TestJNI(t *testing.T) {
+	Expect := NewWithT(t).Expect
+
+	Expect(len(builders)).NotTo(Equal(0))
+
+	SetDefaultEventuallyTimeout(60 * time.Second)
+
+	suite := spec.New("JavaNativeImage", spec.Parallel(), spec.Report(report.Terminal{}))
+	for _, builder := range builders {
+		switch builderType := tests.FindBuilderType(builder); builderType {
+		case "tiny":
+			suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder), spec.Sequential())
+		case "base":
+			suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder), spec.Sequential())
+		default:
+			suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder), spec.Sequential())
+		}
+	}
+	suite.Run(t)
+}
 
 func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
