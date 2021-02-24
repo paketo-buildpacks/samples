@@ -1,0 +1,28 @@
+name: Test Pull Request (HTTPD)
+
+on:
+  pull_request:
+    branches:
+    - main
+    paths:
+    - 'httpd/**'
+
+jobs:
+  smoke:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup Go
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.14
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Test HTTPD Samples
+      run: |
+        ./scripts/smoke.sh --suite httpd \
+                           --builder paketobuildpacks/builder:full \
+                           --builder paketobuildpacks/builder:base \
+                           --builder paketobuildpacks/builder:tiny
