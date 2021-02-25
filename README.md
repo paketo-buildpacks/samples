@@ -8,17 +8,18 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 1. [Pack](https://buildpacks.io/docs/install-pack/)
 
 ## Adding New Samples
-* Add app to the appropriate language family
-* Add a smoke test in the *_test.go file in a language family subdirectory
-  * If the app is a part of an existing language family: add a test context to
-    the existing test file.
-  * If the app is a part of a new language family: create a new directory, add
-    a new test file, and add a workflow to
-    `.github/workflows/test-pull-request-<name>.yml` to run the tests when
-    files in the directory change.
-  * Be mindful of which builders the app is
-    compatible with and set up test suites accordingly.
-* Update README.md
+* If the app is a part of an existing language family:
+  * Add app to the appropriate language family in its own subdirectory.
+  * Add a test context to the *_test.go file in the language family directory.
+* If the app is a part of a new language family:
+  * Create a new directory for the language family.
+  * Create a new test file <language_family_name>/*_test.go containing a new
+    test suite.
+  * Be mindful of which builders the app is compatible with and set up test
+    suites accordingly.
+  * Run `./scripts/generate-test-workflow.sh -l <language_family_name>` to
+    generate a Github Actions workflow that runs the tests.
+* Update README.md.
 
 ## Samples
 
