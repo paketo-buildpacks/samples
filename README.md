@@ -9,12 +9,15 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 
 ## Adding New Samples
 * Add app to the appropriate language family
-* Add a smoke test in the `tests` directory
+* Add a smoke test in the *_test.go file in a language family subdirectory
   * If the app is a part of an existing language family: add a test context to
     the existing test file.
-  * If the app is a part of a new language family: add a new test file, and add
-    the suite to `tests/init_test.go`. Be mindful of which builders the app is
-    compatible with.
+  * If the app is a part of a new language family: create a new directory, add
+    a new test file, and add a workflow to
+    `.github/workflows/test-pull-request-<name>.yml` to run the tests when
+    files in the directory change.
+  * Be mindful of which builders the app is
+    compatible with and set up test suites accordingly.
 * Update README.md
 
 ## Samples
@@ -62,3 +65,16 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 
 ### Procfile
 * [Static Webserver](/procfile)
+
+## Testing Samples
+To run integration tests that `pack build` each of the sample apps, use
+`scripts/smoke.sh`. See `scripts/smoke.sh -h` for usage information.
+
+For example, to run tests for the Go and .NET Core samples with the Paketo tiny
+and base builders, run:
+```
+./smoke.sh --builder paketobuildpacks/builder:tiny \
+           --builder paketobuildpacks/builder:base \
+           --suite go \
+           --suite dotnet-core
+```
