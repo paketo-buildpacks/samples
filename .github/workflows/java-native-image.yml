@@ -2,12 +2,12 @@ name: native-image
 "on":
   pull_request:
     paths:
-    - java/native-image/**
+    - java/native-image/java-native-image-sample/**
   push:
     branches:
     - main
     paths:
-    - java/native-image/**
+    - java/native-image/java-native-image-sample/**
 
 jobs:
   test:
@@ -24,7 +24,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('java/native-image/pom.xml') }}
+          key: ${{ runner.os }}-m2-${{ hashFiles('java/native-image/java-native-image-sample/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - run: ./mvnw -B package
-        working-directory: java/native-image
+        working-directory: java/native-image/java-native-image-sample
