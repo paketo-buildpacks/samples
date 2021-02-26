@@ -6,8 +6,7 @@ on:
     - main
     paths:
     - 'java/**'
-    paths-ignore:
-    - 'java/native-image/**'
+    - '!java/native-image/**'
 
 jobs:
   smoke:
