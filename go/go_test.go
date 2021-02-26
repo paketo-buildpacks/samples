@@ -33,14 +33,7 @@ func TestGo(t *testing.T) {
 
 	suite := spec.New("Go", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		switch builderType := tests.FindBuilderType(builder); builderType {
-		case "tiny":
-			suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
-		case "base":
-			suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
-		default:
-			suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
-		}
+		suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
 	}
 	suite.Run(t)
 }

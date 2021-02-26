@@ -24,5 +24,3 @@ jobs:
       run: |
         ./scripts/smoke.sh --suite httpd \
                            --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base \
-                           --builder paketobuildpacks/builder:tiny

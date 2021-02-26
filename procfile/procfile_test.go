@@ -32,15 +32,7 @@ func TestProcfile(t *testing.T) {
 
 	suite := spec.New("Procfile", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		switch builderType := tests.FindBuilderType(builder); builderType {
-		case "tiny":
-			// do nothing; Procfile does not run on Tiny
-			suite(fmt.Sprintf("Procfile with %s builder", builder), func(t *testing.T, context spec.G, it spec.S) {})
-		case "base":
-			suite(fmt.Sprintf("Procfile with %s builder", builder), testProcfileWithBuilder(builder))
-		default:
-			suite(fmt.Sprintf("Procfile with %s builder", builder), testProcfileWithBuilder(builder))
-		}
+		suite(fmt.Sprintf("Procfile with %s builder", builder), testProcfileWithBuilder(builder))
 	}
 	suite.Run(t)
 }

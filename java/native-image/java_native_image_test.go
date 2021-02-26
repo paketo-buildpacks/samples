@@ -1,6 +1,7 @@
 package java_test
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -16,6 +17,13 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
+var builders tests.BuilderFlags
+var suite spec.Suite
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+
 func TestJNI(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
@@ -25,14 +33,7 @@ func TestJNI(t *testing.T) {
 
 	suite := spec.New("JavaNativeImage", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		switch builderType := tests.FindBuilderType(builder); builderType {
-		case "tiny":
-			suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder), spec.Sequential())
-		case "base":
-			suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder), spec.Sequential())
-		default:
-			suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder), spec.Sequential())
-		}
+		suite(fmt.Sprintf("Java Native Image with %s builder", builder), testJNIWithBuilder(builder), spec.Sequential())
 	}
 	suite.Run(t)
 }
@@ -76,7 +77,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			it("builds successfully", func() {
 				var err error
-				source, err = occam.Source(filepath.Join("../java", "native-image"))
+				source, err = occam.Source(filepath.Join(".", "java-native-image-sample"))
 				Expect(err).NotTo(HaveOccurred())
 
 				var logs fmt.Stringer

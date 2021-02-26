@@ -6,6 +6,8 @@ on:
     - main
     paths:
     - 'java/**'
+    paths-ignore:
+    - 'java/native-image/**'
 
 jobs:
   smoke:
@@ -24,5 +26,4 @@ jobs:
       run: |
         ./scripts/smoke.sh --suite java \
                            --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base \
-                           --builder paketobuildpacks/builder:tiny
+                           --builder paketobuildpacks/builder:base

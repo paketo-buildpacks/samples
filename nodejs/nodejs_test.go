@@ -33,15 +33,7 @@ func TestNodejs(t *testing.T) {
 
 	suite := spec.New("Nodejs", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		switch builderType := tests.FindBuilderType(builder); builderType {
-		case "tiny":
-			// do nothing; Nodejs does not run on Tiny
-			suite(fmt.Sprintf("Nodejs with %s builder", builder), func(t *testing.T, context spec.G, it spec.S) {})
-		case "base":
-			suite(fmt.Sprintf("Nodejs with %s builder", builder), testNodejsWithBuilder(builder))
-		default:
-			suite(fmt.Sprintf("Nodejs with %s builder", builder), testNodejsWithBuilder(builder))
-		}
+		suite(fmt.Sprintf("Nodejs with %s builder", builder), testNodejsWithBuilder(builder))
 	}
 	suite.Run(t)
 }
