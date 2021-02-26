@@ -33,15 +33,7 @@ func TestJava(t *testing.T) {
 
 	suite := spec.New("Java", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		switch builderType := tests.FindBuilderType(builder); builderType {
-		case "tiny":
-			// do nothing; Java does not run on Tiny
-			suite(fmt.Sprintf("Java with %s builder", builder), func(t *testing.T, context spec.G, it spec.S) {})
-		case "base":
-			suite(fmt.Sprintf("Java with %s builder", builder), testJavaWithBuilder(builder), spec.Sequential())
-		default:
-			suite(fmt.Sprintf("Java with %s builder", builder), testJavaWithBuilder(builder), spec.Sequential())
-		}
+		suite(fmt.Sprintf("Java with %s builder", builder), testJavaWithBuilder(builder), spec.Sequential())
 	}
 	suite.Run(t)
 }

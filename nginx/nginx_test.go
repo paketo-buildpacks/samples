@@ -32,15 +32,7 @@ func TestNginx(t *testing.T) {
 
 	suite := spec.New("NGINX", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		switch builderType := tests.FindBuilderType(builder); builderType {
-		case "tiny":
-			// do nothing; NGINX does not run on Tiny
-			suite(fmt.Sprintf("NGINX with %s builder", builder), func(t *testing.T, context spec.G, it spec.S) {})
-		case "base":
-			suite(fmt.Sprintf("NGINX with %s builder", builder), testNGINXWithBuilder(builder))
-		default:
-			suite(fmt.Sprintf("NGINX with %s builder", builder), testNGINXWithBuilder(builder))
-		}
+		suite(fmt.Sprintf("NGINX with %s builder", builder), testNGINXWithBuilder(builder))
 	}
 	suite.Run(t)
 }

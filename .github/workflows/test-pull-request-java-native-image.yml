@@ -1,11 +1,11 @@
-name: Test Pull Request (Ruby)
+name: Test Pull Request (Java Native Image)
 
 on:
   pull_request:
     branches:
     - main
     paths:
-    - 'ruby/**'
+    - 'java/native-image/**'
 
 jobs:
   smoke:
@@ -20,8 +20,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Test Ruby Samples
+    - name: Test Java Native Image Samples
       run: |
-        ./scripts/smoke.sh --suite ruby \
+        ./scripts/smoke.sh --suite java/native-image \
                            --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base
+                           --builder paketobuildpacks/builder:base \
+                           --builder paketobuildpacks/builder:tiny

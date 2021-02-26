@@ -33,15 +33,7 @@ func TestRuby(t *testing.T) {
 
 	suite := spec.New("Ruby", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		switch builderType := tests.FindBuilderType(builder); builderType {
-		case "tiny":
-			// do nothing; Ruby does not run on Tiny
-			suite(fmt.Sprintf("Ruby with %s builder", builder), func(t *testing.T, context spec.G, it spec.S) {})
-		case "base":
-			suite(fmt.Sprintf("Ruby with %s builder", builder), testRubyWithBuilder(builder))
-		default:
-			suite(fmt.Sprintf("Ruby with %s builder", builder), testRubyWithBuilder(builder))
-		}
+		suite(fmt.Sprintf("Ruby with %s builder", builder), testRubyWithBuilder(builder))
 	}
 	suite.Run(t)
 }

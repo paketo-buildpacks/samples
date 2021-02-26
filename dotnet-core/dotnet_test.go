@@ -33,15 +33,7 @@ func TestDotnet(t *testing.T) {
 
 	suite := spec.New("Dotnet", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		switch builderType := tests.FindBuilderType(builder); builderType {
-		case "tiny":
-			// do nothing; .NET does not run on Tiny
-			suite(fmt.Sprintf(".NET Core with %s builder", builder), func(t *testing.T, context spec.G, it spec.S) {})
-		case "base":
-			suite(fmt.Sprintf(".NET Core with %s builder", builder), testDotnetWithBuilder(builder))
-		default:
-			suite(fmt.Sprintf(".NET Core with %s builder", builder), testDotnetWithBuilder(builder))
-		}
+		suite(fmt.Sprintf(".NET Core with %s builder", builder), testDotnetWithBuilder(builder))
 	}
 	suite.Run(t)
 }
