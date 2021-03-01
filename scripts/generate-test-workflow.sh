@@ -38,7 +38,7 @@ function main() {
     esac
   done
 
-  sed -e "s/\${language}/${language}/" "${SAMPLESDIR}/.github/test-workflow-template.yml" > "${SAMPLESDIR}/.github/workflows/test-pull-request-${language}.yml"
+  sed -e "s/\${language}/${language}/" "${PROGDIR}/.util/test-workflow-template.yml" > "${SAMPLESDIR}/.github/workflows/test-pull-request-${language}.yml"
 }
 
 function usage() {
