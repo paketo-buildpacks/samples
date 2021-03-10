@@ -84,7 +84,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				image, logs, err = pack.Build.
 					WithPullPolicy("never").
 					WithBuilder(builder).
-					WithEnv(map[string]string{"BP_BOOT_NATIVE_IMAGE": "true"}).
+					WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true"}).
 					Execute(name, source)
 				Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -100,7 +100,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
 				Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
 				Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
-				Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Native Image Buildpack")))
+				Expect(logs).To(ContainLines(ContainSubstring("Paketo Native Image Buildpack")))
 
 				Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
 			})
