@@ -1,19 +1,44 @@
-package samples_test
+package php_test
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/paketo-buildpacks/occam"
+	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
+	"github.com/sclevine/spec/report"
 
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+var builders tests.BuilderFlags
+var suite spec.Suite
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+
+func TestPHP(t *testing.T) {
+	Expect := NewWithT(t).Expect
+
+	Expect(len(builders)).NotTo(Equal(0))
+
+	SetDefaultEventuallyTimeout(60 * time.Second)
+
+	suite := spec.New("PHP", spec.Parallel(), spec.Report(report.Terminal{}))
+	for _, builder := range builders {
+		suite(fmt.Sprintf("PHP with %s builder", builder), testPHPWithBuilder(builder))
+	}
+	suite.Run(t)
+}
+
+func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -28,7 +53,7 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			docker = occam.NewDocker()
 		})
 
-		context("detects a Go app", func() {
+		context("detects a PHP app", func() {
 			var (
 				image     occam.Image
 				container occam.Container
@@ -50,10 +75,10 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("no imports", func() {
+			context("app uses composer", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../go", "no-imports"))
+					source, err = occam.Source(filepath.Join("../php", "composer"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -63,12 +88,9 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
-
-					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Go Mod Vendor Buildpack")))
-					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Dep Buildpack")))
-					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Dep Ensure Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Composer Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -80,10 +102,10 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 
-			context("uses go modules", func() {
+			context("app uses httpd", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../go", "mod"))
+					source, err = occam.Source(filepath.Join("../php", "httpd"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -93,9 +115,9 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Mod Vendor Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache HTTP Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -107,10 +129,10 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 
-			context("uses dep", func() {
+			context("app uses nginx", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../go", "dep"))
+					source, err = occam.Source(filepath.Join("../php", "nginx"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -120,10 +142,9 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Dep Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Dep Ensure Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Nginx Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -134,6 +155,33 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
 				})
 			})
+
+			context("app uses php webserver", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../php", "webserver"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithBuilder(builder).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+				})
+			})
+
 		})
 	}
 }

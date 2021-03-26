@@ -13,8 +13,9 @@ source "${PROGDIR}/.util/tools.sh"
 source "${PROGDIR}/.util/print.sh"
 
 function main() {
-  local builderArray
+  local builderArray suiteArray
   builderArray=()
+  suiteArray=()
 
   while [[ "${#}" != 0 ]]; do
     case "${1}" in
@@ -26,6 +27,11 @@ function main() {
 
       --builder|-b)
         builderArray+=("${2}")
+        shift 2
+        ;;
+
+      --suite|-s)
+        suiteArray+=("${2}")
         shift 2
         ;;
 
@@ -43,9 +49,14 @@ function main() {
       util::print::warn "** WARNING  No Smoke tests **"
   fi
 
-  if [[ ! "${builderArray[*]}" ]]; then
+  if [[ ! ${builderArray[@]+"${builderArray[@]}"} ]]; then
     builderArray+=("paketobuildpacks/builder:full")
     util::print::info "No builder specified. Running with full builder"
+  fi
+
+  if [[ ! ${suiteArray[@]+"${suiteArray[@]}"} ]]; then
+    suiteArray+=("...")
+    util::print::info "No suites specified. Running all tests. This will take a while..."
   fi
 
   tools::install
@@ -55,7 +66,7 @@ function main() {
     image::pull::run_image "${name}"
   done
 
-  tests::run "${builderArray[@]}"
+  tests::run ${builderArray[@]/#/--name } ${suiteArray[@]/#/--suite }
 }
 
 function usage() {
@@ -66,7 +77,8 @@ Runs the smoke test suite.
 
 OPTIONS
   --help        -h         prints the command usage
-  --builder <name> -b <name>  sets the name of the builder that is built for testing. Defaults to Full Builder if nothing passed.
+  --builder <name> -b <name>  sets the name of the builder(s) that is built for testing. Defaults to Full Builder if nothing passed.
+  --suite <name> -s <name>  selects the test suites to run (e.g. dotnet-core, nodejs). Defaults to running all suites.
 USAGE
 }
 
@@ -108,29 +120,33 @@ function image::pull::run_image() {
   docker pull "${run_image}"
 }
 function tests::run() {
-  local builderArray
+  local builderArray suiteArray
   builderArray=()
+  suiteArray=()
   while [[ "${#}" != 0 ]]; do
     case "${1}" in
+      --name)
+        builderArray+=("${2}")
+        shift 2
+        ;;
+
+      --suite)
+        suiteArray+=("${2}")
+        shift 2
+        ;;
       "")
         # skip if the argument is empty
         shift 1
         ;;
-
-      *)
-        builderArray+=("${1}")
-        shift 1
-        ;;
-
     esac
   done
 
   util::print::title "Run Samples Tests"
 
   testout=$(mktemp)
-  pushd "${SAMPLESDIR}"/tests > /dev/null
+  # pushd "${SAMPLESDIR}"/tests > /dev/null
   # ignore shellcheck double quote error, we want the builderArray to be split 
-  if GOMAXPROCS="${GOMAXPROCS:-4}" go test -count=1 -timeout 0 ./... -v -run Samples ${builderArray[@]/#/--name } | tee "${testout}"; then
+  if GOMAXPROCS="${GOMAXPROCS:-4}" go test -count=1 -timeout 0 ${suiteArray[@]/#/./} -v  ${builderArray[@]/#/--name } | tee "${testout}"; then
       util::tools::tests::checkfocus "${testout}"
       util::print::success "** GO Test Succeeded **"
     else

@@ -1,27 +1,44 @@
-package samples_test
+package go_test
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
+	"time"
 
 	"github.com/paketo-buildpacks/occam"
+	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
+	"github.com/sclevine/spec/report"
 
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
-	// Node.js apps are not compatible with the tiny builder
-	if strings.Contains(builder, "tiny") {
-		return func(t *testing.T, context spec.G, it spec.S) {
-			context(fmt.Sprintf("skip Node tests with %s", builder), func() {})
-		}
-	}
+var builders tests.BuilderFlags
+var suite spec.Suite
 
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+
+func TestGo(t *testing.T) {
+	Expect := NewWithT(t).Expect
+
+	Expect(len(builders)).NotTo(Equal(0))
+
+	SetDefaultEventuallyTimeout(60 * time.Second)
+
+	suite := spec.New("Go", spec.Parallel(), spec.Report(report.Terminal{}))
+	for _, builder := range builders {
+		suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
+	}
+	suite.Run(t)
+}
+
+func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -36,7 +53,7 @@ func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			docker = occam.NewDocker()
 		})
 
-		context("detects a Node.js app", func() {
+		context("detects a Go app", func() {
 			var (
 				image     occam.Image
 				container occam.Container
@@ -58,10 +75,10 @@ func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("no package manager", func() {
+			context("no imports", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../nodejs", "no-package-manager"))
+					source, err = occam.Source(filepath.Join("../go", "no-imports"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -71,8 +88,12 @@ func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Start Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
+
+					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Go Mod Vendor Buildpack")))
+					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Dep Buildpack")))
+					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Dep Ensure Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -84,10 +105,10 @@ func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 
-			context("app uses npm", func() {
+			context("uses go modules", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../nodejs", "npm"))
+					source, err = occam.Source(filepath.Join("../go", "mod"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -97,9 +118,9 @@ func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Start Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Mod Vendor Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -111,10 +132,10 @@ func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 
-			context("app uses yarn", func() {
+			context("uses dep", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../nodejs", "yarn"))
+					source, err = occam.Source(filepath.Join("../go", "dep"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -124,9 +145,10 @@ func testNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Yarn Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Yarn Start Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Dep Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Dep Ensure Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).

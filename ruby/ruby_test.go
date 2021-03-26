@@ -1,27 +1,44 @@
-package samples_test
+package ruby_test
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
+	"time"
 
 	"github.com/paketo-buildpacks/occam"
+	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
+	"github.com/sclevine/spec/report"
 
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
-	// Ruby apps are not compatible with the tiny builder
-	if strings.Contains(builder, "tiny") {
-		return func(t *testing.T, context spec.G, it spec.S) {
-			context(fmt.Sprintf("skip Ruby tests with %s", builder), func() {})
-		}
-	}
+var builders tests.BuilderFlags
+var suite spec.Suite
 
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+
+func TestRuby(t *testing.T) {
+	Expect := NewWithT(t).Expect
+
+	Expect(len(builders)).NotTo(Equal(0))
+
+	SetDefaultEventuallyTimeout(60 * time.Second)
+
+	suite := spec.New("Ruby", spec.Parallel(), spec.Report(report.Terminal{}))
+	for _, builder := range builders {
+		suite(fmt.Sprintf("Ruby with %s builder", builder), testRubyWithBuilder(builder))
+	}
+	suite.Run(t)
+}
+
+func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
