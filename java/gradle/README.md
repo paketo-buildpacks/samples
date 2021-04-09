@@ -6,6 +6,12 @@
 pack build applications/gradle
 ```
 
+Alternatively, if you want to attach a `gradle.properties` file to pass additional configuration to Gradle.
+
+```bash
+pack build --volume $(pwd)/bindings:/platform/bindings applications/gradle
+```
+
 ## Running
 
 ```bash
