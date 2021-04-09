@@ -6,6 +6,12 @@
 pack build applications/maven
 ```
 
+Alternatively, if you want to attach a Maven `settings.xml` file to pass additional configuration to Maven.
+
+```bash
+pack build applications/maven --volume (pwd)/bindings:/platform/bindings
+```
+
 ## Running
 
 ```bash
