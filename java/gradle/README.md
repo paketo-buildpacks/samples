@@ -12,6 +12,13 @@ Alternatively, if you want to attach a `gradle.properties` file to pass addition
 pack build --volume $(pwd)/bindings:/platform/bindings applications/gradle
 ```
 
+The command above will use the sample `gradle.properties` file from this repo. It may be more useful to copy your local `gradle.properties` file first.
+
+```bash
+cp ~/.gradle/gradle.properties java/gradle/bindings/gradle/gradle.properties
+pack build applications/gradle --volume $(pwd)/bindings:/platform/bindings
+```
+
 ## Running
 
 ```bash
