@@ -27,5 +27,5 @@ jobs:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('java/maven/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-      - run: ./mvnw -B package
+      - run: ./mvnw -B package -Djava.version=${{ matrix.java }}
         working-directory: java/maven
