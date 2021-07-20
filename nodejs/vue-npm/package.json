@@ -1,0 +1,23 @@
+{
+  "name": "vue_app",
+  "dependencies": {
+    "vue": "^2.6.11"
+  },
+  "description": "Sample Node.js Vue Application using Npm",
+  "devDependencies": {
+    "@vue/cli-service": "~4.5.0",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "license": "Apache-2.0",
+  "name": "sample",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paketo-buildpacks/samples"
+  },
+  "scripts": {
+    "start": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "version": "0.1.0"
+}
