@@ -6,7 +6,7 @@
 
 ## Running
 
-`docker run --interactive --tty --publish 8080:8080 npm-sample`
+`docker run --interactive --tty --init --publish 8080:8080 npm-sample`
 
 ## Viewing
 
