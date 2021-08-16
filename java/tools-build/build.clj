@@ -27,4 +27,5 @@
                       :class-dir class-dir})
       (b/uber {:class-dir class-dir
                :uber-file uber-file
-               :basis basis}))
+               :basis basis
+               :main  "toolsbuild_source.server"}))
