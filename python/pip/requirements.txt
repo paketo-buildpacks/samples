@@ -1,0 +1,5 @@
+Flask==1.0
+Jinja2==2.11.3
+MarkupSafe==0.21
+Werkzeug==0.15.3
+gunicorn==19.5.0
