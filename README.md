@@ -64,6 +64,12 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [Thin](/ruby/thin)
 * [Unicorn](/ruby/unicorn)
 
+### Python
+* [No Package Manager](/python/no_package_manager)
+* [Pip](/python/pip)
+* [Pipenv](/python/pipenv)
+* [Miniconda](/python/conda)
+
 ### Procfile
 * [Static Webserver](/procfile)
 
