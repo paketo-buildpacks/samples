@@ -1,4 +1,4 @@
-package ruby_test
+package python_test
 
 import (
 	"flag"
