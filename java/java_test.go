@@ -357,6 +357,73 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
 				})
 			})
+
+			context("app uses clojure tools with deps", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../java", "deps"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithBuilder(builder).
+						WithEnv(map[string]string{
+							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M"}).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Clojure Tools Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithPublish("8080").
+						WithPublishAll().
+						WithTTY().
+						WithEnv(map[string]string{
+							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M"}).
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("Hello World!")).OnPort(8080))
+				})
+			})
+
+			context("app uses clojure tools with tools build", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../java", "tools-build"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithBuilder(builder).
+						WithEnv(map[string]string{
+							"BP_CLJ_TOOLS_BUILD_ENABLED": "true",
+							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M"}).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Clojure Tools Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithPublish("8080").
+						WithPublishAll().
+						WithTTY().
+						WithEnv(map[string]string{
+							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M"}).
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("Hello World!")).OnPort(8080))
+				})
+			})
 		})
 	}
 }
