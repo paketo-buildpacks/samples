@@ -1,0 +1,12 @@
+{:deps
+          {io.pedestal/pedestal.service {:mvn/version "0.5.8"}
+           io.pedestal/pedestal.route   {:mvn/version "0.5.8"}
+           io.pedestal/pedestal.jetty   {:mvn/version "0.5.8"}
+           org.clojure/data.json        {:mvn/version "0.2.6"}
+           org.slf4j/slf4j-simple       {:mvn/version "1.7.28"}}
+ :paths ["src"]
+ :aliases {:uberjar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.1.278"}}
+                     :exec-fn hf.depstar/uberjar
+                     :exec-args {:aot true
+                                 :jar "target/demo.jar"
+                                 :main-class "deps-source.server"}}}}
