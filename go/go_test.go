@@ -31,6 +31,7 @@ func TestGo(t *testing.T) {
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
 
+	/* Trivial change to trigger test suite */
 	suite := spec.New("Go", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
 		suite(fmt.Sprintf("Go with %s builder", builder), testGoWithBuilder(builder))
