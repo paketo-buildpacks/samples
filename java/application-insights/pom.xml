@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
-		<applicationinsights.version>2.6.3</applicationinsights.version>
+		<applicationinsights.version>2.6.4</applicationinsights.version>
 	</properties>
 
 	<dependencies>
