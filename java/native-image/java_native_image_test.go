@@ -96,7 +96,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 				Eventually(container).Should(BeAvailable())
 
-				Expect(logs).To(ContainLines(ContainSubstring("Paketo GraalVM Buildpack")))
+				Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
 				Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
 				Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
 				Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
