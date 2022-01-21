@@ -29,3 +29,5 @@ jobs:
           restore-keys: ${{ runner.os }}-lein
       - run: ./lein uberjar
         working-directory: java/leiningen
+        env:
+          LEIN_HOME: ~/.lein

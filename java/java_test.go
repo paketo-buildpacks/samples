@@ -403,7 +403,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithBuilder(builder).
 						WithEnv(map[string]string{
 							"BP_CLJ_TOOLS_BUILD_ENABLED": "true",
-							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M"}).
+							"JAVA_TOOL_OPTIONS":          "-XX:MaxMetaspaceSize=100M"}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
