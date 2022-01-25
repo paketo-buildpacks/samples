@@ -1,5 +1,5 @@
 Flask==0.12.3
-Jinja2==2.7.2
+Jinja2==2.11.3
 MarkupSafe==0.21
 Werkzeug==0.10.4
 gunicorn==19.5.0
