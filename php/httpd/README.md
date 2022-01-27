@@ -1,4 +1,4 @@
-# PHP Sample App using NGINX
+# PHP Sample App using HTTPD
 
 ## Building
 
