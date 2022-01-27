@@ -89,7 +89,7 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Composer Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Distribution Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
 
 					container, err = docker.Container.Run.
@@ -116,7 +116,7 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache HTTP Server Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Distribution Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
 
 					container, err = docker.Container.Run.
@@ -143,7 +143,7 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Nginx Server Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Distribution Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
 
 					container, err = docker.Container.Run.
@@ -169,7 +169,7 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Distribution Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
 
 					container, err = docker.Container.Run.
