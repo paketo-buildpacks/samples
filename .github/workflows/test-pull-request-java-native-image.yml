@@ -20,6 +20,26 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.4.0
 
+    - name: Cache local Gradle repository
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('java/**/*.gradle*', 'java/**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Cache local Maven repository
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.m2/wrapper
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', 'java/**/maven-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
     - name: Test Java Native Image Samples
       run: |
         ./scripts/smoke.sh --suite java/native-image \
