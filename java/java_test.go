@@ -18,7 +18,6 @@ import (
 )
 
 var builders tests.BuilderFlags
-var suite spec.Suite
 
 func init() {
 	flag.Var(&builders, "name", "the name a builder to test with")
@@ -46,6 +45,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			pack   occam.Pack
 			docker occam.Docker
+			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -85,6 +85,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -112,6 +113,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -140,6 +142,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -171,6 +174,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							"BP_GRADLE_BUILD_ARGUMENTS": "--no-daemon -x test bootDistZip",
 							"BP_GRADLE_BUILT_ARTIFACT":  "build/distributions/*.zip"}).
 						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -198,6 +202,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
+						WithEnv(map[string]string{
+							"BP_GRADLE_BUILT_ARTIFACT": "build/libs/*-SNAPSHOT.jar",
+						}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -252,6 +260,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
+						WithEnv(map[string]string{
+							"BP_GRADLE_BUILT_ARTIFACT": "build/libs/*-SNAPSHOT.jar",
+						}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -282,6 +294,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithBuilder(builder).
 						WithEnv(map[string]string{
 							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M"}).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -313,6 +326,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -341,6 +355,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -370,6 +385,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithBuilder(builder).
 						WithEnv(map[string]string{
 							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M"}).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -404,6 +420,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithEnv(map[string]string{
 							"BP_CLJ_TOOLS_BUILD_ENABLED": "true",
 							"JAVA_TOOL_OPTIONS":          "-XX:MaxMetaspaceSize=100M"}).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
