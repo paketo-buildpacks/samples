@@ -18,7 +18,6 @@ import (
 )
 
 var builders tests.BuilderFlags
-var suite spec.Suite
 
 func init() {
 	flag.Var(&builders, "name", "the name a builder to test with")
@@ -46,6 +45,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			pack   occam.Pack
 			docker occam.Docker
+			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -83,8 +83,10 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				var logs fmt.Stringer
 				image, logs, err = pack.Build.
 					WithPullPolicy("never").
-					WithBuilder(builder).
 					WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true"}).
+					WithBuilder(builder).
+					WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
+					WithGID("121").
 					Execute(name, source)
 				Expect(err).ToNot(HaveOccurred(), logs.String)
 

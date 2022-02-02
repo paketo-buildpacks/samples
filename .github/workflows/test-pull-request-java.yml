@@ -41,6 +41,18 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
 
+    - name: Setup Directories
+      run: |
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        mkdir -p ~/.m2/repository
+        mkdir -p ~/.m2/repository/wrapper/dists
+        mkdir -p ~/.gradle/caches
+        mkdir -p ~/.gradle/wrapper/dists
+        chmod -R 775 ~/.m2
+        chmod -R 775 ~/.gradle
+
     - name: Test Java Samples
       run: |
         ./scripts/smoke.sh --suite java \
