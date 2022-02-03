@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -69,14 +70,31 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			})
 
 			it.After(func() {
-				Expect(docker.Container.Remove.Execute(container.ID)).To(Succeed())
+				err := docker.Container.Remove.Execute(container.ID)
+				if err != nil {
+					Expect(err).To(MatchError("failed to remove docker container: exit status 1: Container name cannot be empty"))
+				} else {
+					Expect(err).ToNot(HaveOccurred())
+				}
+
 				Expect(docker.Volume.Remove.Execute(occam.CacheVolumeNames(name))).To(Succeed())
-				Expect(docker.Image.Remove.Execute(image.ID)).To(Succeed())
+
+				err = docker.Image.Remove.Execute(image.ID)
+				if err != nil {
+					Expect(err).To(MatchError("failed to remove docker image: exit status 1: Error: No such image:"))
+				} else {
+					Expect(err).ToNot(HaveOccurred())
+				}
+
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
 			context("app uses akka", func() {
 				it("builds successfully", func() {
+					if strings.HasSuffix(builder, "tiny") {
+						return // this sample requires bash, does not run on tiny
+					}
+
 					var err error
 					source, err = occam.Source(filepath.Join("../java", "akka"))
 					Expect(err).NotTo(HaveOccurred())
@@ -166,6 +184,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			context("app uses dist zip", func() {
 				it("builds successfully", func() {
+					if strings.HasSuffix(builder, "tiny") {
+						return // this sample requires bash, does not run on tiny
+					}
+
 					var err error
 					source, err = occam.Source(filepath.Join("../java", "dist-zip"))
 					Expect(err).NotTo(HaveOccurred())
