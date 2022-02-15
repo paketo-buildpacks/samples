@@ -1,6 +1,7 @@
 *                @paketo-buildpacks/content-maintainers
-ca-certificates/ @paketo-buildpacks/java-buildpacks
+ca-certificates/ @paketo-buildpacks/utilities-maintainers
 dotnet-core/     @paketo-buildpacks/dotnet-core-maintainers
+git/             @paketo-buildpacks/utilities-maintainers
 go/              @paketo-buildpacks/go-maintainers
 httpd/           @paketo-buildpacks/php-maintainers
 java/            @paketo-buildpacks/java-buildpacks
