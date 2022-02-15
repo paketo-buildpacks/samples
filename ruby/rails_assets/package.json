@@ -1,0 +1,12 @@
+{
+  "name": "myapp",
+  "private": true,
+  "dependencies": {
+    "@rails/ujs": "^6.0.0",
+    "@rails/webpacker": "~5"
+  },
+  "version": "0.1.0",
+  "devDependencies": {
+    "webpack-dev-server": "^3.11.0"
+  }
+}
