@@ -11,6 +11,10 @@ group = "io.paketo"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
+tasks.getByName<Jar>("jar") {
+	enabled = false
+}
+
 repositories {
 	mavenCentral()
 }
