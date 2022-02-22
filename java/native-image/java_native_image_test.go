@@ -75,36 +75,68 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			it("builds successfully", func() {
-				var err error
-				source, err = occam.Source(filepath.Join(".", "java-native-image-sample"))
-				Expect(err).NotTo(HaveOccurred())
+			context("uses Spring Boot app", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join(".", "java-native-image-sample"))
+					Expect(err).NotTo(HaveOccurred())
 
-				var logs fmt.Stringer
-				image, logs, err = pack.Build.
-					WithPullPolicy("never").
-					WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true"}).
-					WithBuilder(builder).
-					WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-					WithGID("121").
-					Execute(name, source)
-				Expect(err).ToNot(HaveOccurred(), logs.String)
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true"}).
+						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
+						WithGID("121").
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-				container, err = docker.Container.Run.
-					WithEnv(map[string]string{"PORT": "8080"}).
-					WithPublish("8080").
-					Execute(image.ID)
-				Expect(err).NotTo(HaveOccurred())
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
 
-				Eventually(container).Should(BeAvailable())
+					Eventually(container).Should(BeAvailable())
 
-				Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-				Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
-				Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
-				Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
-				Expect(logs).To(ContainLines(ContainSubstring("Paketo Native Image Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Native Image Buildpack")))
 
-				Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
+					Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
+				})
+			})
+
+			context("app uses simple JAR", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join(".", "public-static-main"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true"}).
+						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
+						WithGID("121").
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Native Image Buildpack")))
+
+					container, err = docker.Container.Run.Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(func() (fmt.Stringer, error) {
+						return docker.Container.Logs.Execute(container.ID)
+					}).Should(ContainLines(ContainSubstring("Hello World!")))
+				})
 			})
 		})
 	}
