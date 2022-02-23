@@ -18,13 +18,12 @@ import (
 )
 
 var builders tests.BuilderFlags
-var suite spec.Suite
 
 func init() {
 	flag.Var(&builders, "name", "the name a builder to test with")
 }
 
-func TestNginx(t *testing.T) {
+func TestGit(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
 	Expect(len(builders)).NotTo(Equal(0))
