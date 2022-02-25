@@ -1,0 +1,9 @@
+api = "0.7"
+
+[buildpack]
+  id = "paketo-buildpacks/sample/git/clone"
+  name = "Paketo Git Clone Buildpack"
+  version = "0.0.1"
+
+[[stacks]]
+  id = "*"

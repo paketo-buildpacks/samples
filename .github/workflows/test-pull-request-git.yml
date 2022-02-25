@@ -1,11 +1,11 @@
-name: Test Pull Request (${language})
+name: Test Pull Request (git)
 
 on:
   pull_request:
     branches:
     - main
     paths:
-    - '${language}/**'
+    - 'git/**'
 
 jobs:
   smoke:
@@ -20,9 +20,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Test ${language} Samples
+    - name: Test git Samples
       run: |
-        ./scripts/smoke.sh --suite ${language} \
+        ./scripts/smoke.sh --suite git \
                            --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base \
-                           --builder paketobuildpacks/builder:tiny
+                           --builder paketobuildpacks/builder:base

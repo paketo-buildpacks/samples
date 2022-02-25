@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -e
+set -u
+set -o pipefail
+
+function main() {
+  local url
+  url=${BP_TEST_URL:-}
+
+  printf "Paketo Git Clone Buildpack\n\n"
+  if [[ -n "$url" ]]; then
+    git clone "$url"
+    echo "Finished cloning"
+  else
+    echo url=https://example.com | git credential fill
+  fi
+}
+
+main "${@:-}"
