@@ -138,6 +138,45 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					}).Should(ContainLines(ContainSubstring("Hello World!")))
 				})
 			})
+
+			context("uses simple Quarkus app", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join(".", "quarkus-native"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithEnv(map[string]string{
+							"BP_NATIVE_IMAGE":                      "true",
+							"BP_MAVEN_BUILD_ARGUMENTS":             "-Dquarkus.package.type=native-sources -Dmaven.test.skip=true package",
+							"BP_MAVEN_BUILT_ARTIFACT":              "target/native-sources",
+							"BP_NATIVE_IMAGE_BUILD_ARGUMENTS_FILE": "native-sources/native-image.args",
+							"BP_NATIVE_IMAGE_BUILT_ARTIFACT":       "native-sources/getting-started-*-runner.jar",
+						}).
+						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
+						WithGID("121").
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Native Image Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(BeAvailable())
+
+					Eventually(container).Should(Serve(ContainSubstring("hello")).OnPort(8080).WithEndpoint("/hello"))
+				})
+			})
 		})
 	}
 }
