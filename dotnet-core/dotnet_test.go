@@ -136,10 +136,62 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 
-			context("uses a self-containaed runtime", func() {
+			context("uses a self-contained runtime", func() {
 				it("builds successfully", func() {
 					var err error
 					source, err = occam.Source(filepath.Join("../dotnet-core", "self-contained-app"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithBuilder(builder).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo ICU Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Execute Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("<title>react_app</title>")))
+				})
+			})
+
+			context("uses a framework-dependent deployment", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../dotnet-core", "fdd-app"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithBuilder(builder).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo ICU Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Execute Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("<title>react_app</title>")))
+				})
+			})
+
+			context("uses a framework-dependent executable", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../dotnet-core", "fde-app"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
