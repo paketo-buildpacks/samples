@@ -51,7 +51,7 @@ function main() {
 
   if [[ ! ${builderArray[@]+"${builderArray[@]}"} ]]; then
     builderArray+=("paketobuildpacks/builder:full")
-    util::print::info "No builder specified. Running with full builder"
+    util::print::info "No builder specified. Running with full builder (paketobuildpacks/builder:full)"
   fi
 
   if [[ ! ${suiteArray[@]+"${suiteArray[@]}"} ]]; then
