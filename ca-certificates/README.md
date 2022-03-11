@@ -24,7 +24,6 @@ This sample contains a simple Golang application that will make a `HEAD` request
 Build the sample application
 ```bash
 pack build applications/ca-certificates \
-    --buildpack paketo-buildpacks/ca-certificates \
     --buildpack paketo-buildpacks/go
 ```
 Run the sample application **without** the binding, passing the URL as a positional argument, to observe the expected error (should print `ERROR: Head "<url>": x509: certificate signed by unknown authority`):
@@ -50,7 +49,6 @@ Build the sample application with the sample buildpack and set `$BP_TEST_URL` to
 ```bash
 pack build applications/ca-certificates \
     --builder paketobuildpacks/builder:full \
-    --buildpack paketo-buildpacks/ca-certificates \
     --buildpack ./buildpack \
     --buildpack paketo-buildpacks/go \
     --volume "$(pwd)/binding:/platform/bindings/ca-certificates" \
