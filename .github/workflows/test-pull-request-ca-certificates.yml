@@ -1,0 +1,28 @@
+name: Test Pull Request (ca-certificates)
+
+on:
+  pull_request:
+    branches:
+    - main
+    paths:
+    - 'ca-certificates/**'
+
+jobs:
+  smoke:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup Go
+      uses: actions/setup-go@v1
+      with:
+        go-version: 1.17.x
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Test ca-certificates Samples
+      run: |
+        ./scripts/smoke.sh --suite ca-certificates \
+                           --builder paketobuildpacks/builder:full \
+                           --builder paketobuildpacks/builder:base \
+                           --builder paketobuildpacks/builder:tiny
