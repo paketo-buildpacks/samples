@@ -50,6 +50,8 @@ func testGitWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 		it.Before(func() {
 			pack = occam.NewPack().WithVerbose().WithNoColor()
 			docker = occam.NewDocker()
+
+			Expect(docker.Pull.Execute("index.docker.io/paketobuildpacks/git"))
 		})
 
 		context("detects a Git app", func() {
@@ -89,9 +91,10 @@ func testGitWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					var err error
 					var logs fmt.Stringer
 					image, logs, err = pack.WithNoColor().Build.
+						WithPullPolicy("never").
 						WithBuilder(builder).
 						WithBuildpacks(
-							"docker://gcr.io/paketo-community/git",
+							"index.docker.io/paketobuildpacks/git",
 							filepath.Join("..", "git", "git-sample", "buildpack"),
 						).
 						WithEnv(map[string]string{
