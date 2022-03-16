@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build react-sample --buildpack gcr.io/paketo-buildpacks/nodejs --env "BP_NODE_RUN_SCRIPTS=build"`
+`pack build react-sample --buildpack paketo-buildpacks/nodejs --env "BP_NODE_RUN_SCRIPTS=build"`
 
 ## Running
 

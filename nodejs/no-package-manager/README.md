@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build nodejs-sample --buildpack gcr.io/paketo-buildpacks/nodejs`
+`pack build nodejs-sample --buildpack paketo-buildpacks/nodejs`
 
 ## Running
 

@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build dotnet-aspnet-sample --buildpack gcr.io/paketo-buildpacks/dotnet-core`
+`pack build dotnet-aspnet-sample --buildpack paketo-buildpacks/dotnet-core`
 
 ## Running
 

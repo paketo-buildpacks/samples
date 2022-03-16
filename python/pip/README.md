@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build pip-sample --buildpack gcr.io/paketo-buildpacks/python`
+`pack build pip-sample --buildpack paketo-buildpacks/python`
 
 ## Running
 

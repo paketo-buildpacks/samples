@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build go-sample --buildpack gcr.io/paketo-buildpacks/go`
+`pack build go-sample --buildpack paketo-buildpacks/go`
 
 ## Running
 

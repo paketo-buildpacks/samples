@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build rake-sample --buildpack gcr.io/paketo-buildpacks/ruby`
+`pack build rake-sample --buildpack paketo-buildpacks/ruby`
 
 ## Running
 
