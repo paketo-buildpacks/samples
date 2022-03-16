@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build angular-sample --buildpack gcr.io/paketo-buildpacks/nodejs --env "BP_NODE_RUN_SCRIPTS=build" --env "NODE_ENV=development"`
+`pack build angular-sample --buildpack paketo-buildpacks/nodejs --env "BP_NODE_RUN_SCRIPTS=build" --env "NODE_ENV=development"`
 
 ## Running
 

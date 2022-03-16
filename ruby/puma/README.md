@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build puma-sample --buildpack gcr.io/paketo-buildpacks/ruby`
+`pack build puma-sample --buildpack paketo-buildpacks/ruby`
 
 ## Running
 
