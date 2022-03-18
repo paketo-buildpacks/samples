@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build unicorn-sample --buildpack gcr.io/paketo-buildpacks/ruby`
+`pack build unicorn-sample --buildpack paketo-buildpacks/ruby`
 
 ## Running
 

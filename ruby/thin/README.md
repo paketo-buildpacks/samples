@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build thin-sample --buildpack gcr.io/paketo-buildpacks/ruby`
+`pack build thin-sample --buildpack paketo-buildpacks/ruby`
 
 ## Running
 

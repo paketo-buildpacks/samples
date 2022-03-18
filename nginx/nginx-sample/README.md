@@ -3,7 +3,7 @@
 ## Building
 
 ```bash
-pack build my-nginx-app --buildpack gcr.io/paketo-buildpacks/nginx
+pack build my-nginx-app --buildpack paketo-buildpacks/nginx
 ```
 
 ## Running

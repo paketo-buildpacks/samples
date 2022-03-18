@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build no-package-manager-sample --buildpack gcr.io/paketo-buildpacks/python`
+`pack build no-package-manager-sample --buildpack paketo-buildpacks/python`
 
 ## Running
 

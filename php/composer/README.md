@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build php-composer-sample --buildpack gcr.io/paketo-buildpacks/php`
+`pack build php-composer-sample --buildpack paketo-buildpacks/php`
 
 ## Running
 
