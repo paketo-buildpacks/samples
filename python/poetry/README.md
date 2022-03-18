@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build poetry-sample --buildpack gcr.io/paketo-buildpacks/python`
+`pack build poetry-sample --buildpack paketo-buildpacks/python`
 
 ## Running
 

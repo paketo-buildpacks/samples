@@ -17,7 +17,7 @@ mv app/.git.bak app/.git
 
 ```bash
 pack build git-sample --path app \
-  --buildpack gcr.io/paketo-buildpacks/git
+  --buildpack paketo-buildpacks/git
 ```
 
 ### Viewing
@@ -66,7 +66,7 @@ For this demonstration, a basic default credentials binding has been provided.
 The following will ensure that everything is working as expected.
 ```bash
 pack build git-sample --path app \
-  --buildpack gcr.io/paketo-buildpacks/git \
+  --buildpack paketo-buildpacks/git \
   --buildpack ./buildpack \
   --env SERVICE_BINDING_ROOT=/bindings \
   --volume "$(pwd)/git-credentials:/bindings/git-credentials"
@@ -89,7 +89,7 @@ for the private repository. Once those credentials have been added run the
 following command.
 ```bash
 pack build git-sample --path app \
-  --buildpack gcr.io/paketo-buildpacks/git \
+  --buildpack paketo-buildpacks/git \
   --buildpack ./buildpack \
   --env BP_TEST_URL={url to private repository} \
   --env SERVICE_BINDING_ROOT=/bindings \

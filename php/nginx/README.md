@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build php-nginx-sample --buildpack gcr.io/paketo-buildpacks/php`
+`pack build php-nginx-sample --buildpack paketo-buildpacks/php`
 
 ## Running
 

@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build php-webserver-sample --buildpack gcr.io/paketo-buildpacks/php`
+`pack build php-webserver-sample --buildpack paketo-buildpacks/php`
 
 ## Running
 
