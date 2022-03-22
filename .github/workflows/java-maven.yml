@@ -22,7 +22,7 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
-      - uses: actions/cache@v2.1.7
+      - uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('java/maven/pom.xml') }}
