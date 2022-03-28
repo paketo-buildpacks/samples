@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "default_app"
+version = "0.1.0"
+description = ""
+authors = []
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "2.0.3"
+gunicorn = "^20.1.0"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+my-script = "default_app.server:run"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
