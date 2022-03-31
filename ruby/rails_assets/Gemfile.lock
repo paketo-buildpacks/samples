@@ -75,11 +75,11 @@ GEM
     mini_mime (1.1.0)
     mini_portile2 (2.8.0)
     minitest (5.14.4)
-    nio4r (2.5.7)
+    nio4r (2.5.8)
     nokogiri (1.13.3)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
-    puma (4.3.7)
+    puma (4.3.12)
       nio4r (~> 2.0)
     racc (1.6.0)
     rack (2.2.3)
@@ -151,7 +151,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  puma (~> 4.1)
+  puma (~> 4.3)
   rails (~> 6.0.3, >= 6.0.3.6)
   sass-rails (>= 6)
   webpacker (~> 5)
