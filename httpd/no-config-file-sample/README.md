@@ -4,8 +4,8 @@
 
 In order to have the Paketo HTTPD Server Buildpack generate an `httpd.conf` for
 your application the build process must have `BP_WEB_SERVER` set to `httpd`.
-Setting this environment variable during build can be done with the following
-build command:
+
+### Building
 
 ```bash
 pack build httpd-no-config --path app \
@@ -14,14 +14,13 @@ pack build httpd-no-config --path app \
   --env BP_WEB_SERVER=httpd
 ```
 
-This command will build a container that has a default `httpd.conf`. To verify
-this run the following command to start the image:
+### Running
 
 ```bash
-docker run --tty --env PORT=8080 --publish 8080:8080 httpd-no-config
+docker run --tty --rm --env PORT=8080 --publish 8080:8080 httpd-no-config
 ```
 
-You should then see a message when you run the following `curl` command:
+### Veiwing
 
 ```bash
 curl -s localhost:8080
@@ -53,7 +52,7 @@ pack build httpd-custom-root --path app \
 ### Running
 
 ```bash
-docker run --tty --env PORT=8080 --publish 8080:8080 httpd-custom-root
+docker run --tty --rm --env PORT=8080 --publish 8080:8080 httpd-custom-root
 ```
 
 ### Veiwing
@@ -83,7 +82,7 @@ pack build httpd-push-state --path app \
 ### Running
 
 ```bash
-docker run --tty --env PORT=8080 --publish 8080:8080 httpd-push-state
+docker run --tty --rm --env PORT=8080 --publish 8080:8080 httpd-push-state
 ```
 
 ### Veiwing
@@ -112,7 +111,7 @@ pack build httpd-force-https --path app \
 ### Running
 
 ```bash
-docker run --tty --env PORT=8080 --publish 8080:8080 httpd-force-https
+docker run --tty --rm --env PORT=8080 --publish 8080:8080 httpd-force-https
 ```
 
 ### Veiwing
@@ -156,7 +155,7 @@ pack build httpd-basic-auth --path app \
 ```bash
 docker run --tty --rm \
   --env PORT=8080 \
-  --env SERVICE_BINDING_ROOT=/bindings
+  --env SERVICE_BINDING_ROOT=/bindings \
   --publish 8080:8080 \
   --volume "$(pwd)/binding:/bindings/auth" \
   httpd-basic-auth
@@ -164,9 +163,9 @@ docker run --tty --rm \
 
 ### Veiwing
 
-A standard with a standard `curl -s localhost:8080` you should see an HTTP
-status code 401 returned. Run the following:
+A standard with `curl -s localhost:8080` you should see an HTTP status code 401
+returned. Run the following:
 
 ```bash
-curl -u user:password http://localhost:8080
+curl -u user:password localhost:8080
 ```
