@@ -139,7 +139,7 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			context("uses a self-contained runtime", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../dotnet-core", "self-contained-app"))
+					source, err = occam.Source(filepath.Join("../dotnet-core", "self-contained-deployment"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
