@@ -254,13 +254,23 @@ func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			context("app uses react and nginx", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../nodejs", "react-nginx"))
+					source, err = occam.Source(filepath.Join("../nodejs", "react-httpd-nginx"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy("if-not-present").
 						WithBuilder(builder).
+						WithBuildpacks(
+							"gcr.io/paketo-buildpacks/nodejs",
+							"gcr.io/paketo-buildpacks/nginx",
+						).
+						WithEnv(map[string]string{
+							"BP_NODE_RUN_SCRIPTS":             "build",
+							"BP_WEB_SERVER":                   "nginx",
+							"BP_WEB_SERVER_ROOT":              "build",
+							"BP_WEB_SERVER_ENABLE_PUSH_STATE": "true",
+						}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -269,6 +279,45 @@ func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Run Script Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Start Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Nginx Server Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("<title>Paketo Buildpacks</title>")).OnPort(8080))
+				})
+			})
+
+			context("app uses react and httpd", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../nodejs", "react-httpd-nginx"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("if-not-present").
+						WithBuilder(builder).
+						WithBuildpacks(
+							"gcr.io/paketo-buildpacks/nodejs",
+							"gcr.io/paketo-buildpacks/httpd",
+						).
+						WithEnv(map[string]string{
+							"BP_NODE_RUN_SCRIPTS":             "build",
+							"BP_WEB_SERVER":                   "httpd",
+							"BP_WEB_SERVER_ROOT":              "build",
+							"BP_WEB_SERVER_ENABLE_PUSH_STATE": "true",
+						}).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Install Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Run Script Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Start Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache HTTP Server Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).

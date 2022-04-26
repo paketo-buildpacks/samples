@@ -3,29 +3,35 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Deploy and View
-Build this app into an OCI image using the Paketo Node.js and NGINX buildpacks.
-The
-[`project.toml`](https://buildpacks.io/docs/app-developer-guide/using-project-descriptor/)
-in this directory contains all of the required configuration to bulid the React
-source into static assets, then serve those assets with NGINX.
+Build this app into an OCI image using the Paketo Node.js and a web server
+buildpack (either HTTPD or NGINX).  There are two [project
+descriptor](https://buildpacks.io/docs/app-developer-guide/using-project-descriptor/)
+files in this directory, `httpd.toml` and `nginx.toml`. Each contain the
+configuration necessary to build the React source code into static assets and
+serve those assets with the selected server.
 
-The NGINX buildpack will automatically generate a default `nginx.conf` to
-configure NGINX to serve the app.
+The HTTPD and NGINX buildpacks will automatically generate a default
+configuration file for the server.
 
-### Build with `pack`
+### Build with `pack` | HTTPD
 ```bash
-pack build react-nginx
+pack build react-sample --descriptor httpd.toml
+```
+
+### Build with `pack` | NGINX
+```bash
+pack build react-sample --descriptor nginx.toml
 ```
 
 ### Run the app
 ```
-docker run  -it -p 8080:8080 --env PORT=8080  react-nginx
+docker run  -it -p 8080:8080 --env PORT=8080  react-sample
 ```
 
 ### View the app
 Visit `localhost:8080` in your browser. Since push-state routing is enabled in
 this build with `BP_WEB_SERVER_ENABLE_PUSH_STATE`, visiting
-`localhost:8080/foo`, or any other endpoint, will serve the same page.
+`localhost:8080/foo` – or any other endpoint – will serve the same page.
 
 ## Available Scripts
 
