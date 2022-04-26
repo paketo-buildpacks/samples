@@ -1,0 +1,11 @@
+.App {
+  font-size: large;
+  text-align: center;
+}
+
+.App img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
