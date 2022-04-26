@@ -41,7 +41,6 @@ and see that the server serves the other version of `index.html`.
 
 ```bash
 pack build nginx-custom-root --path app \
-  --buildpack paketo-buildpacks/nginx \
   --builder paketobuildpacks/builder:base \
   --env BP_WEB_SERVER=nginx \
   --env BP_WEB_SERVER_ROOT=alternate \
@@ -73,7 +72,6 @@ static file structure.
 
 ```bash
 pack build nginx-push-state --path app \
-  --buildpack paketo-buildpacks/nginx \
   --builder paketobuildpacks/builder:base \
   --env BP_WEB_SERVER=nginx \
   --env BP_WEB_SERVER_ENABLE_PUSH_STATE=true
@@ -102,7 +100,6 @@ the server to be redirected using the HTTPS protocol.
 
 ```bash
 pack build nginx-force-https --path app \
-  --buildpack paketo-buildpacks/nginx \
   --builder paketobuildpacks/builder:base \
   --env BP_WEB_SERVER=nginx \
   --env BP_WEB_SERVER_FORCE_HTTPS=true
@@ -146,7 +143,6 @@ The username is `user`, password is `password`.
 
 ```bash
 pack build nginx-basic-auth --path app \
-  --buildpack paketo-buildpacks/nginx \
   --builder paketobuildpacks/builder:base \
   --volume "$(pwd)/binding:/bindings/auth" \
   --env BP_WEB_SERVER=nginx \
