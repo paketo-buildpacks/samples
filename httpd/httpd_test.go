@@ -104,7 +104,7 @@ func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			})
 		})
 
-		context("app is uses no configuration HTTPD", func() {
+		context("app uses no configuration HTTPD", func() {
 			var (
 				image     occam.Image
 				container occam.Container
@@ -129,7 +129,7 @@ func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			it("serves up uses default config", func() {
+			it("uses default config", func() {
 				var (
 					err  error
 					logs fmt.Stringer

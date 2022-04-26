@@ -26,7 +26,7 @@ docker run --tty --rm --env PORT=8080 --publish 8080:8080 httpd-no-config
 curl -s localhost:8080
 ```
 
-That addressed should also be able to be viewed in your browser.
+That address can also be viewed in your browser.
 
 ## Configure Server Root
 
@@ -64,7 +64,7 @@ curl -s localhost:8080
 ## Enable Push State
 
 The Paketo HTTPD Server Buildpack allows you to set up push state for your
-application. This means that regardless of the route the is requested the
+application. This means that regardless of the route that is requested,
 `index.html` will always be serverd. This comes in handy if you are serving a
 Javascript frontend app where the route exists within the app but not on the
 static file structure.
