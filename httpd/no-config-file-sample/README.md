@@ -20,7 +20,7 @@ pack build httpd-no-config --path app \
 docker run --tty --rm --env PORT=8080 --publish 8080:8080 httpd-no-config
 ```
 
-### Veiwing
+### Viewing
 
 ```bash
 curl -s localhost:8080
@@ -55,7 +55,7 @@ pack build httpd-custom-root --path app \
 docker run --tty --rm --env PORT=8080 --publish 8080:8080 httpd-custom-root
 ```
 
-### Veiwing
+### Viewing
 
 ```bash
 curl -s localhost:8080
@@ -85,7 +85,7 @@ pack build httpd-push-state --path app \
 docker run --tty --rm --env PORT=8080 --publish 8080:8080 httpd-push-state
 ```
 
-### Veiwing
+### Viewing
 
 You should see the contents of `index.html` regardless of what route you visit
 
@@ -114,7 +114,7 @@ pack build httpd-force-https --path app \
 docker run --tty --rm --env PORT=8080 --publish 8080:8080 httpd-force-https
 ```
 
-### Veiwing
+### Viewing
 
 You should see a HTTP status code 301 and the redirect address should be using
 the HTTPS protocol.
@@ -161,7 +161,7 @@ docker run --tty --rm \
   httpd-basic-auth
 ```
 
-### Veiwing
+### Viewing
 
 A standard with `curl -s localhost:8080` you should see an HTTP status code 401
 returned. Run the following:
