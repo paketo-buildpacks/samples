@@ -64,7 +64,7 @@ See that the version of `index.html` that is in `/alternate` is served.
 
 The Paketo NGINX Buildpack allows you to set up push state routing for your
 application. This means that regardless of the route that is requested,
-`index.html` will always be serverd. This comes in handy if you are serving a
+`index.html` will always be served. This comes in handy if you are serving a
 Javascript frontend app where the route exists within the app but not on the
 static file structure.
 
