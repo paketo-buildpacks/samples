@@ -3,7 +3,7 @@
            io.pedestal/pedestal.route   {:mvn/version "0.5.10"}
            io.pedestal/pedestal.jetty   {:mvn/version "0.5.10"}
            org.clojure/data.json        {:mvn/version "2.4.0"}
-           org.slf4j/slf4j-simple       {:mvn/version "1.7.33"}}
+           org.slf4j/slf4j-simple       {:mvn/version "1.7.36"}}
  :paths ["src"]
  :aliases {:uberjar {:replace-deps {com.github.seancorfield/depstar {:mvn/version "2.1.303"}}
                      :exec-fn hf.depstar/uberjar
