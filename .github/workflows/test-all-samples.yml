@@ -52,10 +52,10 @@ jobs:
         failure_issue=$(gh issue list --json number --label "test-failure" --jq .[0].number)
         if [ -z $failure_issue ]; \
         then gh issue create \
-        --title "Failure: 'Test All Samples (${{ matrix.suite }})' workflow" \
+        --title "Failure: 'Test All Samples' workflow" \
         --label "test-failure" \
         --body "[Test ${{ matrix.suite }} workflow](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}) failed. Please take a look to ensure samples are working. (cc @paketo-buildpacks/content-maintainers)" \
         -R ${{github.repository}}; \
-        else gh issue comment $failure_issue --body "Another failure occurred: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"; \
+        else gh issue comment $failure_issue --body "Another failure occurred: [Test ${{ matrix.suite }} workflow](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}) failed."; \
         fi
         echo $failure_issue
