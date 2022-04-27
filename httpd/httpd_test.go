@@ -304,5 +304,66 @@ func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 		})
+		context("app uses react and httpd", func() {
+			var (
+				image     occam.Image
+				container occam.Container
+
+				name   string
+				source string
+			)
+
+			it.Before(func() {
+				var err error
+				name, err = occam.RandomName()
+				Expect(err).NotTo(HaveOccurred())
+
+				source, err = occam.Source("../httpd/no-config-file-sample/app")
+				Expect(err).NotTo(HaveOccurred())
+			})
+
+			it.After(func() {
+				Expect(docker.Container.Remove.Execute(container.ID)).To(Succeed())
+				Expect(docker.Volume.Remove.Execute(occam.CacheVolumeNames(name))).To(Succeed())
+				Expect(docker.Image.Remove.Execute(image.ID)).To(Succeed())
+				Expect(os.RemoveAll(source)).To(Succeed())
+			})
+			it("builds successfully", func() {
+				var err error
+				source, err = occam.Source(filepath.Join("../nodejs", "react-httpd-nginx"))
+				Expect(err).NotTo(HaveOccurred())
+
+				var logs fmt.Stringer
+				image, logs, err = pack.Build.
+					WithPullPolicy("if-not-present").
+					WithBuilder(builder).
+					WithBuildpacks(
+						"gcr.io/paketo-buildpacks/nodejs",
+						"gcr.io/paketo-buildpacks/httpd",
+					).
+					WithEnv(map[string]string{
+						"BP_NODE_RUN_SCRIPTS":             "build",
+						"BP_WEB_SERVER":                   "httpd",
+						"BP_WEB_SERVER_ROOT":              "build",
+						"BP_WEB_SERVER_ENABLE_PUSH_STATE": "true",
+					}).
+					Execute(name, source)
+				Expect(err).ToNot(HaveOccurred(), logs.String)
+
+				Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
+				Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Install Buildpack")))
+				Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Run Script Buildpack")))
+				Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Start Buildpack")))
+				Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache HTTP Server Buildpack")))
+
+				container, err = docker.Container.Run.
+					WithEnv(map[string]string{"PORT": "8080"}).
+					WithPublish("8080").
+					Execute(image.ID)
+				Expect(err).NotTo(HaveOccurred())
+
+				Eventually(container).Should(Serve(ContainSubstring("<title>Paketo Buildpacks</title>")).OnPort(8080))
+			})
+		})
 	}
 }
