@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/onsi/gomega/format"
 	"github.com/paketo-buildpacks/occam"
 	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
@@ -25,6 +26,7 @@ func init() {
 }
 
 func TestNodejs(t *testing.T) {
+	format.MaxLength = 0
 	Expect := NewWithT(t).Expect
 
 	Expect(len(builders)).NotTo(Equal(0))
