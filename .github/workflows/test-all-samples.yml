@@ -1,0 +1,43 @@
+name: Test All Samples
+
+on:
+  schedule:
+  - cron: '30 1 * * *'
+  workflow_dispatch: {}
+  pull_request:
+    branches:
+    - main
+    paths:
+    - 'scripts/.util/tools.json'
+
+jobs:
+  smoke:
+    name: Smoke Tests
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18.x
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Test All Samples
+      run: |
+        ./scripts/smoke.sh --builder paketobuildpacks/builder:full
+
+    - name: File Issue
+      if: ${{ failure() && github.event_name != 'pull_request' }}
+      run: |
+        echo "${{ secrets.PAKETO_BOT_GITHUB_TOKEN }}" | gh auth login --with-token
+        failure_issue=$(gh issue list --json number --label test-failure --jq .[0].number)
+        if [ -z $failure_issue ]; \
+        then gh issue create \
+        --title "Failure: 'Test All Samples' workflow" \
+        --label "test-failure" \
+        --body "[Test All Samples workflow](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}) failed. Please take a look to ensure samples are working. (cc @paketo-buildpacks/content-maintainers)" \
+        -R ${{github.repository}}; \
+        else gh issue comment $failure_issue --body "Another failure occurred: https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}"; \
+        fi
+        echo $failure_issue
