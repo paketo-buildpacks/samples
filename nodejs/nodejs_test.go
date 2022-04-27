@@ -15,7 +15,6 @@ import (
 	"github.com/sclevine/spec/report"
 
 	. "github.com/onsi/gomega"
-	"github.com/onsi/gomega/format"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
