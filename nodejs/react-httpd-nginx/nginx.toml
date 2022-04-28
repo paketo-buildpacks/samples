@@ -1,0 +1,26 @@
+[build]
+exclude = [
+    "/README.md",
+]
+
+  [[build.buildpacks]]
+  uri = "paketo-buildpacks/nodejs"
+
+  [[build.buildpacks]]
+  uri = "paketo-buildpacks/nginx"
+
+  [[ build.env ]]
+    name="BP_NODE_RUN_SCRIPTS"
+    value="build"
+
+  [[ build.env ]]
+    name="BP_WEB_SERVER"
+    value="nginx"
+
+  [[ build.env ]]
+    name="BP_WEB_SERVER_ROOT"
+    value="build"
+
+  [[ build.env ]]
+    name="BP_WEB_SERVER_ENABLE_PUSH_STATE"
+    value="true"

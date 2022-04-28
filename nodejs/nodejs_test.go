@@ -33,6 +33,8 @@ func TestNodejs(t *testing.T) {
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
 
+	format.MaxLength = 0
+
 	suite := spec.New("Nodejs", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
 		suite(fmt.Sprintf("Nodejs with %s builder", builder), testNodejsWithBuilder(builder))
@@ -247,6 +249,46 @@ func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
 				})
 			})
+
+			context("app uses react and nginx", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../nodejs", "react-httpd-nginx"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("if-not-present").
+						WithBuilder(builder).
+						WithBuildpacks(
+							"gcr.io/paketo-buildpacks/nodejs",
+							"gcr.io/paketo-buildpacks/nginx",
+						).
+						WithEnv(map[string]string{
+							"BP_NODE_RUN_SCRIPTS":             "build",
+							"BP_WEB_SERVER":                   "nginx",
+							"BP_WEB_SERVER_ROOT":              "build",
+							"BP_WEB_SERVER_ENABLE_PUSH_STATE": "true",
+						}).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Install Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Run Script Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Start Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Nginx Server Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("<title>Paketo Buildpacks</title>")).OnPort(8080))
+				})
+			})
+
 		})
 	}
 }
