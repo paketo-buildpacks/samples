@@ -51,10 +51,14 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [Dep](/go/dep)
 
 ### PHP
-* [Built-in Webserver](/php/webserver)
+* [Built-in Webserver](/php/builtin-server)
 * [NGINX](/php/nginx)
 * [Apache HTTPD](/php/httpd)
 * [Composer](/php/composer)
+* [Composer with Extensions](/php/composer_with_extensions)
+* [Extensions via custon .ini](/php/app_with_extensions)
+* [Memcached Session Handler](/php/memcached_session_handler)
+* [Redis Session Handler](/php/redis_session_handler)
 
 ### Ruby
 * [Passenger](/ruby/passenger)

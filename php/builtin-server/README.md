@@ -1,23 +1,23 @@
-# PHP Sample App using NGINX
+# PHP Sample App using PHP Built-in Webserver
 
 The app contains a
 [project.toml](https://buildpacks.io/docs/app-developer-guide/using-project-descriptor/)
 file, which is used here to [pass environment
 variables](https://buildpacks.io/docs/app-developer-guide/using-project-descriptor/#specify-buildpacks-and-envs)
-The `BP_PHP_SERVER` environment variable is set in this file to indicate
-intention of using Nginx as the web server.
+The `BP_PHP_WEB_DIR` environment variable is set in this file to indicate to
+the server where to find files to serve.
 
 The alternative to using a `project.toml` file in an application to specify
 environment variables is to set the environment variable in the build command.
-With the Pack CLI, this would involve setting `--env BP_PHP_SERVER=nginx`.
+With the Pack CLI, this would involve setting `--env BP_PHP_WEB_DIR=htdocs`.
 
 ## Building
 
-`pack build php-nginx-sample --buildpack paketo-buildpacks/php`
+`pack build php-builtin-server-sample --buildpack paketo-buildpacks/php`
 
 ## Running
 
-`docker run --interactive --tty --env PORT=8080 --publish 8080:8080 php-nginx-sample`
+`docker run --interactive --tty --env PORT=8080 --publish 8080:8080 php-builtin-server-sample`
 
 ## Viewing
 
