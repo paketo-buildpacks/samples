@@ -1,0 +1,3 @@
+[[build.env]]
+name='BP_PHP_WEB_DIR'
+value='htdocs'

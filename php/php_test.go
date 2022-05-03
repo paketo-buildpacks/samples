@@ -1,13 +1,18 @@
 package php_test
 
 import (
+	gocontext "context"
 	"flag"
 	"fmt"
+	"net/http"
+	"net/http/cookiejar"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
 
+	"github.com/docker/docker/api/types"
+	"github.com/docker/docker/client"
 	"github.com/paketo-buildpacks/occam"
 	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
@@ -85,20 +90,62 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithEnv(map[string]string{
+							"BP_PHP_WEB_DIR": "htdocs",
+						}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Composer Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Composer Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Composer Install Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
 
 					container, err = docker.Container.Run.
-						WithEnv(map[string]string{"PORT": "8080"}).
+						WithEnv(map[string]string{
+							"PORT": "8080",
+						}).
 						WithPublish("8080").
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
 					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+				})
+
+				context("app contains extensions via a composer.json", func() {
+					it("builds successfully", func() {
+						var err error
+						source, err = occam.Source(filepath.Join("../php", "composer_with_extensions"))
+						Expect(err).NotTo(HaveOccurred())
+
+						var logs fmt.Stringer
+						image, logs, err = pack.Build.
+							WithPullPolicy("never").
+							WithBuilder(builder).
+							Execute(name, source)
+						Expect(err).ToNot(HaveOccurred(), logs.String)
+
+						Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+						Expect(logs).To(ContainLines(ContainSubstring("Composer Buildpack")))
+						Expect(logs).To(ContainLines(ContainSubstring("Composer Install Buildpack")))
+						Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+
+						container, err = docker.Container.Run.
+							WithEnv(map[string]string{"PORT": "8080"}).
+							WithPublish("8080").
+							Execute(image.ID)
+						Expect(err).NotTo(HaveOccurred())
+
+						Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+
+						extensionsMatcher := And(
+							ContainSubstring("fileinfo"),
+							ContainSubstring("gd"),
+							ContainSubstring("mysqli"),
+							ContainSubstring("zip"),
+						)
+						Eventually(container).Should(Serve(extensionsMatcher).OnPort(8080))
+					})
 				})
 			})
 
@@ -115,9 +162,11 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache HTTP Server Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Apache HTTP Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP FPM Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP HTTPD Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Start Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -142,9 +191,11 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Nginx Server Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Nginx Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP FPM Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Nginx Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Start Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -156,10 +207,10 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 
-			context("app uses php webserver", func() {
+			context("app uses PHP built-in web server", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../php", "webserver"))
+					source, err = occam.Source(filepath.Join("../php", "builtin-server"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -169,8 +220,8 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo PHP Web Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -182,6 +233,184 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 
+			context("app contains extensions via a custom .ini snippet", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../php", "app_with_extensions"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithBuilder(builder).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+
+					extensionsMatcher := And(
+						ContainSubstring("bz2"),
+						ContainSubstring("curl"),
+					)
+					Eventually(container).Should(Serve(extensionsMatcher).OnPort(8080))
+				})
+			})
+
+			context("app configures a redis session handler", func() {
+				var (
+					source         string
+					redisContainer occam.Container
+					binding        string
+					err            error
+				)
+
+				it.Before(func() {
+					source, err = occam.Source(filepath.Join("../php", "redis_session_handler"))
+					Expect(err).NotTo(HaveOccurred())
+					binding = filepath.Join(source, "binding")
+
+					redisContainer, err = docker.Container.Run.
+						WithPublish("6379").
+						Execute("redis:latest")
+					Expect(err).NotTo(HaveOccurred())
+
+					ipAddress, err := redisContainer.IPAddressForNetwork("bridge")
+					Expect(err).NotTo(HaveOccurred())
+
+					Expect(os.WriteFile(filepath.Join(source, "binding", "host"), []byte(ipAddress), os.ModePerm)).To(Succeed())
+				})
+
+				it.After(func() {
+					Expect(docker.Container.Remove.Execute(redisContainer.ID)).To(Succeed())
+					// Clean up redis image
+					dockerClient, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+					Expect(err).NotTo(HaveOccurred())
+
+					_, err = dockerClient.ImageRemove(gocontext.Background(), "redis:latest", types.ImageRemoveOptions{Force: true})
+					Expect(err).NotTo(HaveOccurred())
+				})
+
+				it("builds successfully", func() {
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithEnv(map[string]string{
+							"BP_PHP_WEB_DIR":       "htdocs",
+							"SERVICE_BINDING_ROOT": "/bindings",
+						}).
+						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s:/bindings/php-redis-session", binding)).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						WithPublishAll().
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					jar, err := cookiejar.New(nil)
+					Expect(err).NotTo(HaveOccurred())
+
+					client := &http.Client{
+						Jar: jar,
+					}
+
+					Eventually(container).Should(Serve(ContainSubstring("<h1> Page hit count:1</h1>")).WithClient(client).OnPort(8080))
+					Eventually(container).Should(Serve(ContainSubstring("<h1> Page hit count:2</h1>")).WithClient(client).OnPort(8080))
+
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Redis Session Handler Buildpack")))
+				})
+			})
+
+			context("app configures a memcached session handler", func() {
+				var (
+					source             string
+					memcachedContainer occam.Container
+					binding            string
+					err                error
+				)
+
+				it.Before(func() {
+					source, err = occam.Source(filepath.Join("../php", "memcached_session_handler"))
+					Expect(err).NotTo(HaveOccurred())
+					binding = filepath.Join(source, "binding")
+
+					memcachedContainer, err = docker.Container.Run.
+						WithPublish("11211").
+						Execute("memcached")
+					Expect(err).NotTo(HaveOccurred())
+
+					ipAddress, err := memcachedContainer.IPAddressForNetwork("bridge")
+					Expect(err).NotTo(HaveOccurred())
+
+					Expect(os.WriteFile(filepath.Join(binding, "host"), []byte(ipAddress), os.ModePerm)).To(Succeed())
+					Expect(os.WriteFile(filepath.Join(binding, "servers"), []byte(ipAddress), os.ModePerm)).To(Succeed())
+				})
+
+				it.After(func() {
+					Expect(docker.Container.Remove.Execute(memcachedContainer.ID)).To(Succeed())
+					// Clean up memcached image
+					dockerClient, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+					Expect(err).NotTo(HaveOccurred())
+
+					_, err = dockerClient.ImageRemove(gocontext.Background(), "memcached:latest", types.ImageRemoveOptions{Force: true})
+					Expect(err).NotTo(HaveOccurred())
+				})
+
+				it("builds successfully", func() {
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithEnv(map[string]string{
+							"BP_PHP_WEB_DIR":       "htdocs",
+							"SERVICE_BINDING_ROOT": "/bindings",
+						}).
+						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s:/bindings/php-memcached-session", binding)).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						WithPublishAll().
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					jar, err := cookiejar.New(nil)
+					Expect(err).NotTo(HaveOccurred())
+
+					client := &http.Client{
+						Jar: jar,
+					}
+
+					Eventually(container).Should(Serve(ContainSubstring("<h1> Page hit count:1</h1>")).WithClient(client).OnPort(8080))
+					Eventually(container).Should(Serve(ContainSubstring("<h1> Page hit count:2</h1>")).WithClient(client).OnPort(8080))
+
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("PHP Memcached Session Handler Buildpack")))
+				})
+			})
 		})
 	}
 }

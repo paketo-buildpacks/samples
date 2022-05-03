@@ -1,0 +1,17 @@
+{
+    "name": "paketo/composer_app",
+    "require": {
+        "vlucas/phpdotenv": "5.3.0",
+        "php": "8.*",
+        "ext-zip": "*",
+        "ext-gd": "*",
+        "ext-fileinfo": "*",
+        "ext-mysqli": "*",
+        "ext-mbstring": "*"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php -r 'foreach (get_loaded_extensions() as $ext) { print(\"PostInstall [$ext]\\n\"); }'"
+        ]
+    }
+}
