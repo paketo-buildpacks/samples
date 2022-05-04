@@ -41,6 +41,41 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
+    - name: Cache local Gradle repository
+      if: ${{ matrix.suite == 'java' }}
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('java/**/*.gradle*', 'java/**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    - name: Cache local Maven repository
+      if: ${{ matrix.suite == 'java' }}
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.m2/repository
+          ~/.m2/wrapper
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', 'java/**/maven-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Setup Directories
+      if: ${{ matrix.suite == 'java' }}
+      run: |
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        mkdir -p ~/.m2/repository
+        mkdir -p ~/.m2/repository/wrapper/dists
+        mkdir -p ~/.gradle/caches
+        mkdir -p ~/.gradle/wrapper/dists
+        chmod -R 775 ~/.m2
+        chmod -R 775 ~/.gradle
+
     - name: Test ${{ matrix.suite }}
       run: |
         ./scripts/smoke.sh --builder paketobuildpacks/builder:full --suite ${{ matrix.suite }}
