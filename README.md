@@ -77,6 +77,12 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 ### Procfile
 * [Static Webserver](/procfile)
 
+### Web Servers
+* [HTTPD](/web-servers/httpd-sample)
+* [NGINX](/web-servers/nginx-sample)
+* [Zero Configuration](/web-servers/no-config-file-sample)
+* [JavaScript Frontend](/web-servers/javascript-frontend-sample)
+
 ## Testing Samples
 To run integration tests that `pack build` each of the sample apps, use
 `scripts/smoke.sh`. See `scripts/smoke.sh -h` for usage information.

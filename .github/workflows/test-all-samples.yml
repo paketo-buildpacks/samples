@@ -23,7 +23,6 @@ jobs:
         - 'dotnet-core'
         - 'git'
         - 'go'
-        - 'httpd'
         - 'java'
         - 'nginx'
         - 'nodejs'
@@ -31,6 +30,7 @@ jobs:
         - 'procfile'
         - 'python'
         - 'ruby'
+        - 'web-servers'
 
     steps:
     - name: Setup Go
