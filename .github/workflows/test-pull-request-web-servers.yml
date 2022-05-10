@@ -1,11 +1,11 @@
-name: Test Pull Request (HTTPD)
+name: Test Pull Request (web-servers)
 
 on:
   pull_request:
     branches:
     - main
     paths:
-    - 'httpd/**'
+    - 'web-servers/**'
 
 jobs:
   smoke:
@@ -20,7 +20,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    - name: Test HTTPD Samples
+    - name: Test Web Servers Samples
       run: |
-        ./scripts/smoke.sh --suite httpd \
-                           --builder paketobuildpacks/builder:full \
+        ./scripts/smoke.sh --suite web-servers \
+                           --builder paketobuildpacks/builder:full
