@@ -612,8 +612,7 @@ func testJavaScriptFrontendWithBuilder(builder string) func(*testing.T, spec.G, 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Install Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Run Script Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Start Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo HTTPD Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache HTTP Server Buildpack")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -647,7 +646,6 @@ func testJavaScriptFrontendWithBuilder(builder string) func(*testing.T, spec.G, 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Install Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Run Script Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo NPM Start Buildpack")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Nginx Server Buildpack")))
 
 					container, err = docker.Container.Run.
