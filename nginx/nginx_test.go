@@ -227,7 +227,7 @@ func testNGINXWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 						_, err = http.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
 						// Assert that the server attempts to hit HTTPS URL instead of HTTP
-						Expect(err).To(MatchError(`Get "https://localhost/": dial tcp [::1]:443: connect: connection refused`))
+						Expect(err).To(MatchError(`Get "https://localhost/": dial tcp 127.0.0.1:443: connect: connection refused`))
 					})
 				})
 
