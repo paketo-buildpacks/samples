@@ -1,5 +1,5 @@
 # Zero Configuration Static File App
-This directory hass all of the components to for a sample of a zero
+This directory has all of the components for a sample of a zero
 configuration static file app that is configurable with either HTTPD or NGINX
 web servers.
 
