@@ -73,6 +73,8 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 * [Pip](/python/pip)
 * [Pipenv](/python/pipenv)
 * [Miniconda](/python/conda)
+* [Poetry (dependency management only)](/python/poetry)
+* [Poetry (dependency management and run commands)](/python/poetry-run)
 
 ### Procfile
 * [Static Webserver](/procfile)
