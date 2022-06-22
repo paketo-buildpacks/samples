@@ -11,6 +11,7 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+	"time"
 
 	"github.com/paketo-buildpacks/occam"
 	"github.com/paketo-buildpacks/samples/tests"
@@ -50,6 +51,7 @@ func testCACertificatesRun(builder string) func(*testing.T, spec.G, spec.S) {
 			pack   occam.Pack
 			docker occam.Docker
 		)
+		SetDefaultEventuallyTimeout(60 * time.Second)
 
 		it.Before(func() {
 			pack = occam.NewPack().WithVerbose().WithNoColor()
