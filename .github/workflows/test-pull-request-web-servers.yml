@@ -23,4 +23,5 @@ jobs:
     - name: Test Web Servers Samples
       run: |
         ./scripts/smoke.sh --suite web-servers \
-                           --builder paketobuildpacks/builder:full
+                           --builder paketobuildpacks/builder:full \
+                           --builder paketobuildpacks/builder:base
