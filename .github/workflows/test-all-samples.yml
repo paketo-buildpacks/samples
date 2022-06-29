@@ -24,7 +24,6 @@ jobs:
         - 'git'
         - 'go'
         - 'java'
-        - 'nginx'
         - 'nodejs'
         - 'php'
         - 'procfile'
