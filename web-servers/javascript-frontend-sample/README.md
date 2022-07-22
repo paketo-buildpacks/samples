@@ -3,8 +3,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Deploy and View
-Build this app into an OCI image using the Paketo Node.js and a web server
-buildpack (either HTTPD or NGINX).  There are two [project
+Build this app into an OCI image using the Paketo Web Servers buildpack.  There
+are two [project
 descriptor](https://buildpacks.io/docs/app-developer-guide/using-project-descriptor/)
 files in this directory, `httpd.toml` and `nginx.toml`. Each contain the
 configuration necessary to build the React source code into static assets and
