@@ -4,10 +4,7 @@ exclude = [
 ]
 
   [[build.buildpacks]]
-  uri = "paketo-buildpacks/nodejs"
-
-  [[build.buildpacks]]
-  uri = "paketo-buildpacks/nginx"
+  uri = "paketo-buildpacks/web-servers"
 
   [[ build.env ]]
     name="BP_NODE_RUN_SCRIPTS"
