@@ -13,16 +13,16 @@ jobs:
     name: Smoke Tests
     runs-on: ubuntu-latest
     strategy:
-    fail-fast: false
-    max-parallel: 3
-    matrix:
-      builder:
-      - 'paketobuildpacks/builder:full'
-      - 'paketobuildpacks/builder:base'
-      - 'paketobuildpacks/builder:tiny'
-      - 'paketobuildpacks/builder-jammy-full:latest'
-      - 'paketobuildpacks/builder-jammy-base:latest'
-      - 'paketobuildpacks/builder-jammy-tiny:latest'
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        builder:
+        - 'paketobuildpacks/builder:full'
+        - 'paketobuildpacks/builder:base'
+        - 'paketobuildpacks/builder:tiny'
+        - 'paketobuildpacks/builder-jammy-full:latest'
+        - 'paketobuildpacks/builder-jammy-base:latest'
+        - 'paketobuildpacks/builder-jammy-tiny:latest'
     steps:
     - name: Setup Go
       uses: actions/setup-go@v3
