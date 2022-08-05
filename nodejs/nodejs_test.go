@@ -18,8 +18,10 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-var builders tests.BuilderFlags
-var suite spec.Suite
+var (
+	builders tests.BuilderFlags
+	suite    spec.Suite
+)
 
 func init() {
 	flag.Var(&builders, "name", "the name a builder to test with")
