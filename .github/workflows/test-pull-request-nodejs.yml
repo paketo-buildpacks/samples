@@ -6,11 +6,21 @@ on:
     - main
     paths:
     - 'nodejs/**'
+    - '.github/workflows/test-pull-request-nodejs.yml'
 
 jobs:
   smoke:
     name: Smoke Tests
     runs-on: ubuntu-latest
+    strategy:
+    fail-fast: false
+    max-parallel: 3
+    matrix:
+      builder:
+      - 'paketobuildpacks/builder:full'
+      - 'paketobuildpacks/builder:base'
+      - 'paketobuildpacks/builder-jammy-full:latest'
+      - 'paketobuildpacks/builder-jammy-base:latest'
     steps:
     - name: Setup Go
       uses: actions/setup-go@v3
@@ -23,5 +33,4 @@ jobs:
     - name: Test Nodejs Samples
       run: |
         ./scripts/smoke.sh --suite nodejs \
-                           --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base
+                           --builder ${{ matrix.builder }}
