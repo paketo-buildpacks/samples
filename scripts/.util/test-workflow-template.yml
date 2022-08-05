@@ -35,4 +35,4 @@ jobs:
     - name: Test ${language} Samples
       run: |
         ./scripts/smoke.sh --suite ${language} \
-                           --builder {{ matrix.builder }}
+                           --builder ${{ matrix.builder }}
