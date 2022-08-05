@@ -8,6 +8,11 @@ on:
     - '${language}/**'
     - '.github/workflows/test-pull-request-${language}.yml'
 
+concurrency:
+  # only one instance of test suite per PR at one time
+  group: pr-${{ github.event.number }}
+  cancel-in-progress: true
+
 jobs:
   smoke:
     name: Smoke Tests
