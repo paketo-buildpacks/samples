@@ -6,6 +6,7 @@ on:
     - main
     paths:
     - 'dotnet-core/**'
+    - '.github/workflows/test-pull-request-dotnet-core.yml'
 
 jobs:
   smoke:
