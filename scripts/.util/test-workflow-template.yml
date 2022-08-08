@@ -6,11 +6,28 @@ on:
     - main
     paths:
     - '${language}/**'
+    - '.github/workflows/test-pull-request-${language}.yml'
+
+concurrency:
+  # only one instance of test suite per PR at one time
+  group: pr-${{ github.event.number }}
+  cancel-in-progress: true
 
 jobs:
   smoke:
     name: Smoke Tests
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        builder:
+        - 'paketobuildpacks/builder:full'
+        - 'paketobuildpacks/builder:base'
+        - 'paketobuildpacks/builder:tiny'
+        - 'paketobuildpacks/builder-jammy-full:latest'
+        - 'paketobuildpacks/builder-jammy-base:latest'
+        - 'paketobuildpacks/builder-jammy-tiny:latest'
     steps:
     - name: Setup Go
       uses: actions/setup-go@v3
@@ -23,6 +40,4 @@ jobs:
     - name: Test ${language} Samples
       run: |
         ./scripts/smoke.sh --suite ${language} \
-                           --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base \
-                           --builder paketobuildpacks/builder:tiny
+                           --builder ${{ matrix.builder }}
