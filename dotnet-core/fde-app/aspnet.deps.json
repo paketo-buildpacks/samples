@@ -1,0 +1,24 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0/ubuntu.18.04-x64",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {},
+    ".NETCoreApp,Version=v6.0/ubuntu.18.04-x64": {
+      "aspnet/1.0.0": {
+        "runtime": {
+          "aspnet.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "aspnet/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
