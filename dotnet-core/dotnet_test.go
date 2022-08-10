@@ -158,7 +158,7 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Eventually(container).Should(Serve(ContainSubstring("<title>react_app</title>")))
+					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")))
 				})
 			})
 
@@ -184,7 +184,7 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Eventually(container).Should(Serve(ContainSubstring("<title>react_app</title>")))
+					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")))
 				})
 			})
 
@@ -210,7 +210,7 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Eventually(container).Should(Serve(ContainSubstring("<title>react_app</title>")))
+					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")))
 				})
 			})
 		})

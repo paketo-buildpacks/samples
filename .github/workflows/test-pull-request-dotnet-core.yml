@@ -6,11 +6,26 @@ on:
     - main
     paths:
     - 'dotnet-core/**'
+    - '.github/workflows/test-pull-request-dotnet-core.yml'
+
+concurrency:
+  # only one instance of test suite per PR at one time
+  group: pr-${{ github.event.number }}
+  cancel-in-progress: true
 
 jobs:
   smoke:
     name: Smoke Tests
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        builder:
+        - 'paketobuildpacks/builder:full'
+        - 'paketobuildpacks/builder:base'
+        - 'paketobuildpacks/builder-jammy-base:latest'
+        - 'paketobuildpacks/builder-jammy-full:latest'
     steps:
     - name: Setup Go
       uses: actions/setup-go@v3
@@ -23,5 +38,4 @@ jobs:
     - name: Test .NET Samples
       run: |
         ./scripts/smoke.sh --suite dotnet-core \
-                           --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base
+                           --builder ${{ matrix.builder }}
