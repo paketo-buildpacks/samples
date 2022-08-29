@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.1</version>
+		<version>2.7.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.paketo</groupId>
@@ -16,7 +16,7 @@
 	<properties>
 		<java.version>11</java.version>
 		<repackage.classifier />
-		<spring-native.version>0.12.0-SNAPSHOT</spring-native.version>
+		<spring-native.version>0.12.1</spring-native.version>
 	</properties>
 
 	<dependencies>
@@ -86,19 +86,22 @@
 
 	<repositories>
 		<repository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
-			<releases>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
 				<enabled>false</enabled>
-			</releases>
+			</snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
-			<id>spring-snapshots</id>
-			<name>Spring Snapshots</name>
-			<url>https://repo.spring.io/snapshot</url>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>https://repo.spring.io/release</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -107,7 +110,7 @@
 			<id>native</id>
 			<properties>
 				<repackage.classifier>exec</repackage.classifier>
-				<native-buildtools.version>0.9.11</native-buildtools.version>
+				<native-buildtools.version>0.9.13</native-buildtools.version>
 			</properties>
 			<dependencies>
 				<dependency>
