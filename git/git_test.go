@@ -105,7 +105,7 @@ func testGitWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred(), logs.String())
 
 					Expect(logs).To(ContainLines(
-						"Paketo Git Clone Buildpack",
+						"Paketo Buildpack for Git Clone",
 						"",
 						"protocol=https",
 						"host=example.com",
