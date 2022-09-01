@@ -100,9 +100,9 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Eventually(container).Should(BeAvailable())
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Native Image Buildpack")))
 
 					Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
@@ -126,8 +126,8 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Native Image Buildpack")))
 
 					container, err = docker.Container.Run.Execute(image.ID)
@@ -162,8 +162,8 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Native Image Buildpack")))
 
 					container, err = docker.Container.Run.
