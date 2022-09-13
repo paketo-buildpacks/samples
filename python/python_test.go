@@ -88,10 +88,10 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Miniconda Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Conda Env Update Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Python Start Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Procfile Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Miniconda")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Conda Env Update")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Python Start")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Procfile")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -116,11 +116,11 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CPython Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Pip Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Pip Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Python Start Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Procfile Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Pip")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Pip Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Python Start")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Procfile")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -145,12 +145,12 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CPython Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Pip Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Pipenv Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Pipenv Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Python Start Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Procfile Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Pip")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Pipenv")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Pipenv Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Python Start")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Procfile")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -175,12 +175,12 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CPython Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Pip Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Poetry Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Poetry Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Python Start Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Procfile Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Pip")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Poetry")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Poetry Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Python Start")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Procfile")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -205,11 +205,11 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CPython Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Pip Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Poetry Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Poetry Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Poetry Run Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Pip")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Poetry")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Poetry Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Poetry Run")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -234,9 +234,9 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CPython Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Python Start Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Procfile Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Python Start")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Procfile")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
