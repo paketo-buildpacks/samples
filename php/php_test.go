@@ -96,10 +96,10 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Composer Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Composer Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Composer")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Composer Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Built-in Server")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{
@@ -125,10 +125,10 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							Execute(name, source)
 						Expect(err).ToNot(HaveOccurred(), logs.String)
 
-						Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-						Expect(logs).To(ContainLines(ContainSubstring("Composer Buildpack")))
-						Expect(logs).To(ContainLines(ContainSubstring("Composer Install Buildpack")))
-						Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+						Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+						Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Composer")))
+						Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Composer Install")))
+						Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Built-in Server")))
 
 						container, err = docker.Container.Run.
 							WithEnv(map[string]string{"PORT": "8080"}).
@@ -162,11 +162,11 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Apache HTTP Server Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP FPM Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP HTTPD Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Start Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Apache HTTP Server")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP FPM")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP HTTPD")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Start")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -191,11 +191,11 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Nginx Server Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP FPM Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Nginx Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Start Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Nginx Server")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP FPM")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Nginx")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Start")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -220,8 +220,8 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Built-in Server")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -246,8 +246,8 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Built-in Server")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -312,8 +312,8 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Built-in Server")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -332,9 +332,9 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Eventually(container).Should(Serve(ContainSubstring("<h1> Page hit count:1</h1>")).WithClient(client).OnPort(8080))
 					Eventually(container).Should(Serve(ContainSubstring("<h1> Page hit count:2</h1>")).WithClient(client).OnPort(8080))
 
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Redis Session Handler Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Built-in Server")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Redis Session Handler")))
 				})
 			})
 
@@ -386,8 +386,8 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Built-in Server")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -406,9 +406,9 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Eventually(container).Should(Serve(ContainSubstring("<h1> Page hit count:1</h1>")).WithClient(client).OnPort(8080))
 					Eventually(container).Should(Serve(ContainSubstring("<h1> Page hit count:2</h1>")).WithClient(client).OnPort(8080))
 
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Built-in Server Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("PHP Memcached Session Handler Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Built-in Server")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for PHP Memcached Session Handler")))
 				})
 			})
 		})
