@@ -1,5 +1,0 @@
-# project.toml
-[ build ]
-  [[ build.env ]]
-    name="BP_GO_BUILD_IMPORT_PATH"
-    value="github.com/paketo-buildpacks/samples/go/dep"
