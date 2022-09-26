@@ -48,7 +48,6 @@ A collection of sample applications that can be built using Paketo Buildpacks.
 ### Go
 * [No Imports](/go/no-imports)
 * [Mod](/go/mod)
-* [Dep](/go/dep)
 
 ### PHP
 * [Built-in Webserver](/php/builtin-server)
