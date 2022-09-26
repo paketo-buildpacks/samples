@@ -88,12 +88,10 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Go Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Go Build")))
 
-					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Go Mod Vendor Buildpack")))
-					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Dep Buildpack")))
-					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Dep Ensure Buildpack")))
+					Expect(logs).NotTo(ContainLines(ContainSubstring("Paketo Buildpack for Go Mod Vendor")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -118,37 +116,9 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Mod Vendor Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
-
-					container, err = docker.Container.Run.
-						WithEnv(map[string]string{"PORT": "8080"}).
-						WithPublish("8080").
-						Execute(image.ID)
-					Expect(err).NotTo(HaveOccurred())
-
-					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
-				})
-			})
-
-			context("uses dep", func() {
-				it("builds successfully", func() {
-					var err error
-					source, err = occam.Source(filepath.Join("../go", "dep"))
-					Expect(err).NotTo(HaveOccurred())
-
-					var logs fmt.Stringer
-					image, logs, err = pack.Build.
-						WithPullPolicy("never").
-						WithBuilder(builder).
-						Execute(name, source)
-					Expect(err).ToNot(HaveOccurred(), logs.String)
-
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Distribution Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Dep Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Dep Ensure Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Go Build Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Go Distribution")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Go Mod Vendor")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Go Build")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).

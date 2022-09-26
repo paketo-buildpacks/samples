@@ -108,10 +108,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo SBT Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo DistZip Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for SBT")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo DistZip")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -137,11 +137,11 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -167,11 +167,11 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -204,10 +204,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Gradle Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo DistZip Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo DistZip")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -236,10 +236,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Gradle Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -263,10 +263,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -295,11 +295,11 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Gradle Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -328,10 +328,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Leiningen Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Leiningen")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -361,11 +361,11 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Spring Boot Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -391,10 +391,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Maven Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache Tomcat Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Apache Tomcat")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -423,10 +423,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Clojure Tools Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Clojure Tools")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -460,10 +460,10 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo CA Certificates Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo BellSoft Liberica Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Clojure Tools Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Clojure Tools")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Executable JAR")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
