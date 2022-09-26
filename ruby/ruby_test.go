@@ -157,7 +157,10 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080), func() string {
+						logs, _ := docker.Container.Logs.Execute(container.ID)
+						return logs.String()
+					})
 				})
 			})
 
