@@ -111,7 +111,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for SBT")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo DistZip")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for DistZip")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
@@ -207,7 +207,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo DistZip")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for DistZip")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
