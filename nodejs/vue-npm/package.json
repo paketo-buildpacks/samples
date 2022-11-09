@@ -5,7 +5,7 @@
   },
   "description": "Sample Node.js Vue Application using Npm",
   "devDependencies": {
-    "@vue/cli-service": "~4.5.0",
+    "@vue/cli-service": "~5.0.8",
     "vue-template-compiler": "^2.6.11"
   },
   "license": "Apache-2.0",
