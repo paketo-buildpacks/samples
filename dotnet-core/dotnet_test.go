@@ -94,10 +94,10 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Core Runtime")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Core SDK")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ICU")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Publish")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ASP.NET Core Runtime")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Execute")))
 
 					Eventually(container).Should(BeAvailable())
@@ -119,11 +119,10 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Core Runtime")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ASP.NET Core")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Core SDK")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ICU")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Publish")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ASP.NET Core Runtime")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Execute")))
 
 					container, err = docker.Container.Run.
