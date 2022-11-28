@@ -238,13 +238,25 @@ func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						},
 					}
 
-					response, err := client.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
-					Expect(err).NotTo(HaveOccurred())
-					Expect(response.StatusCode).To(Equal(http.StatusMovedPermanently))
+					Eventually(func() (int, error) {
+						response, err := client.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
+						if err != nil {
+							return -1, err
+						}
+						return response.StatusCode, nil
+					}).Should(Equal(http.StatusMovedPermanently))
 
-					contents, err := io.ReadAll(response.Body)
-					Expect(err).NotTo(HaveOccurred())
-					Expect(string(contents)).To(ContainSubstring(fmt.Sprintf("https://localhost:%s", container.HostPort("8080"))))
+					Eventually(func() (string, error) {
+						response, err := client.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
+						if err != nil {
+							return "", err
+						}
+						contents, err := io.ReadAll(response.Body)
+						if err != nil {
+							return "", err
+						}
+						return string(contents), nil
+					}).Should(ContainSubstring(fmt.Sprintf("https://localhost:%s", container.HostPort("8080"))))
 				})
 			})
 
@@ -284,21 +296,29 @@ func testHTTPDWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					response, err := http.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
-					Expect(err).NotTo(HaveOccurred())
-					Expect(response.StatusCode).To(Equal(http.StatusUnauthorized))
+					Eventually(func() (int, error) {
+						response, err := http.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
+						if err != nil {
+							return -1, err
+						}
+						return response.StatusCode, nil
+					}).Should(Equal(http.StatusUnauthorized))
 
 					req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://localhost:%s", container.HostPort("8080")), http.NoBody)
 					Expect(err).NotTo(HaveOccurred())
-
 					req.SetBasicAuth("user", "password")
 
-					response, err = http.DefaultClient.Do(req)
-					Expect(err).NotTo(HaveOccurred())
-
-					contents, err := io.ReadAll(response.Body)
-					Expect(err).NotTo(HaveOccurred())
-					Expect(string(contents)).To(ContainSubstring("Powered By Paketo Buildpacks"))
+					Eventually(func() (string, error) {
+						response, err := http.DefaultClient.Do(req)
+						if err != nil {
+							return "", err
+						}
+						contents, err := io.ReadAll(response.Body)
+						if err != nil {
+							return "", err
+						}
+						return string(contents), nil
+					}).Should(ContainSubstring("Powered By Paketo Buildpacks"))
 				})
 			})
 		})
@@ -484,14 +504,22 @@ func testNGINXWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 								return http.ErrUseLastResponse
 							},
 						}
+						Eventually(func() (int, error) {
+							response, err := client.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
+							if err != nil {
+								return -1, err
+							}
+							return response.StatusCode, nil
+						}).Should(Equal(http.StatusMovedPermanently))
 
-						response, err := client.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
-						Expect(err).NotTo(HaveOccurred())
-						Expect(response.StatusCode).To(Equal(http.StatusMovedPermanently))
-
-						_, err = http.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
-						// Assert that the server attempts to hit HTTPS URL instead of HTTP
-						Expect(err).To(MatchError(MatchRegexp(`Get "https:\/\/localhost\/": dial tcp (127\.0\.0\.1|\[::1\]):443: connect: connection refused`)))
+						Eventually(func() error {
+							_, err := http.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
+							return err
+						}).Should(
+							// Assert that the server attempts to hit HTTPS URL instead of HTTP
+							MatchError(MatchRegexp(
+								`Get "https:\/\/localhost\/": dial tcp (127\.0\.0\.1|\[::1\]):443: connect: connection refused`,
+							)))
 					})
 				})
 
@@ -531,21 +559,29 @@ func testNGINXWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							Execute(image.ID)
 						Expect(err).NotTo(HaveOccurred())
 
-						response, err := http.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
-						Expect(err).NotTo(HaveOccurred())
-						Expect(response.StatusCode).To(Equal(http.StatusUnauthorized))
+						Eventually(func() (int, error) {
+							response, err := http.Get(fmt.Sprintf("http://localhost:%s", container.HostPort("8080")))
+							if err != nil {
+								return -1, err
+							}
+							return response.StatusCode, nil
+						}).Should(Equal(http.StatusUnauthorized))
 
 						req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("http://localhost:%s", container.HostPort("8080")), http.NoBody)
 						Expect(err).NotTo(HaveOccurred())
-
 						req.SetBasicAuth("user", "password")
 
-						response, err = http.DefaultClient.Do(req)
-						Expect(err).NotTo(HaveOccurred())
-
-						contents, err := io.ReadAll(response.Body)
-						Expect(err).NotTo(HaveOccurred())
-						Expect(string(contents)).To(ContainSubstring("Powered By Paketo Buildpacks"))
+						Eventually(func() (string, error) {
+							response, err := http.DefaultClient.Do(req)
+							if err != nil {
+								return "", err
+							}
+							contents, err := io.ReadAll(response.Body)
+							if err != nil {
+								return "", err
+							}
+							return string(contents), nil
+						}).Should(ContainSubstring("Powered By Paketo Buildpacks"))
 					})
 				})
 			})
