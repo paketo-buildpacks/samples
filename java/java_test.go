@@ -376,6 +376,44 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 
+			context("app uses opentelemetry", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../java", "opentelemetry"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithEnv(map[string]string{
+							"BP_OPENTELEMETRY_ENABLED": "true",
+						}).
+						WithBuilder(builder).
+						WithBuildpacks(
+							"paketo-buildpacks/java",
+							"gcr.io/paketo-buildpacks/opentelemetry",
+						).
+						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
+						WithGID("121").
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo OpenTelemetry Buildpack")))
+
+					container, err = docker.Container.Run.
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
+				})
+			})
+
 			context("app uses war", func() {
 				it("builds successfully", func() {
 					var err error
