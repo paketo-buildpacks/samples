@@ -50,7 +50,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 		)
 
 		it.Before(func() {
-			pack = occam.NewPack().WithVerbose().WithNoColor()
+			pack = occam.NewPack().WithNoColor()
 			docker = occam.NewDocker()
 		})
 
@@ -194,8 +194,12 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					f, err := os.Stat(home)
 					Expect(err).NotTo(HaveOccurred())
-					fmt.Println(f.Name())
+					fmt.Println(home)
 					fmt.Println(f.Mode())
+
+					f2, err := os.Stat(filepath.Join(home, ".gradle"))
+					Expect(err).NotTo(HaveOccurred())
+					fmt.Println(f2.Mode())
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
