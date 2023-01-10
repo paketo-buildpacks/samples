@@ -94,11 +94,11 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Core Runtime Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Core SDK Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo ICU Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Publish Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Execute Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Core SDK")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ICU")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Publish")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ASP.NET Core Runtime")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Execute")))
 
 					Eventually(container).Should(BeAvailable())
 
@@ -119,12 +119,11 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Core Runtime Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo ASP.NET Core Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Core SDK Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo ICU Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Publish Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Execute Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Core SDK")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ICU")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Publish")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ASP.NET Core Runtime")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Execute")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -149,8 +148,8 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo ICU Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Execute Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ICU")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Execute")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -175,8 +174,8 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo ICU Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Execute Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ICU")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Execute")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -201,8 +200,8 @@ func testDotnetWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo ICU Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo .NET Execute Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for ICU")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for .NET Execute")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).

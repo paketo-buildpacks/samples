@@ -90,10 +90,10 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo MRI Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundler Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundle Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Passenger Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for MRI")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundler")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundle Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Passenger")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -118,10 +118,10 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo MRI Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundler Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundle Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Puma Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for MRI")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundler")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundle Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Puma")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -146,10 +146,10 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo MRI Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundler Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundle Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Rackup Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for MRI")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundler")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundle Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Rackup")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -157,7 +157,10 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080), func() string {
+						logs, _ := docker.Container.Logs.Execute(container.ID)
+						return logs.String()
+					})
 				})
 			})
 
@@ -174,10 +177,10 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo MRI Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundler Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundle Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Rake Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for MRI")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundler")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundle Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Rake")))
 
 					container, err = docker.Container.Run.Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
@@ -204,10 +207,10 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo MRI Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundler Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundle Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Thin Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for MRI")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundler")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundle Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Thin")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -232,10 +235,10 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo MRI Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundler Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundle Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Unicorn Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for MRI")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundler")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundle Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Unicorn")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{"PORT": "8080"}).
@@ -260,14 +263,14 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo MRI Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundler Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Bundle Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Node Engine Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Yarn Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Yarn Install Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Rails Assets Buildpack")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Puma Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for MRI")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundler")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundle Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Node Engine")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Yarn")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Yarn Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Rails Assets")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Puma")))
 
 					container, err = docker.Container.Run.
 						WithEnv(map[string]string{
