@@ -53,6 +53,8 @@ jobs:
         chmod -R 777 ~/.m2
         chmod -R 777 ~/.gradle
 
+        echo $(id)
+
     - name: Test Java Samples
       run: |
         ./scripts/smoke.sh --suite java \
