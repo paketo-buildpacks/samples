@@ -197,7 +197,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					fmt.Println(home)
 					fmt.Println(f.Mode())
 
-					f2, err := os.Stat(filepath.Join(home, ".gradle"))
+					f2, err := os.Stat(filepath.Join(home, ".gradle", "wrapper", "dists"))
 					Expect(err).NotTo(HaveOccurred())
 					fmt.Println(f2.Mode())
 
