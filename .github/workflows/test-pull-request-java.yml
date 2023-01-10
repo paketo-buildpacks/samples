@@ -50,8 +50,8 @@ jobs:
         mkdir -p ~/.m2/repository/wrapper/dists
         mkdir -p ~/.gradle/caches
         mkdir -p ~/.gradle/wrapper/dists
-        chmod -R 777 ~/.m2
-        chmod -R 777 ~/.gradle
+        chmod -R 775 ~/.m2
+        chmod -R 775 ~/.gradle
 
         echo $(id)
 

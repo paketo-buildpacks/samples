@@ -209,7 +209,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							"BP_GRADLE_BUILT_ARTIFACT":  "build/distributions/*.zip"}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
