@@ -104,7 +104,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithPullPolicy("never").
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -133,7 +133,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithPullPolicy("never").
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -163,7 +163,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithPullPolicy("never").
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -200,7 +200,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							"BP_GRADLE_BUILT_ARTIFACT":  "build/distributions/*.zip"}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -232,7 +232,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -291,7 +291,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -324,7 +324,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -357,7 +357,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithPullPolicy("never").
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -425,7 +425,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithPullPolicy("never").
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -457,7 +457,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -494,7 +494,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
