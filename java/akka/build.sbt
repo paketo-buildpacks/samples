@@ -1,12 +1,12 @@
 lazy val akkaHttpVersion = "10.2.9"
-lazy val akkaVersion    = "2.6.19"
+lazy val akkaVersion    = "2.6.20"
 
 lazy val root = (project in file(".")).
   enablePlugins(JavaAppPackaging).
   settings(
     inThisBuild(List(
       organization    := "com.example",
-      scalaVersion    := "2.13.8"
+      scalaVersion    := "2.13.10"
     )),
     name := "akka-http-quickstart-scala",
     libraryDependencies ++= Seq(
@@ -18,6 +18,6 @@ lazy val root = (project in file(".")).
 
       "com.typesafe.akka" %% "akka-http-testkit"        % akkaHttpVersion % Test,
       "com.typesafe.akka" %% "akka-actor-testkit-typed" % akkaVersion     % Test,
-      "org.scalatest"     %% "scalatest"                % "3.2.12"         % Test
+      "org.scalatest"     %% "scalatest"                % "3.2.15"         % Test
     )
   )
