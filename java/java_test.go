@@ -384,7 +384,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy("if-not-present").
 						WithEnv(map[string]string{
 							"BP_OPENTELEMETRY_ENABLED": "true",
 						}).
@@ -393,8 +393,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							"paketo-buildpacks/java",
 							"gcr.io/paketo-buildpacks/opentelemetry",
 						).
-						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -403,7 +402,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo OpenTelemetry Buildpack")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for OpenTelemetry")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
