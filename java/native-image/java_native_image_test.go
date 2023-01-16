@@ -89,7 +89,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							"BP_JVM_VERSION":  "17"}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -123,7 +123,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true"}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -159,7 +159,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("121").
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
