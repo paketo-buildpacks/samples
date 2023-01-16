@@ -196,6 +196,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
+							"BP_JVM_VERSION":            "17",
 							"BP_GRADLE_BUILD_ARGUMENTS": "--no-daemon -x test bootDistZip",
 							"BP_GRADLE_BUILT_ARTIFACT":  "build/distributions/*.zip"}).
 						WithBuilder(builder).
@@ -228,6 +229,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
+							"BP_JVM_VERSION":           "17",
 							"BP_GRADLE_BUILT_ARTIFACT": "build/libs/*-SNAPSHOT.jar",
 						}).
 						WithBuilder(builder).
@@ -260,6 +262,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithEnv(map[string]string{"BP_JVM_VERSION": "17"}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
@@ -358,6 +361,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
+						WithEnv(map[string]string{"BP_JVM_VERSION": "17"}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
