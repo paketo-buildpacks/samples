@@ -85,8 +85,9 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
-							"BP_NATIVE_IMAGE": "true",
-							"BP_JVM_VERSION":  "17"}).
+							"BP_NATIVE_IMAGE":          "true",
+							"BP_MAVEN_BUILD_ARGUMENTS": "-Dmaven.test.skip=true --no-transfer-progress -Pnative package",
+							"BP_JVM_VERSION":           "17"}).
 						WithBuilder(builder).
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
