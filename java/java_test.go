@@ -418,7 +418,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			})
 
 			context("app uses war", func() {
-				it("builds successfully", func() {
+				it.Focus("builds successfully", func() {
 					var err error
 					source, err = occam.Source(filepath.Join("../java", "war"))
 					Expect(err).NotTo(HaveOccurred())

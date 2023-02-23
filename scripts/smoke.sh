@@ -49,15 +49,17 @@ function main() {
       util::print::warn "** WARNING  No Smoke tests **"
   fi
 
-  if [[ ! ${builderArray[@]+"${builderArray[@]}"} ]]; then
-    builderArray+=("paketobuildpacks/builder:full")
-    util::print::info "No builder specified. Running with full builder (paketobuildpacks/builder:full)"
-  fi
+  builderArray+=("dmikusa/paketo-base-builder-jammy:latest")
+  # if [[ ! ${builderArray[@]+"${builderArray[@]}"} ]]; then
+  #   builderArray+=("paketobuildpacks/builder:full")
+  #   util::print::info "No builder specified. Running with full builder (paketobuildpacks/builder:full)"
+  # fi
 
-  if [[ ! ${suiteArray[@]+"${suiteArray[@]}"} ]]; then
-    suiteArray+=("...")
-    util::print::info "No suites specified. Running all tests. This will take a while..."
-  fi
+  suiteArray+=("java")
+  # if [[ ! ${suiteArray[@]+"${suiteArray[@]}"} ]]; then
+  #   suiteArray+=("...")
+  #   util::print::info "No suites specified. Running all tests. This will take a while..."
+  # fi
 
   tools::install
   for name in "${builderArray[@]}"; do

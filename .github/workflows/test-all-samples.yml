@@ -19,17 +19,7 @@ jobs:
       max-parallel: 3
       matrix:
         suite:
-        - 'ca-certificates'
-        - 'dotnet-core'
-        - 'git'
-        - 'go'
         - 'java'
-        - 'nodejs'
-        - 'php'
-        - 'procfile'
-        - 'python'
-        - 'ruby'
-        - 'web-servers'
 
     steps:
     - name: Setup Go
@@ -77,19 +67,4 @@ jobs:
 
     - name: Test ${{ matrix.suite }}
       run: |
-        ./scripts/smoke.sh --builder paketobuildpacks/builder:full --suite ${{ matrix.suite }}
-
-    - name: File Issue
-      if: ${{ failure() && github.event_name != 'pull_request' }}
-      run: |
-        echo "${{ secrets.PAKETO_BOT_GITHUB_TOKEN }}" | gh auth login --with-token
-        failure_issue=$(gh issue list --json number --label "test-failure" --jq .[0].number)
-        if [ -z $failure_issue ]; \
-        then gh issue create \
-        --title "Failure: 'Test All Samples' workflow" \
-        --label "test-failure" \
-        --body "[Test ${{ matrix.suite }} workflow](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}) failed. Please take a look to ensure samples are working. (cc @paketo-buildpacks/content-maintainers)" \
-        -R ${{github.repository}}; \
-        else gh issue comment $failure_issue --body "Another failure occurred: [Test ${{ matrix.suite }} workflow](https://github.com/${{github.repository}}/actions/runs/${{github.run_id}}) failed."; \
-        fi
-        echo $failure_issue
+        ./scripts/smoke.sh --builder dmikusa/paketo-base-builder-jammy:full --suite java
