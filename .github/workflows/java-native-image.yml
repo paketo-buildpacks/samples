@@ -1,5 +1,6 @@
 name: native-image
 "on":
+  merge_group:
   pull_request:
     paths:
     - java/native-image/java-native-image-sample/**

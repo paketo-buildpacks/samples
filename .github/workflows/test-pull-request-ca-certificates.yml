@@ -1,6 +1,7 @@
 name: Test Pull Request (ca-certificates)
 
 on:
+  merge_group:
   pull_request:
     branches:
     - main

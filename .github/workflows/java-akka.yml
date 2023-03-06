@@ -1,5 +1,6 @@
 name: akka
 "on":
+  merge_group:
   pull_request:
     paths:
     - java/akka/**

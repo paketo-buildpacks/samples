@@ -1,5 +1,6 @@
 name: aspectj
 "on":
+  merge_group:
   pull_request:
     paths:
     - java/aspectj/**

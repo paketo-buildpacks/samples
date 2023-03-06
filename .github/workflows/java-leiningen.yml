@@ -1,5 +1,6 @@
 name: leiningen
 "on":
+  merge_group:
   pull_request:
     paths:
     - java/leiningen/**

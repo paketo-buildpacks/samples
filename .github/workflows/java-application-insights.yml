@@ -1,5 +1,6 @@
 name: application-insights
 "on":
+  merge_group:
   pull_request:
     paths:
     - java/application-insights/**
