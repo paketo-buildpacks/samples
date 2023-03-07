@@ -1,5 +1,6 @@
 name: opentelemetry
 "on":
+  merge_group:
   pull_request:
     paths:
     - java/opentelemetry/**

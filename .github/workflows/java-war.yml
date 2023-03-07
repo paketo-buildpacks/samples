@@ -1,5 +1,6 @@
 name: war
 "on":
+  merge_group:
   pull_request:
     paths:
     - java/war/**

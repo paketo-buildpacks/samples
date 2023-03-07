@@ -1,5 +1,6 @@
 name: kotlin
 "on":
+  merge_group:
   pull_request:
     paths:
     - java/kotlin/**

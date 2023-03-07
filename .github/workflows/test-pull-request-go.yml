@@ -1,6 +1,7 @@
 name: Test Pull Request (Go)
 
 on:
+  merge_group:
   pull_request:
     branches:
     - main
