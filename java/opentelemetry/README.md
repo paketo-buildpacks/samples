@@ -1,12 +1,15 @@
 # Java OpenTelemetry Sample Application
 
+See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sample.
+
 ## Building
 
 ```bash
 pack build applications/opentelemetry \
     --buildpack paketo-buildpacks/java \
     --buildpack gcr.io/paketo-buildpacks/opentelemetry \
-    -e BP_OPENTELEMETRY_ENABLED=true
+    --env BP_OPENTELEMETRY_ENABLED=true \
+    --env BP_JVM_VERSION=11
 ```
 
 ## Running

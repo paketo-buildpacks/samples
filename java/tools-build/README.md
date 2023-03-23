@@ -1,5 +1,7 @@
 # Clojure Tools Build Sample Application
 
+See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sample.
+
 ## Building
 
 ```bash
