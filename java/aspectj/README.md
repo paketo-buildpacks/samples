@@ -1,9 +1,11 @@
 # Java AspectJ Sample Application
 
+See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sample.
+
 ## Building
 
 ```bash
-pack build applications/aspectj
+pack build applications/aspectj --env BP_JVM_VERSION=11
 ```
 
 ## Running
