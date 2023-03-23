@@ -6,7 +6,7 @@
 
 ```bash
 pack build applications/quarkus-native \
-  --builder paketobuildpacks/builder:tiny \
+  --builder paketobuildpacks/builder-jammy-tiny \
   --env BP_NATIVE_IMAGE=true \
   --env BP_MAVEN_BUILD_ARGUMENTS="-Dquarkus.package.type=native-sources -Dmaven.test.skip=true package" \
   --env BP_MAVEN_BUILT_ARTIFACT="target/native-sources" \

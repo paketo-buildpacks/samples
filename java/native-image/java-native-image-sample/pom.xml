@@ -52,7 +52,7 @@
 					<classifier>${repackage.classifier}</classifier>
 					<image>
 						<name>apps/native-image</name>
-						<builder>paketobuildpacks/builder:tiny</builder>
+						<builder>paketobuildpacks/builder-jammy-tiny</builder>
 						<env>
 							<BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
 						</env>
