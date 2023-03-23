@@ -5,7 +5,7 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 ## Building
 
 ```bash
-pack build applications/clojure-deps --env BP_JVM_VERSION=8
+pack build applications/clojure-deps --env BP_JVM_VERSION=11
 ```
 
 ## Running
