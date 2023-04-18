@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>The total cost of a Winter project in Canadian Dollars</title>
+  </head>
+  <body>
+    <script type="module">
+      import $ from "jquery";
+      import { computeWinterEquipmentTotal } from "./javascript/math.js";
+      $.getJSON( "/products", function( data ) {
+        let prices = [];
+        $.each( data, function( key, val ) {
+          prices.push(val.price);
+        });
+        $(document.body).text(computeWinterEquipmentTotal(prices));
+      });
+    </script>
+  </body>
+</html>

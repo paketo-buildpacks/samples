@@ -1,0 +1,81 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.5'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'io.paketo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+jar {
+    enabled = false
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'io.projectreactor:reactor-test'
+}
+
+test {
+	useJUnitPlatform()
+}
+
+
+task installFrontend(type: Exec) {
+    inputs.file(file("frontend/package.json"))
+    inputs.file(file("frontend/package-lock.json"))
+    outputs.dir(file("frontend/node_modules"))
+    environment("NODE_ENV", "development")
+    commandLine("env")
+    commandLine("npm", "--prefix", "./frontend", "install", "./frontend")
+}
+
+task buildFrontend(type: Exec) {
+    dependsOn("installFrontend")
+    inputs.dir(file("frontend"))
+    outputs.dir(file("frontend/dist"))
+    environment("NODE_ENV", "development")
+    commandLine("npm", "--prefix", "./frontend", "run", "build")
+}
+
+task copyFrontend(type: Sync) {
+    dependsOn("buildFrontend")
+    from(file("./frontend/dist"))
+    into(file("$buildDir/resources/main/static"))
+    doLast {
+        println("copied built frontend to static resources")
+    }
+}
+
+task copyFrontendForIntelliJ(type: Sync) {
+    dependsOn("buildFrontend")
+    from(file("./frontend/dist"))
+    into(file("./src/main/resources/static"))
+    doLast {
+        println("copied built frontend to static resources")
+    }
+}
+
+task cleanFrontend(type: Delete) {
+    delete(file("./frontend/dist"))
+    delete(file("./src/main/resources/static"))
+}
+
+bootJar {
+    dependsOn(copyFrontend)
+}
+
+bootRun {
+    dependsOn(copyFrontend)
+}
+
+clean {
+    dependsOn(cleanFrontend)
+}

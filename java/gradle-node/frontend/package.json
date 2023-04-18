@@ -1,0 +1,14 @@
+{
+  "name": "example",
+  "version": "0.0.1",
+  "description": "Example project for testing Java buildpack support for Yarn",
+  "dependencies": {
+    "jquery": "3.6.4"
+  },
+  "scripts": {
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "vite": "^4.2.1"
+  }
+}
