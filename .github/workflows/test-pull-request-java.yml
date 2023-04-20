@@ -8,6 +8,7 @@ on:
     paths:
     - 'java/**'
     - '!java/native-image/**'
+    - '!java/java-node/**'
 
 jobs:
   smoke:
