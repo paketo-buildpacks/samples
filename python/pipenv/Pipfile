@@ -1,5 +1,5 @@
 [packages]
-Flask = "==2.0.2"
+Flask = "==2.2.5"
 gunicorn = "*"
 
 [dev-packages]
