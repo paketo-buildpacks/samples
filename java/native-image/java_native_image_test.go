@@ -112,6 +112,41 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				})
 			})
 
+			context("uses Gradle based Spring Boot app", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join(".", "java-native-image-sample-gradle"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithEnv(map[string]string{
+							"BP_NATIVE_IMAGE": "true"}).
+						WithBuilder(builder).
+						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
+						WithGID("123").
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(BeAvailable())
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Native Image")))
+
+					Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
+				})
+			})
+
 			context("app uses simple JAR", func() {
 				it("builds successfully", func() {
 					var err error
