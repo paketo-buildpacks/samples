@@ -1,0 +1,34 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.0.6'
+    id 'org.graalvm.buildtools.native' version '0.9.21'
+	id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'io.paketo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+jar {
+    // see https://github.com/spring-projects/spring-boot/issues/33238
+    enabled = false
+}
+
+tasks.named("bootBuildImage") {
+    environment = ['BP_NATIVE_IMAGE': 'true']
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+  implementation 'org.springframework.boot:spring-boot-starter-actuator'
+  implementation 'org.springframework.boot:spring-boot-starter-webflux'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'io.projectreactor:reactor-test'
+}
+
+test {
+	useJUnitPlatform()
+}
