@@ -86,9 +86,8 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
 							"BP_NATIVE_IMAGE":          "true",
-							"BP_MAVEN_BUILD_ARGUMENTS": "-Dmaven.test.skip=true --no-transfer-progress -Pnative package",
-							"BP_JVM_VERSION":           "17"}).
-						WithBuilder(builder).
+							"BP_MAVEN_ACTIVE_PROFILES": "native"}).
+						WithBuilder(builder).WithTrustBuilder().
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
 						Execute(name, source)
@@ -123,7 +122,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
 							"BP_NATIVE_IMAGE": "true"}).
-						WithBuilder(builder).
+						WithBuilder(builder).WithTrustBuilder().
 						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
 						WithGID("123").
 						Execute(name, source)
@@ -157,7 +156,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true"}).
-						WithBuilder(builder).
+						WithBuilder(builder).WithTrustBuilder().
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
 						Execute(name, source)
@@ -193,7 +192,7 @@ func testJNIWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							"BP_NATIVE_IMAGE_BUILD_ARGUMENTS_FILE": "native-sources/native-image.args",
 							"BP_NATIVE_IMAGE_BUILT_ARTIFACT":       "native-sources/getting-started-*-runner.jar",
 						}).
-						WithBuilder(builder).
+						WithBuilder(builder).WithTrustBuilder().
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
 						Execute(name, source)

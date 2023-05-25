@@ -56,5 +56,4 @@ jobs:
       - name: Test Java-Node Samples
         run: |
           ./scripts/smoke.sh --suite java/java-node \
-                             --builder paketobuildpacks/builder:full \
-                             --builder paketobuildpacks/builder:base \
+                             --builder anthonydahanne/tiny-builder:fix-273

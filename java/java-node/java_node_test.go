@@ -97,7 +97,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder).
+						WithBuilder(builder).WithTrustBuilder().
 						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
 						WithEnv(map[string]string{
@@ -139,7 +139,7 @@ func testJavaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder).
+						WithBuilder(builder).WithTrustBuilder().
 						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
 						WithGID("123").
 						WithEnv(map[string]string{

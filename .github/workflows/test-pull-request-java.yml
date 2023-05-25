@@ -58,6 +58,4 @@ jobs:
     - name: Test Java Samples
       run: |
         ./scripts/smoke.sh --suite java \
-                           --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base \
-                           --builder paketobuildpacks/builder:tiny
+                           --builder anthonydahanne/tiny-builder:fix-273
