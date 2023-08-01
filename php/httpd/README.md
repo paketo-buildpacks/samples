@@ -13,7 +13,7 @@ With the Pack CLI, this would involve setting `--env BP_PHP_SERVER=httpd`.
 
 ## Building
 
-`pack build php-httpd-sample --buildpack paketo-buildpacks/php`
+`pack build php-httpd-sample --buildpack paketo-buildpacks/php --builder paketobuildpacks/builder-jammy-full`
 
 ## Running
 
@@ -22,3 +22,7 @@ With the Pack CLI, this would involve setting `--env BP_PHP_SERVER=httpd`.
 ## Viewing
 
 `curl http://localhost:8080`
+
+## Stack Support
+
+The Paketo PHP buildpack requires the Full Jammy Stack. See [stack docs](https://paketo.io/docs/concepts/stacks) for more details
