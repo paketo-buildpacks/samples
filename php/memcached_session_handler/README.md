@@ -28,7 +28,8 @@ pack build php-memcached-handler-sample \
 --env BP_PHP_WEB_DIR=htdocs \
 --env SERVICE_BINDING_ROOT=/bindings \
 --volume $PWD/binding:/bindings/php-memcached-session \
---buildpack paketo-buildpacks/php
+--buildpack paketo-buildpacks/php \
+--builder paketobuildpacks/builder-jammy-full
 ```
 
 ## Running
@@ -49,3 +50,7 @@ Observe the counter that displays the number of hits the page has had serving `2
 
 Alternatively, view `localhost:8080` in your browser a few times and see the
 page count increment.
+
+## Stack Support
+
+The Paketo PHP buildpack requires the Full Jammy Stack. See [stack docs](https://paketo.io/docs/concepts/stacks) for more details

@@ -6,7 +6,7 @@ the server where to find files to serve.
 
 ## Building
 
-`pack build php-composer-sample --env BP_PHP_WEB_DIR=htdocs --buildpack paketo-buildpacks/php`
+`pack build php-composer-sample --env BP_PHP_WEB_DIR=htdocs --buildpack paketo-buildpacks/php --builder paketobuildpacks/builder-jammy-full`
 
 ## Running
 
@@ -15,3 +15,7 @@ the server where to find files to serve.
 ## Viewing
 
 `curl http://localhost:8080`
+
+## Stack Support
+
+The Paketo PHP buildpack requires the Full Jammy Stack. See [stack docs](https://paketo.io/docs/concepts/stacks) for more details
