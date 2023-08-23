@@ -12,7 +12,7 @@ pack build applications/quarkus-native \
   --env BP_MAVEN_BUILT_ARTIFACT="target/native-sources" \
   --env BP_NATIVE_IMAGE_BUILD_ARGUMENTS_FILE="native-sources/native-image.args" \
   --env BP_NATIVE_IMAGE_BUILT_ARTIFACT="native-sources/getting-started-*-runner.jar" \
-  --env BP_JVM_VERSION=11
+  --env BP_JVM_VERSION=17
 ```
 
 ## Running
