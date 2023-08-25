@@ -119,8 +119,6 @@ curl http://localhost:8080
 You should see a HTTP status code 301 and the redirect address should be using
 the HTTPS protocol.
 
-## TODO: see that the curl shows something useful
-
 ## Basic Authentication
 
 The Paketo NGINX Buildpack allows you to set up basic authentication

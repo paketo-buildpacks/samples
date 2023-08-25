@@ -1,3 +1,6 @@
+<i> Note: Node.js buildpack is designed to build backend applications that use Node as their server.
+To build frontend applications and serve them with NGINX/HTTPD, please use the Web Servers buildpack </i>
+
 # Node.js Sample app using Npm and a Vue framework
 
 ## Building

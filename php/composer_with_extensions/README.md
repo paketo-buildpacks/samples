@@ -5,7 +5,7 @@ built-in PHP server.
 
 ## Building
 
-`pack build php-composer-extension-sample --buildpack paketo-buildpacks/php`
+`pack build php-composer-extension-sample --buildpack paketo-buildpacks/php  --builder paketobuildpacks/builder-jammy-full`
 
 ## Running
 
@@ -15,3 +15,6 @@ built-in PHP server.
 
 `curl http://localhost:8080`
 
+## Stack Support
+
+The Paketo PHP buildpack requires the Full Jammy Stack. See [stack docs](https://paketo.io/docs/concepts/stacks) for more details

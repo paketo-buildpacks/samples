@@ -629,7 +629,7 @@ func testJavaScriptFrontendWithBuilder(builder string) func(*testing.T, spec.G, 
 			context("app uses react and httpd", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("..", "web-servers", "javascript-frontend-sample"))
+					source, err = occam.Source(filepath.Join("..", "web-servers", "react-frontend-sample"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -663,7 +663,7 @@ func testJavaScriptFrontendWithBuilder(builder string) func(*testing.T, spec.G, 
 			context("app uses react and nginx", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("..", "web-servers", "javascript-frontend-sample"))
+					source, err = occam.Source(filepath.Join("..", "web-servers", "react-frontend-sample"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
@@ -691,6 +691,40 @@ func testJavaScriptFrontendWithBuilder(builder string) func(*testing.T, spec.G, 
 					Expect(err).NotTo(HaveOccurred())
 
 					Eventually(container).Should(Serve(ContainSubstring("<title>Paketo Buildpacks</title>")).OnPort(8080))
+				})
+			})
+
+			context("app uses angular and nginx", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("..", "web-servers", "angular-nginx-sample"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					image, logs, err = pack.Build.
+						WithPullPolicy("never").
+						WithBuilder(builder).
+						WithEnv(map[string]string{
+							"BP_NODE_RUN_SCRIPTS":             "build",
+							"BP_WEB_SERVER":                   "nginx",
+							"BP_WEB_SERVER_ROOT":              "dist/my-project-name",
+							"BP_WEB_SERVER_ENABLE_PUSH_STATE": "true",
+						}).
+						Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Node Engine")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for NPM Install")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Node Run Script")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Nginx Server")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("<title>Powered By Paketo Buildpacks</title>")).OnPort(8080))
 				})
 			})
 		})
