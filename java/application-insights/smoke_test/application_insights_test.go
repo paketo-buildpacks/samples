@@ -1,7 +1,9 @@
-package java_test
+package application_insights_test
 
 import (
+	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
@@ -14,6 +16,12 @@ import (
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
+
+var builders tests.BuilderFlags
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
 
 func TestApplicationInsights(t *testing.T) {
 	Expect := NewWithT(t).Expect

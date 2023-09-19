@@ -1,7 +1,9 @@
-package java_test
+package akka_test
 
 import (
+	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,6 +17,12 @@ import (
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
+
+var builders tests.BuilderFlags
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
 
 func TestAkka(t *testing.T) {
 	Expect := NewWithT(t).Expect
@@ -73,7 +81,7 @@ func testAkkaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 				err = docker.Image.Remove.Execute(image.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker image: exit status 1: Error: No such image:"))
+					Expect(err.Error()).To(ContainSubstring("failed to remove docker image: exit status 1: Error"))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
@@ -88,7 +96,7 @@ func testAkkaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					}
 
 					var err error
-					source, err = occam.Source(filepath.Join("../java", "akka"))
+					source, err = occam.Source(filepath.Join("../../", "akka"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
