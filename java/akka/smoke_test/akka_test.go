@@ -1,7 +1,9 @@
-package java_test
+package akka_test
 
 import (
+	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"strings"
@@ -15,6 +17,12 @@ import (
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
+
+var builders tests.BuilderFlags
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
 
 func TestAkka(t *testing.T) {
 	Expect := NewWithT(t).Expect
@@ -88,7 +96,7 @@ func testAkkaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					}
 
 					var err error
-					source, err = occam.Source(filepath.Join("../java", "akka"))
+					source, err = occam.Source(filepath.Join("../../", "akka"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
