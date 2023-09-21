@@ -1,7 +1,9 @@
-package java_test
+package opentelemetry_test
 
 import (
+	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
@@ -15,21 +17,26 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-func TestWAR(t *testing.T) {
+var builders tests.BuilderFlags
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+func TestOpentelemetry(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
 	Expect(len(builders)).NotTo(Equal(0))
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
 
-	suite := spec.New("Java - WAR", spec.Parallel(), spec.Report(report.Terminal{}))
+	suite := spec.New("Java - Opentelemetry", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		suite(fmt.Sprintf("WAR with %s builder", builder), testWARWithBuilder(builder), spec.Sequential())
+		suite(fmt.Sprintf("Opentelemetry with %s builder", builder), testOpentelemetryWithBuilder(builder), spec.Sequential())
 	}
 	suite.Run(t)
 }
 
-func testWARWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+func testOpentelemetryWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -37,7 +44,6 @@ func testWARWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			pack   occam.Pack
 			docker occam.Docker
-			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -72,7 +78,7 @@ func testWARWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 				err = docker.Image.Remove.Execute(image.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker image: exit status 1: Error: No such image:"))
+					Expect(err).To(MatchError(ContainSubstring("failed to remove docker image: exit status 1: Error")))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
@@ -80,25 +86,33 @@ func testWARWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("app uses war", func() {
+			context("app uses opentelemetry", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../java", "war"))
+					source, err = occam.Source(filepath.Join("../"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy("if-not-present").
+						WithEnv(map[string]string{
+							"BP_OPENTELEMETRY_ENABLED": "true",
+						}).
 						WithBuilder(builder).
-						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
+						WithBuildpacks(
+							"paketo-buildpacks/java",
+							"gcr.io/paketo-buildpacks/opentelemetry",
+						).
 						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Apache Tomcat")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for OpenTelemetry")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").

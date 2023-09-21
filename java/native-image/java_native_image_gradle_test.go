@@ -45,7 +45,6 @@ func testGradleWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			pack   occam.Pack
 			docker occam.Docker
-			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -87,7 +86,6 @@ func testGradleWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithEnv(map[string]string{
 							"BP_NATIVE_IMAGE": "true"}).
 						WithBuilder(builder).
-						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
 						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)

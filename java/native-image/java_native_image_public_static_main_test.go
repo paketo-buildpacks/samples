@@ -37,7 +37,6 @@ func testPublicStaticMainWithBuilder(builder string) func(*testing.T, spec.G, sp
 
 			pack   occam.Pack
 			docker occam.Docker
-			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -78,7 +77,6 @@ func testPublicStaticMainWithBuilder(builder string) func(*testing.T, spec.G, sp
 						WithPullPolicy("never").
 						WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true"}).
 						WithBuilder(builder).
-						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)

@@ -45,7 +45,6 @@ func testGradleNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) 
 
 			pack   occam.Pack
 			docker occam.Docker
-			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -98,7 +97,6 @@ func testGradleNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) 
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
-						WithVolumes(fmt.Sprintf("%s/.gradle:/home/cnb/.gradle:rw", home)).
 						WithGID("123").
 						WithEnv(map[string]string{
 							"BP_JVM_VERSION":       "17",

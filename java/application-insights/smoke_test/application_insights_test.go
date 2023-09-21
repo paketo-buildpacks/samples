@@ -45,7 +45,6 @@ func testApplicationInsightsWithBuilders(builder string) func(*testing.T, spec.G
 
 			pack   occam.Pack
 			docker occam.Docker
-			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -80,7 +79,7 @@ func testApplicationInsightsWithBuilders(builder string) func(*testing.T, spec.G
 
 				err = docker.Image.Remove.Execute(image.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker image: exit status 1: Error: No such image:"))
+					Expect(err).To(MatchError(ContainSubstring("failed to remove docker image: exit status 1: Error")))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
@@ -91,14 +90,13 @@ func testApplicationInsightsWithBuilders(builder string) func(*testing.T, spec.G
 			context("app uses application insights", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../java", "application-insights"))
+					source, err = occam.Source(filepath.Join("../"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
-						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)

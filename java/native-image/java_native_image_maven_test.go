@@ -37,7 +37,6 @@ func testMavenWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			pack   occam.Pack
 			docker occam.Docker
-			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -81,7 +80,6 @@ func testMavenWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							"BP_MAVEN_BUILD_ARGUMENTS": "-Dmaven.test.skip=true --no-transfer-progress -Pnative package",
 							"BP_JVM_VERSION":           "17"}).
 						WithBuilder(builder).
-						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)

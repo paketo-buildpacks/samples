@@ -37,7 +37,6 @@ func testQuarkusWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			pack   occam.Pack
 			docker occam.Docker
-			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -84,7 +83,6 @@ func testQuarkusWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							"BP_NATIVE_IMAGE_BUILT_ARTIFACT":       "native-sources/getting-started-*-runner.jar",
 						}).
 						WithBuilder(builder).
-						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)

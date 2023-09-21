@@ -1,9 +1,12 @@
-package java_test
+package dist_zip_test
 
 import (
+	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -15,21 +18,26 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-func TestJar(t *testing.T) {
+var builders tests.BuilderFlags
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+func TestDistZip(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
 	Expect(len(builders)).NotTo(Equal(0))
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
 
-	suite := spec.New("Java - JAR", spec.Parallel(), spec.Report(report.Terminal{}))
+	suite := spec.New("Java - Dist Zip", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		suite(fmt.Sprintf("JAR with %s builder", builder), testJarWithBuilder(builder), spec.Sequential())
+		suite(fmt.Sprintf("Dist Zip with %s builder", builder), testDistZipWithBuilder(builder), spec.Sequential())
 	}
 	suite.Run(t)
 }
 
-func testJarWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+func testDistZipWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -71,7 +79,7 @@ func testJarWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 				err = docker.Image.Remove.Execute(image.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker image: exit status 1: Error: No such image:"))
+					Expect(err).To(MatchError(ContainSubstring("failed to remove docker image: exit status 1: Error")))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
@@ -79,24 +87,32 @@ func testJarWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("app uses jar", func() {
+			context("app uses dist zip", func() {
 				it("builds successfully", func() {
+					if strings.HasSuffix(builder, "tiny") {
+						return // this sample requires bash, does not run on tiny
+					}
+
 					var err error
-					source, err = occam.Source(filepath.Join("../java", "jar"))
+					source, err = occam.Source(filepath.Join("../"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
+						WithEnv(map[string]string{
+							"BP_JVM_VERSION":            "17",
+							"BP_GRADLE_BUILD_ARGUMENTS": "--no-daemon -x test bootDistZip",
+							"BP_GRADLE_BUILT_ARTIFACT":  "build/distributions/*.zip"}).
 						WithBuilder(builder).
-						WithEnv(map[string]string{"BP_JVM_VERSION": "17"}).
+						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for DistZip")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").

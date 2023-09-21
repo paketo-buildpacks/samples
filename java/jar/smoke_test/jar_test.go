@@ -1,7 +1,9 @@
-package java_test
+package jar_test
 
 import (
+	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
@@ -15,21 +17,26 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-func TestLeiningen(t *testing.T) {
+var builders tests.BuilderFlags
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+func TestJar(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
 	Expect(len(builders)).NotTo(Equal(0))
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
 
-	suite := spec.New("Java - Leiningen", spec.Parallel(), spec.Report(report.Terminal{}))
+	suite := spec.New("Java - JAR", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		suite(fmt.Sprintf("Leiningen with %s builder", builder), testLeiningenWithBuilder(builder), spec.Sequential())
+		suite(fmt.Sprintf("JAR with %s builder", builder), testJarWithBuilder(builder), spec.Sequential())
 	}
 	suite.Run(t)
 }
 
-func testLeiningenWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+func testJarWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -37,7 +44,6 @@ func testLeiningenWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			pack   occam.Pack
 			docker occam.Docker
-			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -72,7 +78,7 @@ func testLeiningenWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 				err = docker.Image.Remove.Execute(image.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker image: exit status 1: Error: No such image:"))
+					Expect(err).To(MatchError(ContainSubstring("failed to remove docker image: exit status 1: Error")))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
@@ -80,39 +86,31 @@ func testLeiningenWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("app uses leiningen", func() {
+			context("app uses jar", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../java", "leiningen"))
+					source, err = occam.Source(filepath.Join("../"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithEnv(map[string]string{
-							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M",
-						}).
 						WithBuilder(builder).
-						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
-						WithGID("123").
+						WithEnv(map[string]string{"BP_JVM_VERSION": "17"}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Leiningen")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
-						WithPublishAll().
-						WithTTY().
-						WithEnv(map[string]string{
-							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M"}).
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Eventually(container).Should(Serve(ContainSubstring("Hello World!")).OnPort(8080))
+					Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
 				})
 			})
 		})

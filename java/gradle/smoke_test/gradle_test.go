@@ -1,7 +1,9 @@
-package java_test
+package gradle_test
 
 import (
+	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
@@ -15,21 +17,26 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
-func TestToolsBuild(t *testing.T) {
+var builders tests.BuilderFlags
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
+func TestGradle(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
 	Expect(len(builders)).NotTo(Equal(0))
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
 
-	suite := spec.New("Java - ToolsBuild", spec.Parallel(), spec.Report(report.Terminal{}))
+	suite := spec.New("Java - Gradle", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		suite(fmt.Sprintf("ToolsBuild with %s builder", builder), testToolsBuildWithBuilder(builder), spec.Sequential())
+		suite(fmt.Sprintf("Gradle with %s builder", builder), testGradleWithBuilder(builder), spec.Sequential())
 	}
 	suite.Run(t)
 }
 
-func testToolsBuildWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+func testGradleWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -37,7 +44,6 @@ func testToolsBuildWithBuilder(builder string) func(*testing.T, spec.G, spec.S) 
 
 			pack   occam.Pack
 			docker occam.Docker
-			home   string = os.Getenv("HOME")
 		)
 
 		it.Before(func() {
@@ -72,7 +78,7 @@ func testToolsBuildWithBuilder(builder string) func(*testing.T, spec.G, spec.S) 
 
 				err = docker.Image.Remove.Execute(image.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker image: exit status 1: Error: No such image:"))
+					Expect(err).To(MatchError(ContainSubstring("failed to remove docker image: exit status 1: Error")))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
@@ -80,41 +86,35 @@ func testToolsBuildWithBuilder(builder string) func(*testing.T, spec.G, spec.S) 
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("app uses clojure tools with tools build", func() {
+			context("app uses gradle", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join("../java", "tools-build"))
+					source, err = occam.Source(filepath.Join("../"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
-							"BP_CLJ_TOOLS_BUILD_ENABLED": "true",
-							"JAVA_TOOL_OPTIONS":          "-XX:MaxMetaspaceSize=100M",
+							"BP_JVM_VERSION":           "17",
+							"BP_GRADLE_BUILT_ARTIFACT": "build/libs/*-SNAPSHOT.jar",
 						}).
 						WithBuilder(builder).
-						WithVolumes(fmt.Sprintf("%s/.m2:/home/cnb/.m2:rw", home)).
 						WithGID("123").
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Clojure Tools")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
 
 					container, err = docker.Container.Run.
 						WithPublish("8080").
-						WithPublishAll().
-						WithTTY().
-						WithEnv(map[string]string{
-							"JAVA_TOOL_OPTIONS": "-XX:MaxMetaspaceSize=100M",
-						}).
 						Execute(image.ID)
 					Expect(err).NotTo(HaveOccurred())
 
-					Eventually(container).Should(Serve(ContainSubstring("Hello World!")).OnPort(8080))
+					Eventually(container).Should(Serve(ContainSubstring("UP")).OnPort(8080).WithEndpoint("/actuator/health"))
 				})
 			})
 		})
