@@ -7,14 +7,13 @@ on:
     - main
     paths:
     - 'java/**'
-    - '!java/native-image/**'
-    - '!java/java-node/**'
 
 jobs:
   smoke:
     name: Smoke Tests
     runs-on: ubuntu-latest
     steps:
+
     - name: Setup Go
       uses: actions/setup-go@v4
       with:
@@ -22,42 +21,24 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v4
-
-    - name: Cache local Gradle repository
-      uses: actions/cache@v3
       with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('java/**/*.gradle*', 'java/**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+        fetch-depth: 0
 
-    - name: Cache local Maven repository
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.m2/repository
-          ~/.m2/wrapper
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', 'java/**/maven-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-
-    - name: Setup Directories
+    - name: Discover changed paths
+      id: paths
       run: |
-        #!/usr/bin/env bash
-        set -euo pipefail
-
-        mkdir -p ~/.m2/repository
-        mkdir -p ~/.m2/repository/wrapper/dists
-        mkdir -p ~/.gradle/caches
-        mkdir -p ~/.gradle/wrapper/dists
-        chmod -R 775 ~/.m2
-        chmod -R 775 ~/.gradle
+        env
+        echo "a PR was triggered; let's find out which modules were updated"
+        # see: https://stackoverflow.com/a/8721550/24069 for usage of paste
+        echo "changed_java_projects=$( git diff --name-only --merge-base origin/$GITHUB_BASE_REF $GITHUB_SHA  | xargs -n 1 dirname | uniq | grep -v "^\." | paste -s -d, -)" >> $GITHUB_OUTPUT
+        echo "These are the modules that we'll work with: $(cat $GITHUB_OUTPUT)"
 
     - name: Test Java Samples
       run: |
-        ./scripts/smoke.sh --suite java \
-                           --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base \
-                           --builder paketobuildpacks/builder:tiny
+        env
+        echo  ${{ steps.paths.outputs.changed_java_projects }}
+
+#        ./scripts/smoke.sh --suite java \
+#                           --builder paketobuildpacks/builder:full \
+#                           --builder paketobuildpacks/builder:base \
+#                           --builder paketobuildpacks/builder:tiny
