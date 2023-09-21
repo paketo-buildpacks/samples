@@ -9,11 +9,35 @@ on:
     - 'java/**'
 
 jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.paths.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Discover changed paths
+        id: paths
+        run: |
+          env
+          # see: https://stackoverflow.com/a/8721550/24069 for usage of paste
+          changed_java_folders=$( git diff --name-only --merge-base origin/$GITHUB_BASE_REF $GITHUB_SHA  | xargs -n 1 dirname | uniq | grep -v "^\." | sed "s/^/\"/;s/$/\"/" | paste -s -d, - )
+          echo "These are the Java folders where we found changes for this PR : $changed_java_folders" >> $GITHUB_STEP_SUMMARY
+          echo "matrix={\"java_sample_folder\":[$changed_java_folders]}" >> $GITHUB_OUTPUT
+          echo "This is how the matrix will look like: $(cat $GITHUB_OUTPUT)"
+
   smoke:
+    needs: prepare
     name: Smoke Tests
     runs-on: ubuntu-latest
-    steps:
+    strategy:
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+#        java_sample_folder:
 
+    steps:
     - name: Setup Go
       uses: actions/setup-go@v4
       with:
@@ -21,24 +45,11 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
-    - name: Discover changed paths
-      id: paths
+    - name: Smoke Test Java samples
       run: |
-        env
-        echo "a PR was triggered; let's find out which modules were updated"
-        # see: https://stackoverflow.com/a/8721550/24069 for usage of paste
-        echo "changed_java_projects=$( git diff --name-only --merge-base origin/$GITHUB_BASE_REF $GITHUB_SHA  | xargs -n 1 dirname | uniq | grep -v "^\." | paste -s -d, -)" >> $GITHUB_OUTPUT
-        echo "These are the modules that we'll work with: $(cat $GITHUB_OUTPUT)"
-
-    - name: Test Java Samples
-      run: |
-        env
-        echo  ${{ steps.paths.outputs.changed_java_projects }}
-
-#        ./scripts/smoke.sh --suite java \
-#                           --builder paketobuildpacks/builder:full \
-#                           --builder paketobuildpacks/builder:base \
-#                           --builder paketobuildpacks/builder:tiny
+        echo "About to run the smoke test script against this suite folder: ${{ matrix.java_sample_folder }}"
+        ./scripts/smoke.sh --suite ${{ matrix.java_sample_folder }} \
+                           --builder paketobuildpacks/builder:full \
+                           --builder paketobuildpacks/builder:base \
+                           --builder paketobuildpacks/builder:tiny
