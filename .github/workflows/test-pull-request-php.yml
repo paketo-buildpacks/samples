@@ -24,4 +24,4 @@ jobs:
     - name: Test PHP Samples
       run: |
         ./scripts/smoke.sh --suite php \
-                           --builder paketobuildpacks/builder:full
+                           --builder paketobuildpacks/builder-jammy-full:latest

@@ -24,6 +24,6 @@ jobs:
     - name: Test ca-certificates Samples
       run: |
         ./scripts/smoke.sh --suite ca-certificates \
-                           --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base \
-                           --builder paketobuildpacks/builder:tiny
+                           --builder paketobuildpacks/builder-jammy-full:latest \
+                           --builder paketobuildpacks/builder-jammy-base:latest \
+                           --builder paketobuildpacks/builder-jammy-tiny:latest
