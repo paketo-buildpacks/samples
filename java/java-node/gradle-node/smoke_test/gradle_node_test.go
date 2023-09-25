@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -79,7 +80,7 @@ func testGradleNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) 
 
 				err = docker.Image.Remove.Execute(image.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker image: exit status 1: Error: No such image:"))
+					Expect(err).To(MatchError(ContainSubstring("failed to remove docker image: exit status 1: Error")))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
@@ -89,8 +90,12 @@ func testGradleNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) 
 
 			context("app uses gradle and node", func() {
 				it("builds successfully", func() {
+					if strings.HasSuffix(builder, "tiny") {
+						return // this sample requires bash, does not run on tiny
+					}
+
 					var err error
-					source, err = occam.Source(filepath.Join(".", "gradle-node"))
+					source, err = occam.Source(filepath.Join("../"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer

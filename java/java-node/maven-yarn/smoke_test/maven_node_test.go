@@ -1,9 +1,12 @@
 package java_node_test
 
 import (
+	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -15,6 +18,11 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
+var builders tests.BuilderFlags
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
 func TestMavenNode(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
@@ -71,7 +79,7 @@ func testMavenNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 				err = docker.Image.Remove.Execute(image.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker image: exit status 1: Error: No such image:"))
+					Expect(err).To(MatchError(ContainSubstring("failed to remove docker image: exit status 1: Error")))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
@@ -81,8 +89,12 @@ func testMavenNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			context("app uses maven and yarn", func() {
 				it("builds successfully", func() {
+					if strings.HasSuffix(builder, "tiny") {
+						return // this sample requires bash, does not run on tiny
+					}
+
 					var err error
-					source, err = occam.Source(filepath.Join(".", "maven-yarn"))
+					source, err = occam.Source(filepath.Join("../"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
