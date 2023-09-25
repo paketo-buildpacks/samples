@@ -1,0 +1,27 @@
+name: java-spring-boot-native-image-maven
+"on":
+  merge_group:
+  pull_request:
+    paths:
+    - java/native-image/spring-boot-native-image-maven/**
+  push:
+    branches:
+    - main
+    paths:
+    - java/native-image/spring-boot-native-image-maven/**
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [17]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: 'zulu'
+      - run: ./mvnw -B package -Djava.version=${{ matrix.java }}
+        working-directory: java/native-image/spring-boot-native-image-maven

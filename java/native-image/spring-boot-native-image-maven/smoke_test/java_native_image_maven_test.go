@@ -1,15 +1,15 @@
-package java_test
+package native_image_test
 
 import (
 	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
 
 	"github.com/paketo-buildpacks/occam"
-	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
 	"github.com/sclevine/spec/report"
 
@@ -22,22 +22,21 @@ var builders tests.BuilderFlags
 func init() {
 	flag.Var(&builders, "name", "the name a builder to test with")
 }
-
-func TestJNIGradle(t *testing.T) {
+func TestJNIMaven(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
 	Expect(len(builders)).NotTo(Equal(0))
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
 
-	suite := spec.New("JavaNativeImage - Gradle", spec.Parallel(), spec.Report(report.Terminal{}))
+	suite := spec.New("JavaNativeImage - Maven", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		suite(fmt.Sprintf("Gradle with %s builder", builder), testGradleWithBuilder(builder), spec.Sequential())
+		suite(fmt.Sprintf("Maven with %s builder", builder), testMavenWithBuilder(builder), spec.Sequential())
 	}
 	suite.Run(t)
 }
 
-func testGradleWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+func testMavenWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -74,17 +73,19 @@ func testGradleWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 				Expect(os.RemoveAll(source)).To(Succeed())
 			})
 
-			context("uses Gradle based Spring Boot app", func() {
+			context("uses Spring Boot app Maven", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join(".", "java-native-image-sample-gradle"))
+					source, err = occam.Source(filepath.Join("../"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
-							"BP_NATIVE_IMAGE": "true"}).
+							"BP_NATIVE_IMAGE":          "true",
+							"BP_MAVEN_BUILD_ARGUMENTS": "-Dmaven.test.skip=true --no-transfer-progress -Pnative package",
+							"BP_JVM_VERSION":           "17"}).
 						WithBuilder(builder).
 						WithGID("123").
 						Execute(name, source)
@@ -99,7 +100,7 @@ func testGradleWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Eventually(container).Should(BeAvailable())
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Executable JAR")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Spring Boot")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Native Image")))

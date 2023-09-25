@@ -1,7 +1,9 @@
-package java_test
+package native_image_test
 
 import (
+	"flag"
 	"fmt"
+	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
@@ -15,6 +17,11 @@ import (
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
 
+var builders tests.BuilderFlags
+
+func init() {
+	flag.Var(&builders, "name", "the name a builder to test with")
+}
 func TestJNIPublicStaticMain(t *testing.T) {
 	Expect := NewWithT(t).Expect
 
@@ -69,7 +76,7 @@ func testPublicStaticMainWithBuilder(builder string) func(*testing.T, spec.G, sp
 			context("app uses simple JAR", func() {
 				it("builds successfully", func() {
 					var err error
-					source, err = occam.Source(filepath.Join(".", "public-static-main"))
+					source, err = occam.Source(filepath.Join("../"))
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
