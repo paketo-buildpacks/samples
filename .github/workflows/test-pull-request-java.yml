@@ -22,6 +22,7 @@ jobs:
       - name: Discover changed paths
         id: paths
         run: |
+          set -eo pipefail
           # 1st step: we get the list of files changed between the tip of this PR branch and main
           # Since we're only interested in the folders containing those files, we get them, sort them alphabetically (`sort`), de duplicate them (`uniq`) and filter out dot folders (.github for example)
           # we end up with, for example, changed_java_folders="java/akka/smoke_test\njava/kotlin/gradle/wrapper\njava/application-insights"

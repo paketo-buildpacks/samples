@@ -23,6 +23,7 @@ jobs:
       - name: Discover changed paths
         id: paths
         run: |
+          set -eo pipefail
           all_java_smoke_test_paths=$( find ./java -iname "smoke_test"  | jq --raw-input | jq --slurp --compact-output )
           all_other_smoke_test_paths='["ca-certificates","dotnet-core","git","go","nodejs","php","procfile","python","ruby","web-servers"]'
           all_paths=$( echo -e "$all_java_smoke_test_paths\n$all_other_smoke_test_paths" | jq  -s 'add' -c )
