@@ -89,7 +89,7 @@ func testDistZipWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			context("app uses dist zip", func() {
 				it("builds successfully", func() {
-					if strings.HasSuffix(builder, "tiny") {
+					if strings.Contains(builder, "tiny") {
 						return // this sample requires bash, does not run on tiny
 					}
 
