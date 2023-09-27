@@ -48,11 +48,11 @@ This sample contains a simple buildpack that will use curl to make a `HEAD` requ
 Build the sample application with the sample buildpack and set `$BP_TEST_URL` to your URL in the build environment.
 ```bash
 pack build applications/ca-certificates \
-    --builder paketobuildpacks/builder:full \
+    --builder paketobuildpacks/builder-jammy-full:latest \
     --buildpack ./buildpack \
     --buildpack paketo-buildpacks/go \
     --volume "$(pwd)/binding:/platform/bindings/ca-certificates" \
     --env BP_TEST_URL=<url>
 ```
 
-The builder `paketobuildpacks/builder:full` is required in the above command because the full stack provides `curl`.
+The builder `paketobuildpacks/builder-jammy-full:latest` is required in the above command because the full stack provides `curl`.

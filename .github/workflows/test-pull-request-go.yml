@@ -23,9 +23,6 @@ jobs:
       max-parallel: 3
       matrix:
         builder:
-        - 'paketobuildpacks/builder:full'
-        - 'paketobuildpacks/builder:base'
-        - 'paketobuildpacks/builder:tiny'
         - 'paketobuildpacks/builder-jammy-full:latest'
         - 'paketobuildpacks/builder-jammy-base:latest'
         - 'paketobuildpacks/builder-jammy-tiny:latest'

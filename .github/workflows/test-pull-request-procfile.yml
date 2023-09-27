@@ -24,5 +24,5 @@ jobs:
     - name: Test Procfile Samples
       run: |
         ./scripts/smoke.sh --suite procfile \
-                           --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base
+                           --builder paketobuildpacks/builder-jammy-full:latest \
+                           --builder paketobuildpacks/builder-jammy-base:latest

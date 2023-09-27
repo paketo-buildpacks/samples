@@ -78,7 +78,7 @@ jobs:
 
     - name: Test ${{ matrix.suite }}
       run: |
-        ./scripts/smoke.sh --builder paketobuildpacks/builder:full --suite ${{ matrix.suite }}
+        ./scripts/smoke.sh --builder paketobuildpacks/builder-jammy-full:latest --suite ${{ matrix.suite }}
 
     - name: File Issue
       if: ${{ failure() && github.event_name != 'pull_request' }}
