@@ -10,7 +10,7 @@ your application the build process must have `BP_WEB_SERVER` set to `httpd`.
 ```bash
 pack build httpd-no-config --path app \
   --buildpack paketo-buildpacks/httpd \
-  --builder paketobuildpacks/builder:full \
+  --builder paketobuildpacks/builder-jammy-full:latest \
   --env BP_WEB_SERVER=httpd
 ```
 
@@ -43,7 +43,7 @@ to `htdocs`.
 mv app/public app/htdocs && \
 pack build httpd-custom-root --path app \
   --buildpack paketo-buildpacks/httpd \
-  --builder paketobuildpacks/builder:full \
+  --builder paketobuildpacks/builder-jammy-full:latest \
   --env BP_WEB_SERVER=httpd \
   --env BP_WEB_SERVER_ROOT=htdocs \
 && mv app/htdocs app/public
@@ -74,7 +74,7 @@ static file structure.
 ```bash
 pack build httpd-push-state --path app \
   --buildpack paketo-buildpacks/httpd \
-  --builder paketobuildpacks/builder:full \
+  --builder paketobuildpacks/builder-jammy-full:latest \
   --env BP_WEB_SERVER=httpd \
   --env BP_WEB_SERVER_ENABLE_PUSH_STATE=true
 ```
@@ -103,7 +103,7 @@ the server to be redirected using the HTTPS protocol.
 ```bash
 pack build httpd-force-https --path app \
   --buildpack paketo-buildpacks/httpd \
-  --builder paketobuildpacks/builder:full \
+  --builder paketobuildpacks/builder-jammy-full:latest \
   --env BP_WEB_SERVER=httpd \
   --env BP_WEB_SERVER_FORCE_HTTPS=true
 ```
@@ -144,7 +144,7 @@ tool that is an httdp utility was used. For sample purposes the user added was
 ```bash
 pack build httpd-basic-auth --path app \
   --buildpack paketo-buildpacks/httpd \
-  --builder paketobuildpacks/builder:full \
+  --builder paketobuildpacks/builder-jammy-full:latest \
   --volume "$(pwd)/binding:/bindings/auth" \
   --env BP_WEB_SERVER=httpd \
   --env SERVICE_BINDING_ROOT=/bindings

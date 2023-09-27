@@ -10,7 +10,7 @@ an NGINX server that starts as PID 1 in the app container.
 
 ```bash
 pack build nginx-no-config --path app \
-  --builder paketobuildpacks/builder:base \
+  --builder paketobuildpacks/builder-jammy-base:latest \
   --env BP_WEB_SERVER=nginx
 ```
 
@@ -41,7 +41,7 @@ and see that the server serves the other version of `index.html`.
 
 ```bash
 pack build nginx-custom-root --path app \
-  --builder paketobuildpacks/builder:base \
+  --builder paketobuildpacks/builder-jammy-base:latest \
   --env BP_WEB_SERVER=nginx \
   --env BP_WEB_SERVER_ROOT=alternate \
 ```
@@ -72,7 +72,7 @@ static file structure.
 
 ```bash
 pack build nginx-push-state --path app \
-  --builder paketobuildpacks/builder:base \
+  --builder paketobuildpacks/builder-jammy-base:latest \
   --env BP_WEB_SERVER=nginx \
   --env BP_WEB_SERVER_ENABLE_PUSH_STATE=true
 ```
@@ -100,7 +100,7 @@ the server to be redirected using the HTTPS protocol.
 
 ```bash
 pack build nginx-force-https --path app \
-  --builder paketobuildpacks/builder:base \
+  --builder paketobuildpacks/builder-jammy-base:latest \
   --env BP_WEB_SERVER=nginx \
   --env BP_WEB_SERVER_FORCE_HTTPS=true
 ```
@@ -141,7 +141,7 @@ The username is `user`, password is `password`.
 
 ```bash
 pack build nginx-basic-auth --path app \
-  --builder paketobuildpacks/builder:base \
+  --builder paketobuildpacks/builder-jammy-base:latest \
   --volume "$(pwd)/binding:/bindings/auth" \
   --env BP_WEB_SERVER=nginx \
   --env SERVICE_BINDING_ROOT=/bindings

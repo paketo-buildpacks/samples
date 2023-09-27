@@ -19,7 +19,7 @@ jobs:
           go-version: 1.18.x
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cache local Gradle repository
         uses: actions/cache@v3
@@ -56,5 +56,5 @@ jobs:
       - name: Test Java-Node Samples
         run: |
           ./scripts/smoke.sh --suite java/java-node \
-                             --builder paketobuildpacks/builder:full \
-                             --builder paketobuildpacks/builder:base \
+                             --builder paketobuildpacks/builder-jammy-full:latest \
+                             --builder paketobuildpacks/builder-jammy-base:latest \
