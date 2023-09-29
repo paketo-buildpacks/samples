@@ -19,10 +19,10 @@ jobs:
         go-version: 1.18.x
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Test Ruby Samples
       run: |
         ./scripts/smoke.sh --suite ruby \
-                           --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base
+                           --builder paketobuildpacks/builder-jammy-full:latest \
+                           --builder paketobuildpacks/builder-jammy-base:latest

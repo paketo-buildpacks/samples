@@ -34,7 +34,7 @@ func TestCACertificates(t *testing.T) {
 	suite := spec.New("CACertificates", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
 		suite(fmt.Sprintf("CACertificates with %s builder", builder), testCACertificatesRun(builder))
-		if builder == "paketobuildpacks/builder:full" {
+		if builder == "paketobuildpacks/builder-jammy-full:latest" {
 			suite(fmt.Sprintf("CACertificates with %s builder", builder), testCACertificatesBuild(builder))
 		}
 	}

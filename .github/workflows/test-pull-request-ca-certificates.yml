@@ -19,11 +19,11 @@ jobs:
         go-version: 1.18.x
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Test ca-certificates Samples
       run: |
         ./scripts/smoke.sh --suite ca-certificates \
-                           --builder paketobuildpacks/builder:full \
-                           --builder paketobuildpacks/builder:base \
-                           --builder paketobuildpacks/builder:tiny
+                           --builder paketobuildpacks/builder-jammy-full:latest \
+                           --builder paketobuildpacks/builder-jammy-base:latest \
+                           --builder paketobuildpacks/builder-jammy-tiny:latest

@@ -91,8 +91,8 @@ To run integration tests that `pack build` each of the sample apps, use
 For example, to run tests for the Go and .NET Core samples with the Paketo tiny
 and base builders, run:
 ```
-./smoke.sh --builder paketobuildpacks/builder:tiny \
-           --builder paketobuildpacks/builder:base \
+./smoke.sh --builder paketobuildpacks/builder-jammy-tiny:latest \
+           --builder paketobuildpacks/builder-jammy-base:latest \
            --suite go \
            --suite dotnet-core
 ```

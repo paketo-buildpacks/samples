@@ -6,4 +6,4 @@ api = "0.4"
   name = "Paketo Sample CA Certficate Tester"
 
 [[stacks]]
-  id = "io.buildpacks.stacks.bionic"
+  id = "*"
