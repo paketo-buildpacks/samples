@@ -1,14 +1,14 @@
-name: native-image
+name: java-public-static-main-native-image-maven
 "on":
   merge_group:
   pull_request:
     paths:
-    - java/native-image/java-native-image-sample/**
+    - java/native-image/public-static-main-native-image-maven/**
   push:
     branches:
     - main
     paths:
-    - java/native-image/java-native-image-sample/**
+    - java/native-image/public-static-main-native-image-maven/**
 
 jobs:
   test:
@@ -23,10 +23,5 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
-      - uses: actions/cache@v3
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('java/native-image/java-native-image-sample/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
       - run: ./mvnw -B package -Djava.version=${{ matrix.java }}
-        working-directory: java/native-image/java-native-image-sample
+        working-directory: java/native-image/public-static-main-native-image-maven

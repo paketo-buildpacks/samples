@@ -12,69 +12,45 @@ on:
     - 'scripts/.util/tools.json'
 
 jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.paths.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Discover changed paths
+        id: paths
+        run: |
+          set -eo pipefail
+          all_java_smoke_test_paths=$( find ./java -iname "smoke_test"  | jq --raw-input | jq --slurp --compact-output )
+          all_other_smoke_test_paths='["ca-certificates","dotnet-core","git","go","nodejs","php","procfile","python","ruby","web-servers"]'
+          all_paths=$( echo -e "$all_java_smoke_test_paths\n$all_other_smoke_test_paths" | jq  -s 'add' -c )
+          
+          echo "These are the Java projects we'll run smoke tests against: $all_java_smoke_test_paths" >> $GITHUB_STEP_SUMMARY
+          echo "These are the other folders we'll run smoke tests against: : $all_other_smoke_test_paths" >> $GITHUB_STEP_SUMMARY
+          echo "These are all the smoke test locations: $all_paths" >> $GITHUB_STEP_SUMMARY
+          echo "matrix={\"suite\":$all_paths}" >> $GITHUB_OUTPUT
+          echo "This is how the matrix will look like: $(cat $GITHUB_OUTPUT)"
+
   smoke:
+    needs: prepare
     name: Smoke Tests
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       max-parallel: 3
-      matrix:
-        suite:
-        - 'ca-certificates'
-        - 'dotnet-core'
-        - 'git'
-        - 'go'
-        - 'java'
-        - 'nodejs'
-        - 'php'
-        - 'procfile'
-        - 'python'
-        - 'ruby'
-        - 'web-servers'
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     steps:
     - name: Setup Go
       uses: actions/setup-go@v4
       with:
-        go-version: 1.18.x
+        go-version: 1.20.x
 
     - name: Checkout
       uses: actions/checkout@v4
-
-    - name: Cache local Gradle repository
-      if: ${{ matrix.suite == 'java' }}
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('java/**/*.gradle*', 'java/**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-
-    - name: Cache local Maven repository
-      if: ${{ matrix.suite == 'java' }}
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.m2/repository
-          ~/.m2/wrapper
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', 'java/**/maven-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-
-    - name: Setup Directories
-      if: ${{ matrix.suite == 'java' }}
-      run: |
-        #!/usr/bin/env bash
-        set -euo pipefail
-
-        mkdir -p ~/.m2/repository
-        mkdir -p ~/.m2/repository/wrapper/dists
-        mkdir -p ~/.gradle/caches
-        mkdir -p ~/.gradle/wrapper/dists
-        chmod -R 775 ~/.m2
-        chmod -R 775 ~/.gradle
 
     - name: Test ${{ matrix.suite }}
       run: |
