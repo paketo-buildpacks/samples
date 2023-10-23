@@ -101,6 +101,10 @@ func testGradleWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						}).
 						WithBuilder(builder).
 						WithGID("123").
+						WithEnv(map[string]string{
+							"SERVICE_BINDING_ROOT": "/bindings",
+						}).
+						WithVolumes(fmt.Sprintf("%s:/bindings/gradle-wrapper", filepath.Join(source, "bindings/gradle-wrapper"))).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
