@@ -29,5 +29,5 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('java/gradle/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
       # simulate the bindings
-      - run: cp bindings/gradle-wrapper/gradle-wrapper.properties gradle/wrapper/gradle-wrapper.properties && ./gradlew build
+      - run: ./gradlew build
         working-directory: java/gradle
