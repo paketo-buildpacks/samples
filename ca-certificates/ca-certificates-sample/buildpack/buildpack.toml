@@ -1,4 +1,4 @@
-api = "0.9"
+api = "0.7"
 
 [buildpack]
   id = "paketo-buildpacks/samples-ca-certficates"
