@@ -28,5 +28,6 @@ jobs:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('java/gradle/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+      # simulate the bindings
       - run: ./gradlew build
         working-directory: java/gradle
