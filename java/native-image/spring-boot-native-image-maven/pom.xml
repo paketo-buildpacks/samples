@@ -51,7 +51,7 @@
 				<configuration>
 					<image>
 						<buildpacks>
-							<buildpack>paketobuildpacks/java-native-image:beta</buildpack>
+							<buildpack>paketobuildpacks/java-native-image</buildpack>
 						</buildpacks>
 						<builder>paketobuildpacks/builder-jammy-buildpackless-tiny</builder>
 					</image>
