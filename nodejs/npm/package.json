@@ -1,7 +1,7 @@
 {
   "author": "Paketo Buildpacks",
   "dependencies": {
-    "express": "^4.19.1"
+    "express": "^4.19.2"
   },
   "description": "Sample Node.js Application using NPM",
   "license": "Apache-2.0",
