@@ -1,63 +1,87 @@
-name: Test Pull Request (Java)
+name: Smoke Test Pull Request (Java)
 
 on:
   merge_group:
   pull_request:
     branches:
-    - main
+      - main
     paths:
-    - 'java/**'
-    - '!java/native-image/**'
-    - '!java/java-node/**'
+      - 'java/**'
 
 jobs:
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.paths.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Discover changed paths
+        id: paths
+        run: |
+          set -eo pipefail
+          # 1st step: we get the list of files changed between the tip of this PR branch and main
+          # Since we're only interested in the folders containing those files, we get them, sort them alphabetically (`sort`), de duplicate them (`uniq`) and filter out dot folders (.github for example)
+          # we end up with, for example, changed_java_folders="java/akka/smoke_test\njava/kotlin/gradle/wrapper\njava/application-insights"
+          changed_java_folders=$(  git diff --name-only --merge-base origin/$GITHUB_BASE_REF $GITHUB_SHA  | xargs -n 1 dirname | sort -k 2 | uniq | grep -v "^\." )
+          
+          # 2nd step: we only want to keep the folders that contain a `smoke_test` subfolder -> those contain the tests we can run
+          # To do that, we loop through all the changed_java_folders and test (`-s`) for a sub folder named `smoke_test`; if there's none, we go to the parent directory (`dirname`)
+          # eventually, we'll find a `smoke_test` folder and add it to `smoke_test_folders`; if not, we move on to the next changed_java_folders entry (until the `.` folder in which case we give up)
+          
+          smoke_test_folders=""
+          while read -r changed_folder
+          do
+            echo "working on $changed_folder"
+            smoke_test=""
+            current_folder=$changed_folder
+            while [ -z "$smoke_test" ] && [ "$current_folder" != "." ]
+            do
+              echo "--smoke_test is $smoke_test"
+              echo "--current_folder is $current_folder"
+              if [[ -s $current_folder/smoke_test ]]; then
+                smoke_test="$current_folder/smoke_test"
+              else
+                current_folder=$(dirname $current_folder)
+              fi
+            done
+            if [ "$current_folder" != "." ]; then
+              smoke_test_folders="$smoke_test_folders\"$smoke_test\"\n"
+            fi
+          done <<<"$changed_java_folders"
+
+          # Once the smoke_test_folders are all found, we de duplicate them (`uniq`), remove extra empty lines (`\S`), and format them into a string
+          # we end up with, for example, smoke_test_folders='"java/akka/smoke_test","java/kotlin/smoke_test","java/application-insights/smoke_test"'
+          # see: https://stackoverflow.com/a/8721550/24069 for usage of paste
+          smoke_test_folders=$( echo -e $smoke_test_folders | uniq  | grep "\S" | paste -s -d, -)
+
+          echo "These are the Java folders where we found changes for this PR : $changed_java_folders" >> $GITHUB_STEP_SUMMARY
+          echo "These are the Java folders where we found changes AND the presence of smoke tests for this PR : $smoke_test_folders" >> $GITHUB_STEP_SUMMARY
+          echo "matrix={\"java_sample_folder\":[$smoke_test_folders]}" >> $GITHUB_OUTPUT
+          echo "This is how the matrix will look like: $(cat $GITHUB_OUTPUT)"
+
   smoke:
+    needs: prepare
     name: Smoke Tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+
     steps:
-    - name: Setup Go
-      uses: actions/setup-go@v4
-      with:
-        go-version: 1.18.x
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.20.x
 
-    - name: Checkout
-      uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Cache local Gradle repository
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.gradle/caches
-          ~/.gradle/wrapper
-        key: ${{ runner.os }}-gradle-${{ hashFiles('java/**/*.gradle*', 'java/**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
-
-    - name: Cache local Maven repository
-      uses: actions/cache@v3
-      with:
-        path: |
-          ~/.m2/repository
-          ~/.m2/wrapper
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', 'java/**/maven-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-
-    - name: Setup Directories
-      run: |
-        #!/usr/bin/env bash
-        set -euo pipefail
-
-        mkdir -p ~/.m2/repository
-        mkdir -p ~/.m2/repository/wrapper/dists
-        mkdir -p ~/.gradle/caches
-        mkdir -p ~/.gradle/wrapper/dists
-        chmod -R 775 ~/.m2
-        chmod -R 775 ~/.gradle
-
-    - name: Test Java Samples
-      run: |
-        ./scripts/smoke.sh --suite java \
-                           --builder paketobuildpacks/builder-jammy-full:latest \
-                           --builder paketobuildpacks/builder-jammy-base:latest \
-                           --builder paketobuildpacks/builder-jammy-tiny:latest
+      - name: Smoke Test Java samples
+        run: |
+          echo "About to run the smoke test script against this suite folder: ${{ matrix.java_sample_folder }}/smoke_test"
+          ./scripts/smoke.sh --suite ${{ matrix.java_sample_folder }} \
+                             --builder paketobuildpacks/builder-jammy-base:latest \
+                             --builder paketobuildpacks/builder-jammy-tiny:latest
