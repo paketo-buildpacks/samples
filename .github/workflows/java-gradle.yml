@@ -19,14 +19,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('java/gradle/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+      # simulate the bindings
       - run: ./gradlew build
         working-directory: java/gradle

@@ -98,9 +98,11 @@ func testGradleWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithEnv(map[string]string{
 							"BP_JVM_VERSION":           "17",
 							"BP_GRADLE_BUILT_ARTIFACT": "build/libs/*-SNAPSHOT.jar",
+							"SERVICE_BINDING_ROOT":     "/bindings",
 						}).
 						WithBuilder(builder).
 						WithGID("123").
+						WithVolumes(fmt.Sprintf("%s:/bindings/gradle-wrapper", filepath.Join(source, "bindings/gradle-wrapper"))).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
