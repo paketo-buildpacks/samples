@@ -9,7 +9,7 @@ pack build applications/opentelemetry \
     --buildpack paketo-buildpacks/java \
     --buildpack gcr.io/paketo-buildpacks/opentelemetry \
     --env BP_OPENTELEMETRY_ENABLED=true \
-    --env BP_JVM_VERSION=11
+    --env BP_JVM_VERSION=17
 ```
 
 ## Running
@@ -48,7 +48,9 @@ The result will be:
 ```bash
 [
   "OTEL_JAVAAGENT_ENABLED=true",
-  "OTEL_SERVICE_NAME=null"
+  "OTEL_SERVICE_NAME=null",
+  "OTEL_LOGS_EXPORTER=none",
+  "OTEL_METRICS_EXPORTER=none"
 ]
 ```
 
@@ -57,6 +59,8 @@ If you configured the `OTEL_SERVICE_NAME` property (either via environment varia
 ```bash
 [
   "OTEL_JAVAAGENT_ENABLED=true",
-  "OTEL_SERVICE_NAME=myapp"
+  "OTEL_SERVICE_NAME=myapp",
+  "OTEL_LOGS_EXPORTER=none",
+  "OTEL_METRICS_EXPORTER=none"
 ]
 ```
