@@ -11,13 +11,13 @@ import (
 	"testing"
 	"time"
 
-	"github.com/docker/docker/api/types"
 	"github.com/docker/docker/client"
 	"github.com/paketo-buildpacks/occam"
 	"github.com/paketo-buildpacks/samples/tests"
 	"github.com/sclevine/spec"
 	"github.com/sclevine/spec/report"
 
+	. "github.com/docker/docker/api/types/image"
 	. "github.com/onsi/gomega"
 	. "github.com/paketo-buildpacks/occam/matchers"
 )
@@ -295,7 +295,7 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					dockerClient, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 					Expect(err).NotTo(HaveOccurred())
 
-					_, err = dockerClient.ImageRemove(gocontext.Background(), "redis:latest", types.ImageRemoveOptions{Force: true})
+					_, err = dockerClient.ImageRemove(gocontext.Background(), "redis:latest", RemoveOptions{Force: true})
 					Expect(err).NotTo(HaveOccurred())
 				})
 
@@ -369,7 +369,7 @@ func testPHPWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					dockerClient, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
 					Expect(err).NotTo(HaveOccurred())
 
-					_, err = dockerClient.ImageRemove(gocontext.Background(), "memcached:latest", types.ImageRemoveOptions{Force: true})
+					_, err = dockerClient.ImageRemove(gocontext.Background(), "memcached:latest", RemoveOptions{Force: true})
 					Expect(err).NotTo(HaveOccurred())
 				})
 
