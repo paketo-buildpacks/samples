@@ -83,5 +83,4 @@ jobs:
         run: |
           echo "About to run the smoke test script against this suite folder: ${{ matrix.java_sample_folder }}/smoke_test"
           ./scripts/smoke.sh --suite ${{ matrix.java_sample_folder }} \
-                             --builder paketobuildpacks/builder-jammy-base:latest \
                              --builder paketobuildpacks/builder-jammy-tiny:latest
