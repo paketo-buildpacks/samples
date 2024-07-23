@@ -36,6 +36,26 @@ updates:
   schedule:
     interval: daily
 
+- package-ecosystem: gradle
+  directory: java/java-node/gradle-node
+  schedule:
+    interval: daily
+
+- package-ecosystem: npm
+  directory: java/java-node/gradle-node/frontend
+  schedule:
+    interval: daily
+
+- package-ecosystem: maven
+  directory: java/java-node/maven-yarn
+  schedule:
+    interval: daily
+
+- package-ecosystem: npm
+  directory: java/java-node/maven-yarn
+  schedule:
+    interval: daily
+
 # Kotlin Gradle config not yet supported
 # - package-ecosystem: gradle
 #   directory: java/kotlin/
@@ -48,7 +68,27 @@ updates:
     interval: daily
 
 - package-ecosystem: maven
-  directory: java/native-image/
+  directory: java/native-image/public-static-main-native-image-maven
+  schedule:
+    interval: daily
+
+- package-ecosystem: maven
+  directory: java/native-image/quarkus-native-image-maven
+  schedule:
+    interval: daily
+
+- package-ecosystem: gradle
+  directory: java/native-image/spring-boot-native-image-gradle
+  schedule:
+    interval: daily
+
+- package-ecosystem: maven
+  directory: java/native-image/spring-boot-native-image-maven
+  schedule:
+    interval: daily
+
+- package-ecosystem: gradle
+  directory: java/opentelemetry
   schedule:
     interval: daily
 
