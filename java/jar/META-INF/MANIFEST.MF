@@ -1,11 +1,11 @@
 Manifest-Version: 1.0
-Created-By: Maven JAR Plugin 3.3.0
-Build-Jdk-Spec: 17
+Created-By: Maven JAR Plugin 3.4.2
+Build-Jdk-Spec: 21
 Implementation-Title: demo
 Implementation-Version: 0.0.1-SNAPSHOT
-Main-Class: org.springframework.boot.loader.JarLauncher
+Main-Class: org.springframework.boot.loader.launch.JarLauncher
 Start-Class: io.paketo.demo.DemoApplication
-Spring-Boot-Version: 3.0.1
+Spring-Boot-Version: 3.3.2
 Spring-Boot-Classes: BOOT-INF/classes/
 Spring-Boot-Lib: BOOT-INF/lib/
 Spring-Boot-Classpath-Index: BOOT-INF/classpath.idx
