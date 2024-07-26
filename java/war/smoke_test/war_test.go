@@ -3,11 +3,12 @@ package war_test
 import (
 	"flag"
 	"fmt"
-	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
+
+	"github.com/paketo-buildpacks/samples/tests"
 
 	"github.com/paketo-buildpacks/occam"
 	"github.com/sclevine/spec"
@@ -96,6 +97,7 @@ func testWARWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
+						WithEnv(map[string]string{"BP_TOMCAT_VERSION": "10"}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 

@@ -51,4 +51,20 @@
 		</dependency>
 	</dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                  <image>
+                    <env>
+                      <BP_TOMCAT_VERSION>10</BP_TOMCAT_VERSION>
+                    </env>
+                  </image>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
