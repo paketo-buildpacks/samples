@@ -21,7 +21,7 @@ echo "<Instrumentation Key>" > binding/InstrumentationKey
 ## Building
 
 ```bash
-pack build applications/application-insights --env BP_JVM_VERSION=11 --volume "$(pwd)/binding:/platform/bindings/application-insights"
+pack build applications/application-insights --env BP_JVM_VERSION=17 --volume "$(pwd)/binding:/platform/bindings/application-insights"
 ```
 
 ## Running

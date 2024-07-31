@@ -5,7 +5,7 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 ## Building
 
 ```bash
-pack build applications/war --env BP_JVM_VERSION=11
+pack build applications/war --env BP_JVM_VERSION=17 --env BP_TOMCAT_VERSION=10
 ```
 
 ## Running
