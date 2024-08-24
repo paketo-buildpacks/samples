@@ -97,7 +97,7 @@ func testWARWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
-						WithEnv(map[string]string{"BP_TOMCAT_VERSION": "10"}).
+						WithEnv(map[string]string{"BP_TOMCAT_VERSION": "10.1"}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
