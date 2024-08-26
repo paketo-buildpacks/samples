@@ -1,21 +1,21 @@
-name: war
+name: war-spring
 "on":
   merge_group:
   pull_request:
     paths:
-      - java/war/**
+      - java/war-spring/**
   push:
     branches:
       - main
     paths:
-      - java/war/**
+      - java/war-spring/**
 
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        java: [11, 17]
+        java: [17, 21]
 
     steps:
       - uses: actions/checkout@v4
@@ -25,8 +25,8 @@ jobs:
           distribution: "zulu"
       - uses: actions/cache@v4
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('java/war/*.gradle') }}
-          restore-keys: ${{ runner.os }}-gradle
-      - run: ./gradlew build
-        working-directory: java/war
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('java/war-spring/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - run: ./mvnw -B package -Djava.version=${{ matrix.java }}
+        working-directory: java/war-spring
