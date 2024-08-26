@@ -103,7 +103,7 @@ func testWARWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CA Certificates")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Maven")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Gradle")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Apache Tomcat")))
 
 					container, err = docker.Container.Run.
