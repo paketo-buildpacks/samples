@@ -1,7 +1,7 @@
 {
   "author": "Paketo Buildpacks",
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.20.0"
   },
   "description": "Sample Node.js Application using Yarn",
   "license": "Apache-2.0",
