@@ -5,7 +5,7 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 ## Building
 
 ```bash
-pack build applications/kotlin  --env BP_JVM_VERSION=11
+pack build applications/kotlin  --env BP_JVM_VERSION=17
 ```
 
 ## Running

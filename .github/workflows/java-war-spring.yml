@@ -1,0 +1,32 @@
+name: war-spring
+"on":
+  merge_group:
+  pull_request:
+    paths:
+      - java/war-spring/**
+  push:
+    branches:
+      - main
+    paths:
+      - java/war-spring/**
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [17, 21]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: "zulu"
+      - uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('java/war-spring/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+      - run: ./mvnw -B package -Djava.version=${{ matrix.java }}
+        working-directory: java/war-spring

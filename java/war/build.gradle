@@ -1,0 +1,26 @@
+plugins {
+    id 'war'
+}
+
+group = 'io.paketo'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    // Use Maven Central for resolving dependencies.
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile 'jakarta.platform:jakarta.jakartaee-api:10.0.0'
+    providedCompile 'org.eclipse.microprofile:microprofile:6.1'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.3'
+}
+
+test {
+    useJUnitPlatform()
+}

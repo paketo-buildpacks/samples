@@ -1,6 +1,8 @@
 #!/bin/bash
 set -eo pipefail
 
+echo "$(basename $(dirname $0))"
+
 # run from the jar director
 if [ "$(basename $(dirname $0))" != "jar" ]; then
     echo "Run this script from the 'java/jar' directory"

@@ -3,12 +3,12 @@ name: war
   merge_group:
   pull_request:
     paths:
-    - java/war/**
+      - java/war/**
   push:
     branches:
-    - main
+      - main
     paths:
-    - java/war/**
+      - java/war/**
 
 jobs:
   test:
@@ -22,11 +22,11 @@ jobs:
       - uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java }}
-          distribution: 'zulu'
+          distribution: "zulu"
       - uses: actions/cache@v4
         with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('java/war/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-      - run: ./mvnw -B package -Djava.version=${{ matrix.java }}
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('java/war/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - run: ./gradlew build
         working-directory: java/war
