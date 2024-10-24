@@ -3,7 +3,7 @@ module github.com/paketo-buildpacks/samples
 go 1.22
 
 require (
-	github.com/docker/docker v26.1.4+incompatible
+	github.com/docker/docker v26.1.5+incompatible
 	github.com/onsi/gomega v1.33.1
 	github.com/paketo-buildpacks/occam v0.18.7
 	github.com/paketo-buildpacks/packit/v2 v2.14.0
