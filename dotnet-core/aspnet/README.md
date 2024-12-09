@@ -6,7 +6,7 @@
 
 ## Running
 
-`docker run --interactive --tty --env PORT=8080 --publish 8080:8080 dotnet-aspnet-sample`
+`docker run --rm --env PORT=8080 --publish 8080:8080 dotnet-aspnet-sample`
 
 ## Viewing
 
