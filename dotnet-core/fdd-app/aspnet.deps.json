@@ -1,12 +1,12 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v6.0/ubuntu.18.04-x64",
+    "name": ".NETCoreApp,Version=v8.0/ubuntu.22.04-x64",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v6.0": {},
-    ".NETCoreApp,Version=v6.0/ubuntu.18.04-x64": {
+    ".NETCoreApp,Version=v8.0": {},
+    ".NETCoreApp,Version=v8.0/ubuntu.22.04-x64": {
       "aspnet/1.0.0": {
         "runtime": {
           "aspnet.dll": {}
