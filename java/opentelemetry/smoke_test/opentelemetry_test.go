@@ -101,7 +101,7 @@ func testOpentelemetryWithBuilder(builder string) func(*testing.T, spec.G, spec.
 						WithBuilder(builder).
 						WithBuildpacks(
 							"paketo-buildpacks/java",
-							"gcr.io/paketo-buildpacks/opentelemetry",
+							"docker.io/paketo-buildpacks/opentelemetry",
 						).
 						WithGID("123").
 						Execute(name, source)
