@@ -7,7 +7,7 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 ```bash
 pack build applications/opentelemetry \
     --buildpack paketo-buildpacks/java \
-    --buildpack docker.io/paketo-buildpacks/opentelemetry \
+    --buildpack docker.io/paketobuildpacks/opentelemetry \
     --env BP_OPENTELEMETRY_ENABLED=true \
     --env BP_JVM_VERSION=17
 ```
