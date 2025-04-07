@@ -96,6 +96,7 @@ func testOpentelemetryWithBuilder(builder string) func(*testing.T, spec.G, spec.
 					image, logs, err = pack.Build.
 						WithPullPolicy("if-not-present").
 						WithEnv(map[string]string{
+                            "BP_JVM_VERSION": "17",
 							"BP_OPENTELEMETRY_ENABLED": "true",
 						}).
 						WithBuilder(builder).
