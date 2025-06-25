@@ -80,10 +80,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Smoke Test Java samples
-        env:
-          TESTCONTAINERS_RYUK_DISABLED: true
-          TESTCONTAINERS_RYUK_CONTAINER_PRIVILEGED: true
         run: |
           echo "About to run the smoke test script against this suite folder: ${{ matrix.java_sample_folder }}/smoke_test"
+          export TESTCONTAINERS_RYUK_DISABLED=true
+          export TESTCONTAINERS_RYUK_CONTAINER_PRIVILEGED=true
           ./scripts/smoke.sh --suite ${{ matrix.java_sample_folder }} \
                              --builder paketobuildpacks/builder-jammy-tiny:latest
