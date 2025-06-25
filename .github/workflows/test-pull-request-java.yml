@@ -84,5 +84,25 @@ jobs:
           echo "About to run the smoke test script against this suite folder: ${{ matrix.java_sample_folder }}/smoke_test"
           export TESTCONTAINERS_RYUK_DISABLED=true
           export TESTCONTAINERS_RYUK_CONTAINER_PRIVILEGED=true
-          ./scripts/smoke.sh --suite ${{ matrix.java_sample_folder }} \
-                             --builder paketobuildpacks/builder-jammy-tiny:latest
+
+          # Map the right builder image for the Java sample folder
+          case "${{ matrix.java_sample_folder }}" in
+            "java/akka/"*)
+              BUILDER_IMAGE="paketobuildpacks/builder-jammy-base:latest"
+              ;;
+            "java/dist-zip/"*)
+              BUILDER_IMAGE="paketobuildpacks/builder-jammy-base:latest"
+              ;;
+            "java/java-node/gradle-node/"*)
+              BUILDER_IMAGE="paketobuildpacks/builder-jammy-base:latest"
+              ;;
+            "java/java-node/maven-yarn/"*)
+              BUILDER_IMAGE="paketobuildpacks/builder-jammy-base:latest"
+              ;;
+            *)
+              BUILDER_IMAGE="paketobuildpacks/builder-jammy-tiny:latest"
+              ;;
+          esac
+
+          ./scripts/smoke.sh --suite "${{ matrix.java_sample_folder }}" \
+                             --builder "$BUILDER_IMAGE"
