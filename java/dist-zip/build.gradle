@@ -23,3 +23,20 @@ dependencies {
 test {
 	useJUnitPlatform()
 }
+
+tasks.named("bootDistTar") {
+	archiveClassifier = 'boot'
+}
+
+tasks.named("bootDistZip") {
+	archiveClassifier = 'boot'
+}
+
+tasks.named("distTar") {
+	archiveClassifier = 'std'
+}
+
+tasks.named("distZip") {
+	archiveClassifier = 'std'
+}
+

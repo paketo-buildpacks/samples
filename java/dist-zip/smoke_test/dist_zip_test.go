@@ -11,6 +11,7 @@ import (
 
 	"github.com/paketo-buildpacks/samples/tests"
 
+	"github.com/onsi/gomega/format"
 	"github.com/paketo-buildpacks/occam"
 	"github.com/sclevine/spec"
 	"github.com/sclevine/spec/report"
@@ -30,6 +31,7 @@ func TestDistZip(t *testing.T) {
 	Expect(len(builders)).NotTo(Equal(0))
 
 	SetDefaultEventuallyTimeout(60 * time.Second)
+	format.MaxLength = 0 // disable truncation of long strings in failure messages
 
 	suite := spec.New("Java - Dist Zip", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
@@ -104,7 +106,7 @@ func testDistZipWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithEnv(map[string]string{
 							"BP_JVM_VERSION":            "17",
 							"BP_GRADLE_BUILD_ARGUMENTS": "--no-daemon -x test bootDistZip",
-							"BP_GRADLE_BUILT_ARTIFACT":  "build/distributions/*.zip"}).
+							"BP_GRADLE_BUILT_ARTIFACT":  "build/distributions/demo-boot*.zip"}).
 						WithBuilder(builder).
 						WithGID("123").
 						Execute(name, source)
