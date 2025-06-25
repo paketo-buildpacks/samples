@@ -68,6 +68,7 @@ jobs:
     name: Smoke Tests
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
 
     steps:
