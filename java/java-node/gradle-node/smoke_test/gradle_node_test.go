@@ -104,7 +104,7 @@ func testGradleNodeWithBuilder(builder string) func(*testing.T, spec.G, spec.S) 
 						WithBuilder(builder).
 						WithGID("123").
 						WithEnv(map[string]string{
-							"BP_JVM_VERSION":       "17",
+							"BP_JVM_VERSION":       "21",
 							"BP_JAVA_INSTALL_NODE": "true",
 							"BP_NODE_PROJECT_PATH": "frontend"}).
 						Execute(name, source)

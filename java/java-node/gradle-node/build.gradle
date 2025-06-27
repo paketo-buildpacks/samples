@@ -54,7 +54,7 @@ tasks.register('buildFrontend', Exec) {
 tasks.register('copyFrontend', Sync) {
     dependsOn("buildFrontend")
     from(file("./frontend/dist"))
-    into(file("$rootProject.layout.buildDirectory/resources/main/static"))
+    into(rootProject.layout.buildDirectory.dir("resources/main/static"))
     doLast {
         println("copied built frontend to static resources")
     }
