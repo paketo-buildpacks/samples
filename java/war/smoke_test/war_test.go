@@ -70,7 +70,7 @@ func testWARWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			it.After(func() {
 				err := docker.Container.Remove.Execute(container.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker container: exit status 1: Container name cannot be empty"))
+					Expect(err).To(MatchError("failed to remove docker container: exit status 1: container name cannot be empty"))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
