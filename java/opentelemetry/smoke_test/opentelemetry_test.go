@@ -3,11 +3,12 @@ package opentelemetry_test
 import (
 	"flag"
 	"fmt"
-	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
+
+	"github.com/paketo-buildpacks/samples/tests"
 
 	"github.com/paketo-buildpacks/occam"
 	"github.com/sclevine/spec"
@@ -69,7 +70,7 @@ func testOpentelemetryWithBuilder(builder string) func(*testing.T, spec.G, spec.
 			it.After(func() {
 				err := docker.Container.Remove.Execute(container.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker container: exit status 1: Container name cannot be empty"))
+					Expect(err).To(MatchError("failed to remove docker container: exit status 1: container name cannot be empty"))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
@@ -96,12 +97,13 @@ func testOpentelemetryWithBuilder(builder string) func(*testing.T, spec.G, spec.
 					image, logs, err = pack.Build.
 						WithPullPolicy("if-not-present").
 						WithEnv(map[string]string{
+							"BP_JVM_VERSION":           "17",
 							"BP_OPENTELEMETRY_ENABLED": "true",
 						}).
 						WithBuilder(builder).
 						WithBuildpacks(
 							"paketo-buildpacks/java",
-							"gcr.io/paketo-buildpacks/opentelemetry",
+							"docker.io/paketobuildpacks/opentelemetry",
 						).
 						WithGID("123").
 						Execute(name, source)
