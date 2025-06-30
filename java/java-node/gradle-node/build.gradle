@@ -1,12 +1,11 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.3.4'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.springframework.boot' version '3.5.+'
+	id 'io.spring.dependency-management' version '1.1.+'
 }
 
 group = 'io.paketo'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
 
 jar {
     enabled = false
@@ -27,8 +26,15 @@ test {
 	useJUnitPlatform()
 }
 
+tasks.named('resolveMainClassName') {
+    dependsOn(copyFrontend)
+}
 
-task installFrontend(type: Exec) {
+tasks.named('compileTestJava') {
+    dependsOn(copyFrontend)
+}
+
+tasks.register('installFrontend', Exec) {
     inputs.file(file("frontend/package.json"))
     inputs.file(file("frontend/package-lock.json"))
     outputs.dir(file("frontend/node_modules"))
@@ -37,7 +43,7 @@ task installFrontend(type: Exec) {
     commandLine("npm", "--prefix", "./frontend", "install", "./frontend")
 }
 
-task buildFrontend(type: Exec) {
+tasks.register('buildFrontend', Exec) {
     dependsOn("installFrontend")
     inputs.dir(file("frontend"))
     outputs.dir(file("frontend/dist"))
@@ -45,16 +51,16 @@ task buildFrontend(type: Exec) {
     commandLine("npm", "--prefix", "./frontend", "run", "build")
 }
 
-task copyFrontend(type: Sync) {
+tasks.register('copyFrontend', Sync) {
     dependsOn("buildFrontend")
     from(file("./frontend/dist"))
-    into(file("$buildDir/resources/main/static"))
+    into(rootProject.layout.buildDirectory.dir("resources/main/static"))
     doLast {
         println("copied built frontend to static resources")
     }
 }
 
-task copyFrontendForIntelliJ(type: Sync) {
+tasks.register('copyFrontendForIntelliJ', Sync) {
     dependsOn("buildFrontend")
     from(file("./frontend/dist"))
     into(file("./src/main/resources/static"))
@@ -63,7 +69,7 @@ task copyFrontendForIntelliJ(type: Sync) {
     }
 }
 
-task cleanFrontend(type: Delete) {
+tasks.register('cleanFrontend', Delete) {
     delete(file("./frontend/dist"))
     delete(file("./src/main/resources/static"))
 }

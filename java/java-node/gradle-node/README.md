@@ -5,7 +5,7 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 ## Building
 
 ```bash
-pack build applications/gradle-node --env BP_JVM_VERSION=17 --env BP_JAVA_INSTALL_NODE=true --env BP_NODE_PROJECT_PATH=frontend
+pack build applications/gradle-node --env BP_JVM_VERSION=21 --env BP_JAVA_INSTALL_NODE=true --env BP_NODE_PROJECT_PATH=frontend --builder paketobuildpacks/builder-jammy-base
 ```
 
 ## Running
