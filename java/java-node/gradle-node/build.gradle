@@ -1,7 +1,7 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.4.5'
-	id 'io.spring.dependency-management' version '1.1.7'
+	id 'org.springframework.boot' version '3.5.+'
+	id 'io.spring.dependency-management' version '1.1.+'
 }
 
 group = 'io.paketo'
@@ -54,7 +54,7 @@ tasks.register('buildFrontend', Exec) {
 tasks.register('copyFrontend', Sync) {
     dependsOn("buildFrontend")
     from(file("./frontend/dist"))
-    into(file("$rootProject.layout.buildDirectory/resources/main/static"))
+    into(rootProject.layout.buildDirectory.dir("resources/main/static"))
     doLast {
         println("copied built frontend to static resources")
     }
