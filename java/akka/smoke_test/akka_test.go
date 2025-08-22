@@ -3,12 +3,13 @@ package akka_test
 import (
 	"flag"
 	"fmt"
-	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/paketo-buildpacks/samples/tests"
 
 	"github.com/paketo-buildpacks/occam"
 	"github.com/sclevine/spec"
@@ -71,7 +72,7 @@ func testAkkaWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			it.After(func() {
 				err := docker.Container.Remove.Execute(container.ID)
 				if err != nil {
-					Expect(err).To(MatchError("failed to remove docker container: exit status 1: Container name cannot be empty"))
+					Expect(err).To(MatchError("failed to remove docker container: exit status 1: container name cannot be empty"))
 				} else {
 					Expect(err).ToNot(HaveOccurred())
 				}
