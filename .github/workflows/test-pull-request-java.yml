@@ -16,7 +16,7 @@ jobs:
       matrix: ${{ steps.paths.outputs.matrix }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
       - name: Discover changed paths
@@ -78,7 +78,7 @@ jobs:
           go-version: 1.22.x
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Smoke Test Java samples
         run: |
