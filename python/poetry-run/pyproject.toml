@@ -7,7 +7,7 @@ authors = []
 [tool.poetry.dependencies]
 python = "^3.10"
 Flask = "2.3.2"
-gunicorn = "^20.1.0"
+gunicorn = "^23.0.0"
 
 [tool.poetry.scripts]
 my-script = "default_app.server:run"
