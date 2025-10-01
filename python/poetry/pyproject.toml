@@ -8,7 +8,7 @@ package-mode = false
 [tool.poetry.dependencies]
 python = "^3.10"
 Flask = "2.3.2"
-gunicorn = "^20.1.0"
+gunicorn = "^22.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
