@@ -17,7 +17,6 @@ import (
 )
 
 var builders tests.BuilderFlags
-var suite spec.Suite
 
 func init() {
 	flag.Var(&builders, "name", "the name a builder to test with")
@@ -82,8 +81,13 @@ func testProcfileWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy("always").
 						WithBuilder(builder).
+						WithBuildpacks(
+							"index.docker.io/paketobuildpacks/go-dist",
+							"index.docker.io/paketobuildpacks/procfile",
+							"index.docker.io/paketocommunity/build-plan",
+						).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 

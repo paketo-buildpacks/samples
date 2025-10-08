@@ -1,0 +1,5 @@
+[[requires]]
+  name = "go"
+
+  [requires.metadata]
+    launch = true
