@@ -2,7 +2,21 @@
 
 ## Building
 
-`pack build npm-sample --buildpack paketo-buildpacks/nodejs`
+### Ubuntu
+
+```
+pack build npm-sample --buildpack docker.io/paketobuildpacks/nodejs \
+    --builder docker.io/paketobuildpacks/builder-jammy-buildpackless-base
+```
+
+### RHEL
+
+```
+pack build npm-sample \
+   --extension docker.io/paketobuildpacks/ubi-nodejs-extension \
+   --buildpack docker.io/paketobuildpacks/nodejs \
+   --builder docker.io/paketobuildpacks/builder-ubi8-buildpackless-base
+```
 
 ## Running
 
