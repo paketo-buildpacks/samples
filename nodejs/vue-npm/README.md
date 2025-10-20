@@ -5,7 +5,22 @@ To build frontend applications and serve them with NGINX/HTTPD, please use the W
 
 ## Building
 
-`pack build vue-sample --buildpack paketo-buildpacks/nodejs --env "BP_NODE_RUN_SCRIPTS=build" --env "NODE_ENV=development"`
+### Ubuntu
+
+```
+pack build vue-sample --buildpack docker.io/paketobuildpacks/nodejs \
+    --builder docker.io/paketobuildpacks/builder-jammy-buildpackless-base \
+    --env "BP_NODE_RUN_SCRIPTS=build" --env "NODE_ENV=development"
+```
+
+### RHEL
+
+```
+pack build vue-sample\
+    --buildpack docker.io/paketobuildpacks/nodejs \
+    --builder docker.io/paketobuildpacks/builder-ubi8-buildpackless-base \
+    --env "BP_NODE_RUN_SCRIPTS=build" --env "NODE_ENV=development"
+```
 
 ## Running
 

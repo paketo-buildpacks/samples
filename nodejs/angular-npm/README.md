@@ -5,7 +5,23 @@ To build frontend applications and serve them with NGINX/HTTPD, please use the W
 
 ## Building
 
-`pack build angular-sample --buildpack paketo-buildpacks/nodejs --env "BP_NODE_RUN_SCRIPTS=build" --env "NODE_ENV=development"`
+### Ubuntu
+
+```
+pack build angular-sample --buildpack docker.io/paketobuildpacks/nodejs \
+    --builder docker.io/paketobuildpacks/builder-jammy-buildpackless-base \
+    --env "BP_NODE_RUN_SCRIPTS=build" --env "NODE_ENV=development"
+```
+
+### RHEL
+
+```
+pack build angular-sample\
+ --buildpack docker.io/paketobuildpacks/nodejs \
+ --builder docker.io/paketobuildpacks/builder-ubi8-buildpackless-base \
+ --env "BP_NODE_RUN_SCRIPTS=build" --env "NODE_ENV=development"
+
+```
 
 ## Running
 
@@ -22,4 +38,3 @@ When running containerized Angular applications, be sure to specify the host bef
 `ng serve --host 0.0.0.0`
 
 We need the additional flag `--env "NODE_ENV=development"` when running `pack build` since we need the `ng` cli provided in the devDependencies.
-
