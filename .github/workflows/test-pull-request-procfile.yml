@@ -24,5 +24,7 @@ jobs:
     - name: Test Procfile Samples
       run: |
         ./scripts/smoke.sh --suite procfile \
-                           --builder paketobuildpacks/builder-jammy-full:latest \
-                           --builder paketobuildpacks/builder-jammy-base:latest
+                           --builder docker.io/paketobuildpacks/builder-jammy-buildpackless-base:latest \
+                           --builder docker.io/paketobuildpacks/builder-jammy-base:latest \
+                           --builder docker.io/paketobuildpacks/ubuntu-noble-builder-buildpackless:latest \
+                           --builder docker.io/paketobuildpacks/ubuntu-noble-builder:latest
