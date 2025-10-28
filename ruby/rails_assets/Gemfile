@@ -1,14 +1,18 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.1.0'
+ruby '~> 3.4.0'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.7'
+gem 'rails', '~> 8.1.0'
 # Use Puma as the app server
-gem 'puma', '~> 5.6'
+gem 'puma', '~> 7.1'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker', '~> 6.0.0.rc.6'
+# Use importmap for JavaScript modules
+gem 'importmap-rails', '~> 2.2'
+# Hotwire's SPA-like page accelerator
+gem 'turbo-rails', '~> 2.0'
+# Hotwire's modest JavaScript framework
+gem 'stimulus-rails', '~> 1.3'
