@@ -8,8 +8,6 @@ gem 'rails', '~> 8.1.0'
 # Use Puma as the app server
 gem 'puma', '~> 7.1'
 
-# Use SCSS for stylesheets
-gem 'sass-rails', '>= 6'
 # Use importmap for JavaScript modules
 gem 'importmap-rails', '~> 2.2'
 # Hotwire's SPA-like page accelerator
