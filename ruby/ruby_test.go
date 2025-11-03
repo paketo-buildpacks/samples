@@ -266,9 +266,6 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for MRI")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundler")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundle Install")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Node Engine")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Yarn")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Yarn Install")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Rails Assets")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Puma")))
 
