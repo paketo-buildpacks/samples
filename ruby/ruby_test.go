@@ -252,6 +252,11 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			context("app uses rails asset compilation", func() {
 				it("builds successfully", func() {
+					// Rails assets requires libyaml which is only available in the full builder
+					if builder != "paketobuildpacks/builder-jammy-full:latest" {
+						t.Skip("Skipping rails_assets test - requires libyaml from full builder")
+					}
+
 					var err error
 					source, err = occam.Source(filepath.Join("../ruby", "rails_assets"))
 					Expect(err).NotTo(HaveOccurred())
