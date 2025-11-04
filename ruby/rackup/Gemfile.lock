@@ -4,6 +4,7 @@ GEM
     rack (3.2.4)
     rackup (2.2.1)
       rack (>= 3)
+    webrick (1.9.1)
 
 PLATFORMS
   arm64-darwin-25
@@ -12,6 +13,7 @@ PLATFORMS
 DEPENDENCIES
   rack (~> 3.2)
   rackup (~> 2.2)
+  webrick (~> 1.9)
 
 RUBY VERSION
    ruby 3.4.7p58
