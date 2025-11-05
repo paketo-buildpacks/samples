@@ -1,0 +1,45 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    base64 (0.3.0)
+    logger (1.7.0)
+    mustermann (3.0.4)
+      ruby2_keywords (~> 0.0.1)
+    passenger (6.1.0)
+      rack (>= 1.6.13)
+      rackup (>= 1.0.1)
+      rake (>= 12.3.3)
+    rack (3.2.4)
+    rack-protection (4.2.1)
+      base64 (>= 0.1.0)
+      logger (>= 1.6.0)
+      rack (>= 3.0.0, < 4)
+    rack-session (2.1.1)
+      base64 (>= 0.1.0)
+      rack (>= 3.0.0)
+    rackup (2.2.1)
+      rack (>= 3)
+    rake (13.3.1)
+    ruby2_keywords (0.0.5)
+    sinatra (4.2.1)
+      logger (>= 1.6.0)
+      mustermann (~> 3.0)
+      rack (>= 3.0.0, < 4)
+      rack-protection (= 4.2.1)
+      rack-session (>= 2.0.0, < 3)
+      tilt (~> 2.0)
+    tilt (2.6.1)
+
+PLATFORMS
+  arm64-darwin-25
+  ruby
+
+DEPENDENCIES
+  passenger (~> 6.1)
+  sinatra (~> 4.2)
+
+RUBY VERSION
+   ruby 3.4.7p58
+
+BUNDLED WITH
+   2.6.9

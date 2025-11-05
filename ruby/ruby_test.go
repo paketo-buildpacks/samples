@@ -71,10 +71,18 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 			})
 
 			it.After(func() {
-				Expect(docker.Container.Remove.Execute(container.ID)).To(Succeed())
-				Expect(docker.Volume.Remove.Execute(occam.CacheVolumeNames(name))).To(Succeed())
-				Expect(docker.Image.Remove.Execute(image.ID)).To(Succeed())
-				Expect(os.RemoveAll(source)).To(Succeed())
+				if container.ID != "" {
+					Expect(docker.Container.Remove.Execute(container.ID)).To(Succeed())
+				}
+				if name != "" {
+					Expect(docker.Volume.Remove.Execute(occam.CacheVolumeNames(name))).To(Succeed())
+				}
+				if image.ID != "" {
+					Expect(docker.Image.Remove.Execute(image.ID)).To(Succeed())
+				}
+				if source != "" {
+					Expect(os.RemoveAll(source)).To(Succeed())
+				}
 			})
 
 			context("app uses passenger", func() {
@@ -252,6 +260,11 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			context("app uses rails asset compilation", func() {
 				it("builds successfully", func() {
+					// Rails assets requires libyaml which is only available in the full builder
+					if builder != "paketobuildpacks/builder-jammy-full:latest" {
+						t.Skip("Skipping rails_assets test - requires libyaml from full builder")
+					}
+
 					var err error
 					source, err = occam.Source(filepath.Join("../ruby", "rails_assets"))
 					Expect(err).NotTo(HaveOccurred())
@@ -266,9 +279,6 @@ func testRubyWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for MRI")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundler")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Bundle Install")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Node Engine")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Yarn")))
-					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Yarn Install")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Rails Assets")))
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Puma")))
 

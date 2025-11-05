@@ -1,4 +1,6 @@
 source 'https://rubygems.org/'
 
-gem 'sinatra'
-gem 'passenger'
+ruby '~> 3.4.0'
+
+gem 'sinatra', '~> 4.2'
+gem 'passenger', '~> 6.1'

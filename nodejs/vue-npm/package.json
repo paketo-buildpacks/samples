@@ -9,7 +9,6 @@
     "vue-template-compiler": "^2.6.11"
   },
   "license": "Apache-2.0",
-  "name": "sample",
   "private": true,
   "repository": {
     "type": "git",
