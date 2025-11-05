@@ -1,0 +1,17 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rake (13.3.1)
+
+PLATFORMS
+  arm64-darwin-25
+  ruby
+
+DEPENDENCIES
+  rake (~> 13.3)
+
+RUBY VERSION
+   ruby 3.4.7p58
+
+BUNDLED WITH
+   2.6.9
