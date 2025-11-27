@@ -4,7 +4,7 @@ GEM
     rack (3.2.4)
     rackup (2.2.1)
       rack (>= 3)
-    webrick (1.9.1)
+    webrick (1.9.2)
 
 PLATFORMS
   arm64-darwin-25
