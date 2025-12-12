@@ -23,7 +23,7 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: ~/.sbt
           key: ${{ runner.os }}-sbt-${{ hashFiles('java/akka/build.sbt') }}
