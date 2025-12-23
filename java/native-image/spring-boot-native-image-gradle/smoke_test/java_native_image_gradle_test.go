@@ -84,7 +84,7 @@ func testGradleWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
-							"BP_NATIVE_IMAGE": "true"}).
+							"BP_NATIVE_IMAGE": "true", "BP_JVM_VERSION": "25"}).
 						WithBuilder(builder).
 						WithGID("123").
 						Execute(name, source)
