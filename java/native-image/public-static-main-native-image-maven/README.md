@@ -1,4 +1,6 @@
-# Java Native Image Sample Application, using Gradle
+# Java Native Image Sample Application, Basic
+
+This is a basic Java app (i.e. public static void main) built using Native Image & Buildpacks.
 
 ## Building
 
@@ -11,12 +13,6 @@ pack build applications/native-image \
   --env BP_JVM_VERSION=25
 ```
 
-### With the Spring Boot Gradle Plugin
-
-```bash
-./gradlew bootBuildImage
-```
-
 ## Running
 
 ```bash
@@ -26,5 +22,5 @@ docker run --rm --tty --publish 8080:8080 applications/native-image
 ## Viewing
 
 ```bash
-curl -s http://localhost:8080/actuator/health | jq .
+docker logs applications/native-image
 ```

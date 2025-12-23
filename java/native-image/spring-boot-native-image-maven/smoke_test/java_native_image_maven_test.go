@@ -3,11 +3,12 @@ package native_image_test
 import (
 	"flag"
 	"fmt"
-	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
+
+	"github.com/paketo-buildpacks/samples/tests"
 
 	"github.com/paketo-buildpacks/occam"
 	"github.com/sclevine/spec"
@@ -85,7 +86,7 @@ func testMavenWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 						WithEnv(map[string]string{
 							"BP_NATIVE_IMAGE":          "true",
 							"BP_MAVEN_BUILD_ARGUMENTS": "-Dmaven.test.skip=true --no-transfer-progress -Pnative package",
-							"BP_JVM_VERSION":           "17"}).
+							"BP_JVM_VERSION":           "25"}).
 						WithBuilder(builder).
 						WithGID("123").
 						Execute(name, source)
