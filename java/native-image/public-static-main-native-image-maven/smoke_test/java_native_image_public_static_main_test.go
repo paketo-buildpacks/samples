@@ -3,11 +3,12 @@ package native_image_test
 import (
 	"flag"
 	"fmt"
-	"github.com/paketo-buildpacks/samples/tests"
 	"os"
 	"path/filepath"
 	"testing"
 	"time"
+
+	"github.com/paketo-buildpacks/samples/tests"
 
 	"github.com/paketo-buildpacks/occam"
 	"github.com/sclevine/spec"
@@ -82,7 +83,7 @@ func testPublicStaticMainWithBuilder(builder string) func(*testing.T, spec.G, sp
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true"}).
+						WithEnv(map[string]string{"BP_NATIVE_IMAGE": "true", "BP_JVM_VERSION": "25"}).
 						WithBuilder(builder).
 						WithGID("123").
 						Execute(name, source)
