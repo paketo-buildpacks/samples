@@ -23,8 +23,9 @@ jobs:
 
     - name: Test Procfile Samples
       run: |
-        ./scripts/smoke.sh --suite procfile \
-                           --builder docker.io/paketobuildpacks/builder-jammy-buildpackless-base:latest \
-                           --builder docker.io/paketobuildpacks/builder-jammy-base:latest \
-                           --builder docker.io/paketobuildpacks/ubuntu-noble-builder-buildpackless:latest \
-                           --builder docker.io/paketobuildpacks/ubuntu-noble-builder:latest
+        cd procfile/procfile-sample
+        pack build applications/procfile \
+          --builder docker.io/paketobuildpacks/ubuntu-noble-builder-buildpackless:0.0.78 \
+          --buildpack docker.io/paketobuildpacks/go-dist \
+          --buildpack docker.io/paketocommunity/build-plan \
+          --buildpack docker.io/paketobuildpacks/procfile
