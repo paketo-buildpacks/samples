@@ -24,6 +24,11 @@ jobs:
     
     - uses: buildpacks/github-actions/setup-pack@v5.10.0
 
+    - name: Disable containerd snapshotter
+      run: |
+        echo '{"features": {"containerd-snapshotter": false}}' | sudo tee /etc/docker/daemon.json
+        sudo systemctl restart docker
+
     - name: Test Procfile Samples
       run: |
         cd procfile/procfile-sample
