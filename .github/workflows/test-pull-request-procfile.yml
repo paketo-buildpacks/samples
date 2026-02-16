@@ -29,6 +29,7 @@ jobs:
         cd procfile/procfile-sample
         pack build applications/procfile \
           --builder docker.io/paketobuildpacks/ubuntu-noble-builder-buildpackless:0.0.78 \
+          --lifecycle-image buildpacksio/lifecycle:e10cf01 \
           --buildpack docker.io/paketobuildpacks/go-dist \
           --buildpack docker.io/paketocommunity/build-plan \
           --buildpack docker.io/paketobuildpacks/procfile
