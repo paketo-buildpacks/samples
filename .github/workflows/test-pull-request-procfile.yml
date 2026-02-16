@@ -22,7 +22,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v6
     
-    - uses: buildpacks/github-actions/setup-pack@v5.11.0
+    - uses: buildpacks/github-actions/setup-pack@v5.10.1
 
     - name: Test Procfile Samples
       run: |
