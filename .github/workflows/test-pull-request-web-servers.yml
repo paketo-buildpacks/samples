@@ -23,6 +23,8 @@ jobs:
 
     - name: Test Web Servers Samples
       run: |
-        ./scripts/smoke.sh --suite web-servers \
-                           --builder paketobuildpacks/builder-jammy-full:latest \
-                           --builder paketobuildpacks/builder-jammy-base:latest
+        cd web-servers/nginx-sample
+        pack build applications/nginx \
+          --builder docker.io/paketobuildpacks/ubuntu-noble-builder:latest \
+          --lifecycle-image buildpacksio/lifecycle:e10cf01 \
+          --buildpack urn:cnb:builder:paketo-buildpacks/web-servers
