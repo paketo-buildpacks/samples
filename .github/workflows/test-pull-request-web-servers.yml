@@ -22,6 +22,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v6
 
+    - uses: buildpacks/github-actions/setup-pack@v5.10.0
+
     - name: Test Web Servers Samples
       run: |
         cd web-servers/nginx-sample
