@@ -31,6 +31,7 @@ jobs:
 
     - name: Test Procfile Samples
       run: |
+        docker info
         cd procfile/procfile-sample
         pack build applications/procfile \
           --builder docker.io/paketobuildpacks/ubuntu-noble-builder-buildpackless:latest \
