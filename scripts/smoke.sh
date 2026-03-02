@@ -50,8 +50,8 @@ function main() {
   fi
 
   if [[ ! ${builderArray[@]+"${builderArray[@]}"} ]]; then
-    builderArray+=("paketobuildpacks/builder-jammy-full:latest")
-    util::print::info "No builder specified. Running with jammy full builder (paketobuildpacks/builder-jammy-full:latest)"
+    util::print::error "No builder specified. Please specify a builder."
+    exit 1
   fi
 
   if [[ ! ${suiteArray[@]+"${suiteArray[@]}"} ]]; then
