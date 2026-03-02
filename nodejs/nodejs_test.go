@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"regexp"
 	"testing"
 	"time"
 
@@ -20,7 +21,6 @@ import (
 
 var (
 	builders tests.BuilderFlags
-	suite    spec.Suite
 )
 
 func init() {
@@ -39,12 +39,18 @@ func TestNodejs(t *testing.T) {
 
 	suite := spec.New("Nodejs", spec.Parallel(), spec.Report(report.Terminal{}))
 	for _, builder := range builders {
-		suite(fmt.Sprintf("Nodejs with %s builder", builder), testNodejsWithBuilder(builder))
+		isUbiBuilder := regexp.MustCompile(`ubi`).MatchString(builder)
+		pullPolicy := "never"
+		if isUbiBuilder {
+			pullPolicy = "always"
+		}
+
+		suite(fmt.Sprintf("Nodejs with %s builder", builder), testNodejsWithBuilder(builder, pullPolicy))
 	}
 	suite.Run(t)
 }
 
-func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
+func testNodejsWithBuilder(builder string, pullPolicy string) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -89,7 +95,7 @@ func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy(pullPolicy).
 						WithBuilder(builder).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
@@ -115,7 +121,7 @@ func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy(pullPolicy).
 						WithBuilder(builder).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
@@ -142,7 +148,7 @@ func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy(pullPolicy).
 						WithBuilder(builder).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
@@ -169,7 +175,7 @@ func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy(pullPolicy).
 						WithBuilder(builder).
 						WithEnv(map[string]string{
 							"BP_NODE_RUN_SCRIPTS": "build",
@@ -200,7 +206,7 @@ func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy(pullPolicy).
 						WithBuilder(builder).
 						WithEnv(map[string]string{"BP_NODE_RUN_SCRIPTS": "build"}).
 						Execute(name, source)
@@ -229,7 +235,7 @@ func testNodejsWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 					var logs fmt.Stringer
 					image, logs, err = pack.Build.
-						WithPullPolicy("never").
+						WithPullPolicy(pullPolicy).
 						WithBuilder(builder).
 						WithEnv(map[string]string{
 							"BP_NODE_RUN_SCRIPTS": "build",
