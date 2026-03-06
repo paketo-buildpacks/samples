@@ -4,6 +4,7 @@ name: opentelemetry
   pull_request:
     paths:
     - java/opentelemetry/**
+    - ".github/workflows/java-opentelemetry.yml"
   push:
     branches:
     - main

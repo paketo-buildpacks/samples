@@ -7,6 +7,7 @@ on:
     - main
     paths:
     - 'procfile/**'
+    - '.github/workflows/test-pull-request-procfile.yml'
 
 jobs:
   smoke:
