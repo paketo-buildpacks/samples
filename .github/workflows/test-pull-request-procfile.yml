@@ -28,3 +28,10 @@ jobs:
                            --builder docker.io/paketobuildpacks/builder-jammy-base:latest \
                            --builder docker.io/paketobuildpacks/ubuntu-noble-builder-buildpackless:latest \
                            --builder docker.io/paketobuildpacks/ubuntu-noble-builder:latest
+                           --builder docker.io/paketobuildpacks/ubuntu-noble-builder-buildpackless:latest \
+                           --builder docker.io/paketobuildpacks/builder-ubi8-base:latest \
+                           --builder docker.io/paketobuildpacks/builder-ubi8-buildpackless-base:latest \
+                           --builder docker.io/paketobuildpacks/ubi-9-builder:latest \
+                           --builder docker.io/paketobuildpacks/ubi-9-builder-buildpackless:latest \
+                           --builder docker.io/paketobuildpacks/ubi-10-builder:latest \
+                           --builder docker.io/paketobuildpacks/ubi-10-builder-buildpackless:latest 
