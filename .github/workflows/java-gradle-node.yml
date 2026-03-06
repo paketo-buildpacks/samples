@@ -4,6 +4,7 @@ name: gradle-node
   pull_request:
     paths:
     - java/java-node/gradle-node/**
+    - ".github/workflows/java-gradle-node.yml"
   push:
     branches:
     - main
