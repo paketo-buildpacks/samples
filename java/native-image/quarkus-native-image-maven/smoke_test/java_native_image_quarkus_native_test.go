@@ -85,7 +85,7 @@ func testQuarkusWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
-							"BP_JVM_VERSION":                       "21",
+							"BP_JVM_VERSION":                       "25",
 							"BP_NATIVE_IMAGE":                      "true",
 							"BP_MAVEN_BUILD_ARGUMENTS":             "-Dquarkus.package.type=native-sources -Dmaven.test.skip=true package",
 							"BP_MAVEN_BUILT_ARTIFACT":              "target/native-sources",
