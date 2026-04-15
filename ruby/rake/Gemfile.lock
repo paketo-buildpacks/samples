@@ -1,14 +1,14 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    rake (13.3.1)
+    rake (13.4.1)
 
 PLATFORMS
   arm64-darwin-25
   ruby
 
 DEPENDENCIES
-  rake (~> 13.3)
+  rake (~> 13.4)
 
 RUBY VERSION
    ruby 3.4.7p58
