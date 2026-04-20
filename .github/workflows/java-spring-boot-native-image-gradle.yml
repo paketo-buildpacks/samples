@@ -4,6 +4,7 @@ name: java-spring-boot-native-image-gradle
   pull_request:
     paths:
     - java/native-image/spring-boot-native-image-gradle/**
+    - ".github/workflows/java-spring-boot-native-image-gradle.yml"
   push:
     branches:
     - main

@@ -7,6 +7,7 @@ on:
     - main
     paths:
     - 'git/**'
+    - '.github/workflows/test-pull-request-git.yml'
 
 jobs:
   smoke:
