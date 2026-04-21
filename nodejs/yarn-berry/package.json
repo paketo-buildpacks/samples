@@ -1,0 +1,18 @@
+{
+  "author": "Paketo Buildpacks",
+  "dependencies": {
+    "express": "^5"
+  },
+  "description": "Sample Node.js Application using Yarn Berry",
+  "license": "Apache-2.0",
+  "name": "sample",
+  "packageManager": "yarn@4.12.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paketo-buildpacks/samples"
+  },
+  "scripts": {
+    "start": "yarn node server.js"
+  },
+  "version": "1.0.0"
+}
