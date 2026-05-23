@@ -5,56 +5,78 @@ updates:
   directory: /
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: npm
   directory: demo-apps/app-source/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: gomod
   directory: go/mod/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: maven
   directory: java/application-insights/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: maven
   directory: java/aspectj/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: gradle
   directory: java/dist-zip/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: gradle
   directory: java/gradle/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: gradle
   directory: java/java-node/gradle-node
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: npm
   directory: java/java-node/gradle-node/frontend
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: maven
   directory: java/java-node/maven-yarn
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: npm
   directory: java/java-node/maven-yarn
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 # Kotlin Gradle config not yet supported
 # - package-ecosystem: gradle
@@ -66,74 +88,103 @@ updates:
   directory: java/maven/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: maven
   directory: java/native-image/public-static-main-native-image-maven
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: maven
   directory: java/native-image/quarkus-native-image-maven
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: gradle
   directory: java/native-image/spring-boot-native-image-gradle
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: maven
   directory: java/native-image/spring-boot-native-image-maven
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: gradle
   directory: java/opentelemetry
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: maven
   directory: java/war/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: npm
   directory: nodejs/npm/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: npm
   directory: nodejs/yarn/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: bundler
   directory: ruby/passenger/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: bundler
   directory: ruby/puma/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: bundler
   directory: ruby/rackup/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: bundler
   directory: ruby/rake/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: bundler
   directory: ruby/thin/
   schedule:
     interval: daily
+  cooldown:
+    default-days: 7
 
 - package-ecosystem: bundler
   directory: ruby/unicorn/
   schedule:
     interval: daily
-
+  cooldown:
+    default-days: 7
