@@ -54,7 +54,24 @@ jobs:
 
     - name: Test ${{ matrix.suite }}
       run: |
-        ./scripts/smoke.sh --builder paketobuildpacks/builder-jammy-full:latest --suite ${{ matrix.suite }}
+        # Suites the Paketo Ubuntu Resolute builder can build are migrated to it.
+        # Its bundled buildpacks cover Java/JVM, Node.js and Procfile out of the box.
+        # Go and Python are not embedded in the builder, but their buildpacks publish
+        # resolute-stack binaries, so the go/python smoke tests supply them explicitly
+        # (see WithBuildpacks in those tests); ca-certificates rides on the Go buildpack.
+        # dotnet-core, web-servers (httpd/nginx), ruby and php have no resolute-stack
+        # dependency binaries published upstream yet, so they stay on jammy-full.
+        # (Note: java/deps and java/tools-build use the Clojure Tools buildpack, whose
+        # Clojure CLI dependency is published amd64-only; that is fine here because the
+        # GitHub-hosted runners are amd64, but those two samples cannot be built on
+        # arm64 with any builder until an arm64 Clojure CLI is published upstream.)
+        case "${{ matrix.suite }}" in
+          ./java/*|nodejs|procfile|go|python|ca-certificates)
+            BUILDER="paketobuildpacks/ubuntu-resolute-builder:latest" ;;
+          *)
+            BUILDER="paketobuildpacks/builder-jammy-full:latest" ;;
+        esac
+        ./scripts/smoke.sh --builder "$BUILDER" --suite ${{ matrix.suite }}
 
     - name: File Issue
       if: ${{ failure() && github.event_name != 'pull_request' }}

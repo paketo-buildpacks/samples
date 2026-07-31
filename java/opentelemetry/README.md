@@ -6,6 +6,7 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 
 ```bash
 pack build applications/opentelemetry \
+    --builder paketobuildpacks/ubuntu-resolute-builder \
     --buildpack paketo-buildpacks/java \
     --buildpack docker.io/paketobuildpacks/opentelemetry \
     --env BP_OPENTELEMETRY_ENABLED=true \

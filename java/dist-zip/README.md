@@ -5,7 +5,7 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 ## Building
 
 ```bash
-pack build applications/dist-zip --env BP_GRADLE_BUILD_ARGUMENTS="--no-daemon -x test bootDistZip" --env BP_GRADLE_BUILT_ARTIFACT="build/distributions/*.zip" --env BP_JVM_VERSION=17
+pack build applications/dist-zip --builder paketobuildpacks/ubuntu-resolute-builder --env BP_GRADLE_BUILD_ARGUMENTS="--no-daemon -x test bootDistZip" --env BP_GRADLE_BUILT_ARTIFACT="build/distributions/*.zip" --env BP_JVM_VERSION=17
 ```
 
 ## Running

@@ -6,7 +6,8 @@
 
 ```bash
 pack build applications/native-image \
-  --builder paketobuildpacks/builder-jammy-tiny \
+  --builder paketobuildpacks/ubuntu-resolute-builder \
+  --run-image paketobuildpacks/ubuntu-resolute-run-tiny \
   --env BP_NATIVE_IMAGE=true \
   --env BP_JVM_VERSION=25
 ```

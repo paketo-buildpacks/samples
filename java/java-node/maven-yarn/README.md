@@ -5,7 +5,7 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 ## Building
 
 ```bash
-pack build applications/maven-yarn --env BP_JVM_VERSION=17 --env BP_JAVA_INSTALL_NODE=true
+pack build applications/maven-yarn --builder paketobuildpacks/ubuntu-resolute-builder --env BP_JVM_VERSION=17 --env BP_JAVA_INSTALL_NODE=true
 ```
 
 ## Running

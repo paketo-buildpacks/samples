@@ -86,24 +86,12 @@ jobs:
           export TESTCONTAINERS_RYUK_DISABLED=true
           export TESTCONTAINERS_RYUK_CONTAINER_PRIVILEGED=true
 
-          # Map the right builder image for the Java sample folder
-          case "${{ matrix.java_sample_folder }}" in
-            "java/akka/"*)
-              BUILDER_IMAGE="paketobuildpacks/builder-jammy-base:latest"
-              ;;
-            "java/dist-zip/"*)
-              BUILDER_IMAGE="paketobuildpacks/builder-jammy-base:latest"
-              ;;
-            "java/java-node/gradle-node/"*)
-              BUILDER_IMAGE="paketobuildpacks/builder-jammy-base:latest"
-              ;;
-            "java/java-node/maven-yarn/"*)
-              BUILDER_IMAGE="paketobuildpacks/builder-jammy-base:latest"
-              ;;
-            *)
-              BUILDER_IMAGE="paketobuildpacks/builder-jammy-tiny:latest"
-              ;;
-          esac
+          # All Java samples now build with the Paketo Ubuntu Resolute builder.
+          # It bundles the Java, Java Native Image, Node.js and Procfile buildpacks,
+          # and its default (base) run image includes a full Linux distribution
+          # (bash, etc.), so samples that previously required the jammy-base builder
+          # work here too.
+          BUILDER_IMAGE="paketobuildpacks/ubuntu-resolute-builder:latest"
 
           ./scripts/smoke.sh --suite "${{ matrix.java_sample_folder }}" \
                              --builder "$BUILDER_IMAGE"

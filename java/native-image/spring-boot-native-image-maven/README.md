@@ -8,7 +8,8 @@
 
 ```bash
 pack build applications/native-image \
-  --builder paketobuildpacks/builder-jammy-tiny \
+  --builder paketobuildpacks/ubuntu-resolute-builder \
+  --run-image paketobuildpacks/ubuntu-resolute-run-tiny \
   --env BP_MAVEN_ACTIVE_PROFILES=native \
   --env BP_JVM_VERSION=25
 ```

@@ -5,7 +5,7 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 ## Building
 
 ```bash
-pack build applications/clojure-tools-build
+pack build applications/clojure-tools-build --builder paketobuildpacks/ubuntu-resolute-builder
 ```
 
 ## Running

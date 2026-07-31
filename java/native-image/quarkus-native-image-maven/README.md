@@ -6,7 +6,8 @@
 
 ```bash
 pack build applications/quarkus-native \
-  --builder paketobuildpacks/builder-jammy-tiny \
+  --builder paketobuildpacks/ubuntu-resolute-builder \
+  --run-image paketobuildpacks/ubuntu-resolute-run-tiny \
   --env BP_NATIVE_IMAGE=true \
   --env BP_MAVEN_ADDITIONAL_BUILD_ARGUMENTS="-Dquarkus.package.type=native-sources" \
   --env BP_MAVEN_BUILT_ARTIFACT="target/native-sources" \

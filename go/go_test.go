@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -51,6 +52,12 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 		it.Before(func() {
 			pack = occam.NewPack().WithVerbose().WithNoColor()
 			docker = occam.NewDocker()
+
+			// The Ubuntu Resolute builder does not embed the Go buildpack, so it
+			// must be supplied explicitly at build time (see WithBuildpacks below).
+			if strings.Contains(builder, "resolute") {
+				Expect(docker.Pull.Execute("index.docker.io/paketobuildpacks/go")).To(Succeed())
+			}
 		})
 
 		context("detects a Go app", func() {
@@ -82,10 +89,13 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
-					image, logs, err = pack.Build.
+					build := pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder).
-						Execute(name, source)
+						WithBuilder(builder)
+					if strings.Contains(builder, "resolute") {
+						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/go")
+					}
+					image, logs, err = build.Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Go Distribution")))
@@ -110,10 +120,13 @@ func testGoWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
-					image, logs, err = pack.Build.
+					build := pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder).
-						Execute(name, source)
+						WithBuilder(builder)
+					if strings.Contains(builder, "resolute") {
+						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/go")
+					}
+					image, logs, err = build.Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Go Distribution")))
