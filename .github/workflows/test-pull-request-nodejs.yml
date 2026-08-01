@@ -26,6 +26,7 @@ jobs:
         - 'paketobuildpacks/builder-jammy-full:latest'
         - 'paketobuildpacks/builder-jammy-base:latest'
         - 'paketobuildpacks/ubuntu-noble-builder:latest'
+        - 'paketobuildpacks/ubuntu-resolute-builder:latest'
         - 'paketobuildpacks/builder-ubi8-base:latest'
         - 'paketobuildpacks/ubi-9-builder:latest'
         - 'paketobuildpacks/ubi-10-builder:latest'
