@@ -6,6 +6,20 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 
 ```bash
 pack build applications/opentelemetry \
+    --buildpack paketo-buildpacks/java \
+    --buildpack docker.io/paketobuildpacks/opentelemetry \
+    --env BP_OPENTELEMETRY_ENABLED=true \
+    --env BP_JVM_VERSION=17
+```
+
+> This sample's Gradle build pins a Java 17 toolchain, so `BP_JVM_VERSION=17` is required.
+
+### Advanced
+
+You can also select a specific builder by passing the `--builder` flag:
+
+```bash
+pack build applications/opentelemetry \
     --builder paketobuildpacks/ubuntu-resolute-builder \
     --buildpack paketo-buildpacks/java \
     --buildpack docker.io/paketobuildpacks/opentelemetry \

@@ -5,7 +5,15 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 ## Building
 
 ```bash
-pack build applications/gradle-node --env BP_JVM_VERSION=21 --env BP_JAVA_INSTALL_NODE=true --env BP_NODE_PROJECT_PATH=frontend --builder paketobuildpacks/ubuntu-resolute-builder
+pack build applications/gradle-node --env BP_JAVA_INSTALL_NODE=true --env BP_NODE_PROJECT_PATH=frontend
+```
+
+### Advanced
+
+You can also select a specific builder and control the JVM version by passing additional arguments:
+
+```bash
+pack build applications/gradle-node --builder paketobuildpacks/ubuntu-resolute-builder --env BP_JVM_VERSION=21 --env BP_JAVA_INSTALL_NODE=true --env BP_NODE_PROJECT_PATH=frontend
 ```
 
 ## Running
