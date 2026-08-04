@@ -231,7 +231,6 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					image, logs, err = pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder).
-						WithEnv(map[string]string{"BP_ENABLE_PACKAGE_MANAGERS": "true"}).
 						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
