@@ -1,12 +1,12 @@
-# Python sample app using pip package manager
+# Python sample app using pixi package manager
 
 ## Building
 
-`pack build pip-sample --buildpack paketo-buildpacks/python`
+`pack build pixi-sample --buildpack paketo-buildpacks/python`
 
 ## Running
 
-`docker run --interactive --tty --env PORT=8080 --publish 8080:8080 pip-sample`
+`docker run --interactive --tty --env PORT=8080 --publish 8080:8080 pixi-sample`
 
 ## Viewing
 
