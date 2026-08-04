@@ -2,7 +2,7 @@
 
 ## Building
 
-`pack build uv-sample --buildpack paketo-buildpacks/python`
+`pack build uv-sample --env "BP_ENABLE_PACKAGE_MANAGERS=true" --buildpack paketo-buildpacks/python`
 
 ## Running
 
