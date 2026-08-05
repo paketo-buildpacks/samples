@@ -55,7 +55,7 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 
 			// The Ubuntu Resolute builder does not embed the Python buildpack, so it
 			// must be supplied explicitly at build time (see WithBuildpacks below).
-			if strings.Contains(builder, "resolute") {
+			if !strings.Contains(builder, "jammy") {
 				Expect(docker.Pull.Execute("index.docker.io/paketobuildpacks/python")).To(Succeed())
 			}
 		})
@@ -92,7 +92,7 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					build := pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder)
-					if strings.Contains(builder, "resolute") {
+					if !strings.Contains(builder, "jammy") {
 						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
 					}
 					image, logs, err = build.Execute(name, source)
@@ -123,7 +123,7 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					build := pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder)
-					if strings.Contains(builder, "resolute") {
+					if !strings.Contains(builder, "jammy") {
 						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
 					}
 					image, logs, err = build.Execute(name, source)
@@ -155,7 +155,7 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					build := pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder)
-					if strings.Contains(builder, "resolute") {
+					if !strings.Contains(builder, "jammy") {
 						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
 					}
 					image, logs, err = build.Execute(name, source)
@@ -188,7 +188,7 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					build := pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder)
-					if strings.Contains(builder, "resolute") {
+					if !strings.Contains(builder, "jammy") {
 						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
 					}
 					image, logs, err = build.Execute(name, source)
@@ -221,7 +221,7 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					build := pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder)
-					if strings.Contains(builder, "resolute") {
+					if !strings.Contains(builder, "jammy") {
 						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
 					}
 					image, logs, err = build.Execute(name, source)
@@ -307,7 +307,7 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					build := pack.Build.
 						WithPullPolicy("never").
 						WithBuilder(builder)
-					if strings.Contains(builder, "resolute") {
+					if !strings.Contains(builder, "jammy") {
 						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
 					}
 					image, logs, err = build.Execute(name, source)
