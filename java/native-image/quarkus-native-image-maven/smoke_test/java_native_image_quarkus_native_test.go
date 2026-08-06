@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
@@ -51,6 +52,12 @@ func testQuarkusWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 		it.Before(func() {
 			pack = occam.NewPack().WithVerbose().WithNoColor()
 			docker = occam.NewDocker()
+
+			// The tiny run image is not the builder's default, so pre-pull it (the build
+			// below runs with --pull-policy never) when running on the Resolute builder.
+			if !strings.Contains(builder, "jammy") {
+				Expect(docker.Pull.Execute("paketobuildpacks/ubuntu-resolute-run-tiny:latest")).To(Succeed())
+			}
 		})
 
 		context("detects a Java Native Image app", func() {
@@ -82,7 +89,7 @@ func testQuarkusWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
-					image, logs, err = pack.Build.
+					build := pack.Build.
 						WithPullPolicy("never").
 						WithEnv(map[string]string{
 							"BP_JVM_VERSION":                       "25",
@@ -93,8 +100,14 @@ func testQuarkusWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 							"BP_NATIVE_IMAGE_BUILT_ARTIFACT":       "native-sources/getting-started-*-runner.jar",
 						}).
 						WithBuilder(builder).
-						WithGID("123").
-						Execute(name, source)
+						WithGID("123")
+					// The Ubuntu Resolute builder's default run image is the full `run`
+					// variant; native images should run on the tiny run image, so opt into
+					// it explicitly here (matching the sample's README and pom.xml).
+					if !strings.Contains(builder, "jammy") {
+						build = build.WithRunImage("paketobuildpacks/ubuntu-resolute-run-tiny:latest")
+					}
+					image, logs, err = build.Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for BellSoft Liberica")))
