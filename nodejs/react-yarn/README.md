@@ -5,7 +5,59 @@ To build frontend applications and serve them with NGINX/HTTPD, please use the W
 
 ## Building
 
-`pack build react-sample --buildpack paketo-buildpacks/nodejs --env "BP_NODE_RUN_SCRIPTS=build"`
+### Ubuntu
+
+#### Jammy
+
+```
+pack build react-sample --buildpack docker.io/paketobuildpacks/nodejs \
+    --builder docker.io/paketobuildpacks/builder-jammy-buildpackless-base \
+    --env "BP_NODE_RUN_SCRIPTS=build"
+```
+
+#### Noble
+
+```
+pack build react-sample --buildpack docker.io/paketobuildpacks/nodejs \
+    --builder docker.io/paketobuildpacks/ubuntu-noble-builder-buildpackless \
+    --env "BP_NODE_RUN_SCRIPTS=build"
+```
+
+#### Resolute
+
+```
+pack build react-sample --buildpack docker.io/paketobuildpacks/nodejs \
+    --builder docker.io/paketobuildpacks/ubuntu-resolute-builder-buildpackless \
+    --env "BP_NODE_RUN_SCRIPTS=build"
+```
+
+### RHEL
+
+#### UBI 8
+
+```
+pack build react-sample \
+    --extension docker.io/paketobuildpacks/ubi-nodejs-extension \
+    --buildpack docker.io/paketobuildpacks/nodejs \
+    --builder docker.io/paketobuildpacks/builder-ubi8-buildpackless-base \
+    --env "BP_NODE_RUN_SCRIPTS=build"
+```
+
+#### UBI 9
+
+```
+pack build react-sample \
+    --builder docker.io/paketobuildpacks/ubi-9-builder \
+    --env "BP_NODE_RUN_SCRIPTS=build"
+```
+
+#### UBI 10
+
+```
+pack build react-sample \
+    --builder docker.io/paketobuildpacks/ubi-10-builder \
+    --env "BP_NODE_RUN_SCRIPTS=build"
+```
 
 ## Running
 
