@@ -1,0 +1,28 @@
+{
+  "name": "npm_with_native_modules",
+  "version": "0.0.1",
+  "description": "Sample Node.js application with native module",
+  "keywords": [
+    "native_modules"
+  ],
+  "homepage": "https://github.com/paketo-buildpacks/samples#readme",
+  "bugs": {
+    "url": "https://github.com/paketo-buildpacks/samples/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paketo-buildpacks/samples.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Paketo Buildpacks",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "hello_world": "file:hello_world"
+  },
+  "devDependencies": {}
+}
