@@ -45,12 +45,12 @@ func TestNodejs(t *testing.T) {
 			pullPolicy = "always"
 		}
 
-		suite(fmt.Sprintf("Nodejs with %s builder", builder), testNodejsWithBuilder(builder, pullPolicy))
+		suite(fmt.Sprintf("Nodejs with %s builder", builder), testNodejsWithBuilder(builder, pullPolicy, isUbiBuilder))
 	}
 	suite.Run(t)
 }
 
-func testNodejsWithBuilder(builder string, pullPolicy string) func(*testing.T, spec.G, spec.S) {
+func testNodejsWithBuilder(builder string, pullPolicy string, isUbiBuilder bool) func(*testing.T, spec.G, spec.S) {
 	return func(t *testing.T, context spec.G, it spec.S) {
 		var (
 			Expect     = NewWithT(t).Expect
@@ -110,6 +110,35 @@ func testNodejsWithBuilder(builder string, pullPolicy string) func(*testing.T, s
 					Expect(err).NotTo(HaveOccurred())
 
 					Eventually(container).Should(Serve(ContainSubstring("Powered By Paketo Buildpacks")).OnPort(8080))
+				})
+			})
+
+			context("app uses npm with native modules", func() {
+				it("builds successfully", func() {
+					var err error
+					source, err = occam.Source(filepath.Join("../nodejs", "npm-with-native-modules"))
+					Expect(err).NotTo(HaveOccurred())
+
+					var logs fmt.Stringer
+					build := pack.Build.
+						WithPullPolicy(pullPolicy).
+						WithBuilder(builder)
+					if !isUbiBuilder {
+						build = build.WithEnv(map[string]string{"BP_NPM_INCLUDE_BUILD_PYTHON": "true"})
+					}
+					image, logs, err = build.Execute(name, source)
+					Expect(err).ToNot(HaveOccurred(), logs.String)
+
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Node Engine")))
+					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Node Start")))
+
+					container, err = docker.Container.Run.
+						WithEnv(map[string]string{"PORT": "8080"}).
+						WithPublish("8080").
+						Execute(image.ID)
+					Expect(err).NotTo(HaveOccurred())
+
+					Eventually(container).Should(Serve(ContainSubstring("Hello, World!")).OnPort(8080))
 				})
 			})
 
