@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 	"testing"
 	"time"
 
@@ -52,12 +51,6 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 		it.Before(func() {
 			pack = occam.NewPack().WithVerbose().WithNoColor()
 			docker = occam.NewDocker()
-
-			// The Ubuntu Resolute builder does not embed the Python buildpack, so it
-			// must be supplied explicitly at build time (see WithBuildpacks below).
-			if !strings.Contains(builder, "jammy") {
-				Expect(docker.Pull.Execute("index.docker.io/paketobuildpacks/python")).To(Succeed())
-			}
 		})
 
 		context("detects a Python app", func() {
@@ -89,13 +82,10 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
-					build := pack.Build.
+					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder)
-					if !strings.Contains(builder, "jammy") {
-						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
-					}
-					image, logs, err = build.Execute(name, source)
+						WithBuilder(builder).
+						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for Miniconda")))
@@ -120,13 +110,10 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
-					build := pack.Build.
+					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder)
-					if !strings.Contains(builder, "jammy") {
-						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
-					}
-					image, logs, err = build.Execute(name, source)
+						WithBuilder(builder).
+						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
@@ -152,13 +139,10 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
-					build := pack.Build.
+					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder)
-					if !strings.Contains(builder, "jammy") {
-						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
-					}
-					image, logs, err = build.Execute(name, source)
+						WithBuilder(builder).
+						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
@@ -185,13 +169,10 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
-					build := pack.Build.
+					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder)
-					if !strings.Contains(builder, "jammy") {
-						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
-					}
-					image, logs, err = build.Execute(name, source)
+						WithBuilder(builder).
+						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
@@ -218,13 +199,10 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
-					build := pack.Build.
+					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder)
-					if !strings.Contains(builder, "jammy") {
-						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
-					}
-					image, logs, err = build.Execute(name, source)
+						WithBuilder(builder).
+						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
@@ -304,13 +282,10 @@ func testPythonWithBuilder(builder string) func(*testing.T, spec.G, spec.S) {
 					Expect(err).NotTo(HaveOccurred())
 
 					var logs fmt.Stringer
-					build := pack.Build.
+					image, logs, err = pack.Build.
 						WithPullPolicy("never").
-						WithBuilder(builder)
-					if !strings.Contains(builder, "jammy") {
-						build = build.WithBuildpacks("index.docker.io/paketobuildpacks/python")
-					}
-					image, logs, err = build.Execute(name, source)
+						WithBuilder(builder).
+						Execute(name, source)
 					Expect(err).ToNot(HaveOccurred(), logs.String)
 
 					Expect(logs).To(ContainLines(ContainSubstring("Paketo Buildpack for CPython")))
