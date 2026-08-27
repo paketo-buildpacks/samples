@@ -13,15 +13,12 @@ name: leiningen
 jobs:
   test:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java: [8, 11]
 
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-java@v5
         with:
-          java-version: ${{ matrix.java }}
+          java-version: 21
           distribution: 'zulu'
       - uses: actions/cache@v6
         with:
