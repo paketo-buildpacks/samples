@@ -50,10 +50,8 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
           <image>
-            <builder>paketobuildpacks/builder-jammy-buildpackless-tiny</builder>
-            <buildpacks>
-              <buildpack>paketobuildpacks/java-native-image</buildpack>
-            </buildpacks>
+            <builder>paketobuildpacks/ubuntu-resolute-builder:latest</builder>
+            <runImage>paketobuildpacks/ubuntu-resolute-run-tiny:latest</runImage>
           </image>
         </configuration>
 			</plugin>
