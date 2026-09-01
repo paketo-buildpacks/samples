@@ -4,6 +4,7 @@ name: maven
   pull_request:
     paths:
     - java/maven/**
+    - ".github/workflows/java-maven.yml"
   push:
     branches:
     - main

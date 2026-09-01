@@ -4,6 +4,7 @@ name: java-spring-boot-native-image-maven
   pull_request:
     paths:
     - java/native-image/spring-boot-native-image-maven/**
+    - ".github/workflows/java-spring-boot-native-image-maven.yml"
   push:
     branches:
     - main
