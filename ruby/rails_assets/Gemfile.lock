@@ -148,7 +148,7 @@ GEM
     psych (5.3.1)
       date
       stringio
-    puma (7.1.0)
+    puma (7.2.1)
       nio4r (~> 2.0)
     racc (1.8.1)
     rack (3.2.6)
@@ -236,7 +236,7 @@ PLATFORMS
 
 DEPENDENCIES
   importmap-rails (~> 2.2)
-  puma (~> 7.1)
+  puma (~> 7.2)
   rails (~> 8.1.0)
   sprockets-rails (~> 3.5)
   stimulus-rails (~> 1.3)
