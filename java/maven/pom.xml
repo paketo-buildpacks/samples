@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>4.0.6</version>
+		<version>4.1.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.paketo</groupId>
@@ -47,6 +47,19 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+                    <imageBuilder>paketobuildpacks/ubuntu-resolute-builder:latest</imageBuilder>
+                    <image>
+						<name>all</name>
+                        <env>
+                            <BP_JVM_VERSION>25</BP_JVM_VERSION>
+<!--							Some Spring Boot performance features; see https://blog.paketo.io/posts/spring-boot-performance/ -->
+<!--                            <BP_JVM_AOTCACHE_ENABLED>true</BP_JVM_AOTCACHE_ENABLED>-->
+<!--                            <BP_SPRING_AOT_ENABLED>true</BP_SPRING_AOT_ENABLED>-->
+<!--                            <JAVA_TOOL_OPTIONS>-XX:+UseCompactObjectHeaders -Dspring.threads.virtual.enabled=true</JAVA_TOOL_OPTIONS>-->
+<!--                            <BPE_DELIM_JAVA_TOOL_OPTIONS xml:space="preserve"> </BPE_DELIM_JAVA_TOOL_OPTIONS>-->
+<!--                            <BPE_APPEND_JAVA_TOOL_OPTIONS>-XX:+UseCompactObjectHeaders -Dspring.threads.virtual.enabled=true</BPE_APPEND_JAVA_TOOL_OPTIONS>-->
+                        </env>
+                    </image>
 					<layers>
 						<enabled>true</enabled>
 					</layers>
