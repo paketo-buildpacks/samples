@@ -28,6 +28,15 @@ pack build applications/gradle --volume $(pwd)/bindings:/platform/bindings
 ```bash
 cp ~/gradle/wrapper/gradle-wrapper.properties java/gradle/bindings/gradle-wrapper/gradle-wrapper.properties
 pack build applications/gradle --volume $(pwd)/bindings:/platform/bindings
+```
+
+### Advanced
+
+You can also select a specific builder by passing the `--builder` flag:
+
+```bash
+pack build applications/gradle --builder paketobuildpacks/ubuntu-resolute-builder
+```
 
 ## Running
 

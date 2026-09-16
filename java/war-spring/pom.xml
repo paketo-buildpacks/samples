@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.2</version>
+		<version>4.1.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>io.paketo</groupId>
@@ -52,12 +52,9 @@
 				<configuration>
 					<image>
 						<env>
-							<BP_TOMCAT_VERSION>10</BP_TOMCAT_VERSION>
+							<BP_TOMCAT_VERSION>11</BP_TOMCAT_VERSION>
 						</env>
-						<builder>paketobuildpacks/builder-jammy-buildpackless-tiny</builder>
-						<buildpacks>
-							<buildpack>docker.io/paketobuildpacks/java:15.1.0</buildpack>
-						</buildpacks>
+						<builder>paketobuildpacks/ubuntu-resolute-builder:latest</builder>
 					</image>
 				</configuration>
 				<executions>

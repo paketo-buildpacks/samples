@@ -1,9 +1,9 @@
 {:deps
-          {io.pedestal/pedestal.service {:mvn/version "0.5.10"}
-           io.pedestal/pedestal.route   {:mvn/version "0.5.10"}
-           io.pedestal/pedestal.jetty   {:mvn/version "0.5.10"}
-           org.clojure/data.json        {:mvn/version "2.4.0"}
-           org.slf4j/slf4j-simple       {:mvn/version "1.7.36"}}
+          {io.pedestal/pedestal.service {:mvn/version "0.7.2"}
+           io.pedestal/pedestal.route   {:mvn/version "0.7.2"}
+           io.pedestal/pedestal.jetty   {:mvn/version "0.7.2"}
+           org.clojure/data.json        {:mvn/version "2.5.2"}
+           org.slf4j/slf4j-simple       {:mvn/version "2.0.18"}}
  :paths ["src"]
- :aliases {:build {:deps {io.github.clojure/tools.build {:git/tag "v0.8.1" :git/sha "7d40500"}}
+ :aliases {:build {:deps {io.github.clojure/tools.build {:mvn/version "0.10.14"}}
                    :ns-default build}}}

@@ -8,6 +8,14 @@ See [prerequisites](https://paketo.io/docs/howto/java/#prerequisites) of this sa
 pack build applications/clojure-tools-build
 ```
 
+### Advanced
+
+You can also select a specific builder by passing the `--builder` flag:
+
+```bash
+pack build applications/clojure-tools-build --builder paketobuildpacks/ubuntu-resolute-builder
+```
+
 ## Running
 
 ```bash

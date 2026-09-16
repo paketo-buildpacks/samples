@@ -26,12 +26,13 @@ jobs:
         - 'paketobuildpacks/builder-jammy-full:latest'
         - 'paketobuildpacks/builder-jammy-base:latest'
         - 'paketobuildpacks/ubuntu-noble-builder:latest'
+        - 'paketobuildpacks/ubuntu-resolute-builder:latest'
         - 'paketobuildpacks/builder-ubi8-base:latest'
         - 'paketobuildpacks/ubi-9-builder:latest'
         - 'paketobuildpacks/ubi-10-builder:latest'
     steps:
     - name: Setup Go
-      uses: actions/setup-go@v6
+      uses: actions/setup-go@v7
       with:
         go-version: 1.25.x
 
