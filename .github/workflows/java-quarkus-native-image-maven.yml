@@ -4,6 +4,7 @@ name: java-quarkus-native-image-maven
   pull_request:
     paths:
       - java/native-image/quarkus-native-image-maven/**
+      - ".github/workflows/java-quarkus-native-image-maven.yml"
   push:
     branches:
       - main

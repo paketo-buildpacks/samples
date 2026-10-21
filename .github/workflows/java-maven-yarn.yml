@@ -4,6 +4,7 @@ name: maven-yarn
   pull_request:
     paths:
     - java/java-node/maven-yarn/**
+    - ".github/workflows/java-maven-yarn.yml"
   push:
     branches:
     - main

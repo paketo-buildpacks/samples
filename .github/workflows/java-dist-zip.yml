@@ -4,6 +4,7 @@ name: dist-zip
   pull_request:
     paths:
     - java/dist-zip/**
+    - ".github/workflows/java-dist-zip.yml"
   push:
     branches:
     - main

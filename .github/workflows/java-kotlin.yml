@@ -4,6 +4,7 @@ name: kotlin
   pull_request:
     paths:
     - java/kotlin/**
+    - ".github/workflows/java-kotlin.yml"
   push:
     branches:
     - main

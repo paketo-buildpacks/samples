@@ -4,6 +4,7 @@ name: java-public-static-main-native-image-maven
   pull_request:
     paths:
     - java/native-image/public-static-main-native-image-maven/**
+    - ".github/workflows/java-public-static-main-native-image-maven.yml"
   push:
     branches:
     - main

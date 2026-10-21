@@ -4,6 +4,7 @@ name: aspectj
   pull_request:
     paths:
     - java/aspectj/**
+    - ".github/workflows/java-aspectj.yml"
   push:
     branches:
     - main

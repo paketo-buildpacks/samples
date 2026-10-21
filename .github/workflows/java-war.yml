@@ -4,6 +4,7 @@ name: war
   pull_request:
     paths:
       - java/war/**
+      - ".github/workflows/java-war.yml"
   push:
     branches:
       - main

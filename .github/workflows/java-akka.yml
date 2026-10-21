@@ -4,6 +4,7 @@ name: akka
   pull_request:
     paths:
     - java/akka/**
+    - ".github/workflows/java-akka.yml"
   push:
     branches:
     - main
