@@ -13,7 +13,7 @@
              native-image.args, which trips a bug in the Paketo Native Image buildpack
              (replaceJarArguments strips the -o value, breaking the native-image call).
              Bump once that buildpack is fixed. -->
-        <quarkus.platform.version>3.40.1.1</quarkus.platform.version>
+        <quarkus.platform.version>3.40.1.2</quarkus.platform.version>
         <compiler-plugin.version>3.16.0</compiler-plugin.version>
         <surefire-plugin.version>3.6.1</surefire-plugin.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
