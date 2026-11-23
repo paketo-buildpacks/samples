@@ -6,7 +6,7 @@ GEM
     mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)
     nio4r (2.7.5)
-    puma (8.0.2)
+    puma (8.1.1)
       nio4r (~> 2.0)
     rack (3.2.8)
     rack-protection (4.2.1)
@@ -31,7 +31,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  puma (~> 8.0)
+  puma (~> 8.1)
   sinatra (~> 4.2)
 
 RUBY VERSION
