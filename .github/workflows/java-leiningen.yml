@@ -4,6 +4,7 @@ name: leiningen
   pull_request:
     paths:
     - java/leiningen/**
+    - ".github/workflows/java-leiningen.yml"
   push:
     branches:
     - main

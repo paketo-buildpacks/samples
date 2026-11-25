@@ -4,6 +4,7 @@ name: application-insights
   pull_request:
     paths:
     - java/application-insights/**
+    - ".github/workflows/java-application-insights.yml"
   push:
     branches:
     - main

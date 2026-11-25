@@ -7,6 +7,7 @@ on:
     - main
     paths:
     - 'web-servers/**'
+    - '.github/workflows/test-pull-request-web-servers.yml'
 
 jobs:
   smoke:

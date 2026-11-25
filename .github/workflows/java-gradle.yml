@@ -4,6 +4,7 @@ name: gradle
   pull_request:
     paths:
     - java/gradle/**
+    - ".github/workflows/java-gradle.yml"
   push:
     branches:
     - main

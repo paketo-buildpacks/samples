@@ -7,6 +7,7 @@ on:
     - main
     paths:
     - 'ruby/**'
+    - '.github/workflows/test-pull-request-ruby.yml'
 
 jobs:
   smoke:
